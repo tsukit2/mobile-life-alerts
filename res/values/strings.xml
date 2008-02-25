@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Mobile Life Monitor</string>
+    <string name="call_emergency">Call Emergency No.</string>
+    <string name="select_emergency">Select Emergency Contact</string>
+    <string name="email_emergency">Email Emergency Contact</string>
+    <string name="monitor_life">Dial Emergency No.</string>
+    <string name="confirm_emergency_contact">Confirm Selected Contact</string>
+    <string name="no_emergency_contact">No emergency contact stored. Please select one from menu."</string>
+    <string name="selected_emergency_contact">You've selected emergency contact: </string>
+    <string name="intro_greeting">WELCOME TO LIFE MONITOR APPLICATION (CHATE'S PORTION)</string>
+</resources>

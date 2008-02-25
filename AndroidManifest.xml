@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.life.alerts">
+    <application android:icon="@drawable/icon">
+        <activity class=".LifeAlerts_Chate" android:label="@string/app_name">
+            <intent-filter>
+                <action android:value="android.intent.action.MAIN" />
+                <category android:value="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity class=".SelectEmergencyNumber" android:label="@string/select_emergency" />
+    </application>
+
+    <uses-permission id="android.permission.READ_CONTACTS" />
+    <uses-permission id="android.permission.WRITE_CONTACTS" />
+    <uses-permission id="android.permission.CALL_PHONE" />        
+	<uses-permission id="android.permission.INSTALL_PACKAGES" />
+</manifest> 
