@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="sensitivities">
+        <item>Not Sensitive</item>
+        <item>Somewhat</item>
+        <item>Normal</item>
+        <item>Sensitive</item>
+        <item>Very Sensitive</item>
+    </array>
+</resources>

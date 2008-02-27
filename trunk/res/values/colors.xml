@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <color name="sensitivity_bar_inactive">#808080</color>
+   
+   <color name="sensitivity_bar_10">#FF0000</color>
+   <color name="sensitivity_bar_9">#FF0000</color>
+   <color name="sensitivity_bar_8">#FFFF00</color>
+   <color name="sensitivity_bar_7">#FFFF00</color>
+   <color name="sensitivity_bar_6">#FFFF00</color>
+   <color name="sensitivity_bar_5">#FFFF00</color>
+   <color name="sensitivity_bar_4">#00FF00</color>
+   <color name="sensitivity_bar_3">#00FF00</color>
+   <color name="sensitivity_bar_2">#00FF00</color>
+   <color name="sensitivity_bar_1">#00FF00</color>
+   <color name="sensitivity_bar_0">#00FF00</color>
+
+</resources>

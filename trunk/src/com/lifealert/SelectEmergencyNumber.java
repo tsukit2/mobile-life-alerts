@@ -1,4 +1,4 @@
-package com.life.alerts;
+package com.lifealert;
 
 import java.util.ArrayList;
 import java.util.HashMap;

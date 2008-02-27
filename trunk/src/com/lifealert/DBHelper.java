@@ -1,4 +1,4 @@
-package com.life.alerts;
+package com.lifealert;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
