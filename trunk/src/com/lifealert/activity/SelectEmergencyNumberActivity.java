@@ -1,8 +1,12 @@
-package com.lifealert;
+package com.lifealert.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.lifealert.EmergencyPersonInfo;
+import com.lifealert.R;
+import com.lifealert.R.layout;
 
 import android.app.ListActivity;
 import android.database.Cursor;
@@ -11,7 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class SelectEmergencyNumber extends ListActivity {
+public class SelectEmergencyNumberActivity extends ListActivity {
 	
 	private HashMap nameIdHash = new HashMap();
 	private List<String> items = new ArrayList<String>();
@@ -80,9 +84,9 @@ public class SelectEmergencyNumber extends ListActivity {
         Bundle bundle = new Bundle();
         
         EmergencyPersonInfo personInfo = (EmergencyPersonInfo) nameIdHash.get(position);
-        bundle.putLong(LifeAlerts_Chate.PERSON_ID, personInfo.getPersonId());
-        bundle.putString(LifeAlerts_Chate.SELECTED_PHONE, personInfo.getPhoneNumber());
-        bundle.putString(LifeAlerts_Chate.SELECTED_NAME, personInfo.getName());
+        bundle.putLong(LifeAlerts_ChateActivity.PERSON_ID, personInfo.getPersonId());
+        bundle.putString(LifeAlerts_ChateActivity.SELECTED_PHONE, personInfo.getPhoneNumber());
+        bundle.putString(LifeAlerts_ChateActivity.SELECTED_NAME, personInfo.getName());
        
         setResult(RESULT_OK, null, bundle);
         finish();      

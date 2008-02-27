@@ -1,10 +1,15 @@
-package com.lifealert;
+package com.lifealert.activity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import com.lifealert.R;
+import com.lifealert.R.id;
+import com.lifealert.R.layout;
+import com.lifealert.R.string;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -17,7 +22,7 @@ import android.view.Menu;
 import android.view.Menu.Item;
 import android.widget.TextView;
 
-public class LifeAlerts_Chate extends Activity {
+public class LifeAlerts_ChateActivity extends Activity {
 
 	private ContentURI newPersonURI;
 	private ContentURI newPhoneURI;
@@ -118,7 +123,7 @@ public class LifeAlerts_Chate extends Activity {
      * Navigate to the screen to select an emergency number
      */
     private void selectEmergency() {
-    	Intent intent = new Intent(this, SelectEmergencyNumber.class);
+    	Intent intent = new Intent(this, SelectEmergencyNumberActivity.class);
     	startSubActivity(intent, ACTIVITY_SELECT_CONTACT);
     }
 
