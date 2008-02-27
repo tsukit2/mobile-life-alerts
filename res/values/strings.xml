@@ -9,4 +9,40 @@
     <string name="no_emergency_contact">No emergency contact stored. Please select one from menu."</string>
     <string name="selected_emergency_contact">You've selected emergency contact: </string>
     <string name="intro_greeting">WELCOME TO LIFE MONITOR APPLICATION (CHATE'S PORTION)</string>
+
+    <string name="config_userinfo">Your Info</string>
+    <string name="config_username_hint">Your name</string>
+    <string name="config_useraddr_hint">Your address</string>
+    <string name="config_userphone_hint">Your phone number</string>
+    <string name="config_emergencyinfo">Emergency Info</string>
+    <string name="config_emergencyname_hint">Someone's name</string>
+    <string name="config_emergencyaddr_hint">Someone's address</string>
+    <string name="config_emergencyphone_hint">Someone's phone number</string>
+    <string name="config_call911">Call 911?</string>
+    <string name="config_textmsg">Text Message</string>
+    <string name="config_textmsg_hint">Message you want to send when emergency</string>
+    <string name="config_voicemsg">Voice Message</string>
+    <string name="config_voicemsg_recorded">Recorded</string>
+    <string name="config_voicemsg_norecorded">Need Record</string>
+    <string name="config_sensitivity">Sensitivity</string>
+    <string name="config_sensitivity_hint">Shaking sensitivity</string>
+    <string name="config_systemstatus">System Status:</string>
+    <string name="config_systemstatus_active">Active</string>
+    <string name="config_systemstatus_inactive">Inactive</string>
+    <string name="config_systemaction_activate">Activate</string>
+    <string name="config_systemaction_deactivate">Deactiviate</string>
+    
+    <string name="notification_no_voicemail">The emulator doesn't support voice recording yet. So we go with a pre-recorded voice, assuming the user has already recorded it.</string>
+    
+    <string name="sensitivity_notsensitive">Not Sensitive</string>
+    <string name="sensitivity_somewhat">Somewhat</string>
+    <string name="sensitivity_normal">Normal</string>
+    <string name="sensitivity_sensitive">Sensitive</string>
+    <string name="sensitivity_verysensitive">Very Sensitive</string>
+    <string name="sensitivity_teststatus">Test Status:</string>
+    <string name="sensitivity_teststatus_needshaking">Please shake device</string>
+    <string name="sensitivity_teststatus_ok">Okay!</string>
+    <string name="sensitivity_teststatus_notok">Still not good</string>
+    <string name="sensitivity_accept">Accept</string>
+    <string name="sensitivity_testagain">Test</string>
 </resources>

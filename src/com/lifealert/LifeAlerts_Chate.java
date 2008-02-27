@@ -1,4 +1,4 @@
-package com.life.alerts;
+package com.lifealert;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

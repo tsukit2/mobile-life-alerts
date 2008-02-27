@@ -1,4 +1,4 @@
-package com.life.alerts;
+package com.lifealert;
 
 public class EmergencyPersonInfo {
 
