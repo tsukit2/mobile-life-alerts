@@ -220,9 +220,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
          <TextView
-            id="@+id/status"
+            id="@+id/sensitivity_teststatus"
             android:textAlign="start"
-            android:text="@string/sensitivity_teststatus_ok"
+            android:text="@string/sensitivity_teststatus_needshaking"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="#00ff00"
@@ -236,6 +236,7 @@
          android:orientation="horizontal">
 
          <Button
+            id="@+id/sensitivity_testagain"
             android:text="@string/sensitivity_testagain"
             android:textSize="16sp"
             android:layout_weight="1"
@@ -243,6 +244,7 @@
             android:layout_height="wrap_content" />
 
          <Button
+            id="@+id/sensitivity_accept"
             android:text="@string/sensitivity_accept"
             android:textSize="16sp"
             android:layout_weight="1"

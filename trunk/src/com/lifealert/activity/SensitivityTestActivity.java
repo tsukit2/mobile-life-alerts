@@ -3,13 +3,21 @@ package com.lifealert.activity;
 import org.openintents.hardware.Sensors;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.lifealert.R;
+import com.lifealert.config.AppConfiguration;
+import com.lifealert.config.Sensitivity;
 
 public class SensitivityTestActivity extends Activity implements Runnable {
 
@@ -41,8 +49,19 @@ public class SensitivityTestActivity extends Activity implements Runnable {
       R.color.sensitivity_bar_10, 
    };
    
+   private static final int[] SENSITIVITY_RADIOS = {
+      R.id.sensitivity_verysensitive,
+      R.id.sensitivity_sensitive,
+      R.id.sensitivity_normal,
+      R.id.sensitivity_somewhat,
+      R.id.sensitivity_notsensitive,
+   };
+   
    private View[] bars;
    private boolean testing;
+   private RadioButton[] rbuttons;
+   private Sensitivity curSensitivity;
+   private TextView statusText;
 
    @Override
    protected void onCreate(Bundle icicle) {
@@ -56,17 +75,76 @@ public class SensitivityTestActivity extends Activity implements Runnable {
          bars[i] = findViewById(SENSITIVITY_BARS[i]);
       }
       
+      // initialize the rbutton so we can control the check of the button
+      rbuttons = new RadioButton[5];
+      for (int i = 0; i < rbuttons.length; ++i) {
+         rbuttons[i] = (RadioButton) findViewById(SENSITIVITY_RADIOS[i]);
+      }
+      
+      // get a hold of the status text and initialize it
+      statusText = (TextView) findViewById(R.id.sensitivity_teststatus);
+      statusText.setText(R.string.sensitivity_teststatus_needshaking);
+      
+      // make selection. Choose normal if if it's not already there
+      curSensitivity = AppConfiguration.getSensitivity();
+      if (curSensitivity == null) {
+         AppConfiguration.setSensitivity(curSensitivity = Sensitivity.NORMAL);
+      }
+      setRadioButtons(curSensitivity);
+      
       // reset bar color
       resetBarColor();
       
+      // wire the event handler
+      for (int i = 0; i < rbuttons.length; ++i) {
+         rbuttons[i].setOnClickListener(onRadioClicked);
+      }
+      
+      Button testButton = (Button) findViewById(R.id.sensitivity_testagain);
+      testButton.setOnClickListener(onTestClicked);
+      
       // now start testing
       org.openintents.provider.Hardware.mContentResolver = getContentResolver();
-      startTesting();
+   }
+   
+   private OnClickListener onRadioClicked = new OnClickListener() {
+      public void onClick(View view) {
+         for (int i = 0; i < rbuttons.length; ++i) {
+            if (rbuttons[i] == view) {
+               AppConfiguration.setSensitivity(curSensitivity = Sensitivity.values()[i]);
+            } else {
+               rbuttons[i].setChecked(false);
+            }
+         }
+      }
+   };
+   
+   private OnClickListener onTestClicked = new OnClickListener() {
+      public void onClick(View view) {
+         if (testing) {
+            NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            man.notifyWithText(R.string.sensitivity_testing_insession,
+                  getString(R.string.sensitivity_testing_insession),
+                  NotificationManager.LENGTH_LONG, null);
+         } else {
+            startTesting();
+         }
+      }
+   };
+   
+   
+   
+   
+   private void setRadioButtons(Sensitivity sen) {
+      for (int i = 0; i < rbuttons.length; ++i) {
+         rbuttons[i].setChecked(i == sen.ordinal());
+      }
    }
    
    private void startTesting() {
       testing = true;
       new Thread(this).start();
+      statusText.setText(R.string.sensitivity_teststatus_notok);
    }
    
    private void resetBarColor() {
@@ -86,7 +164,13 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    private Handler handler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
+         // update the bar color
          updateBarColor(msg.what);
+         
+         // check if the sensitivity is met
+         if (msg.what >= curSensitivity.ordinal()) {
+            
+         }
       }
    };
 
@@ -108,7 +192,7 @@ public class SensitivityTestActivity extends Activity implements Runnable {
                   Math.abs(data[x1][2] - data[x2][2]));
             
             // scale the value to the bar and update bar if need to
-            int barVal = Math.min(Math.round(rawVal / 0.2f), 11);
+            int barVal = Math.min(Math.round(rawVal / Sensitivity.SCALE), 11);
             if (barVal != prevBarVal) {
                handler.sendEmptyMessage(barVal);
                prevBarVal = barVal;
