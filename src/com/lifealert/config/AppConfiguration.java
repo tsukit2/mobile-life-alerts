@@ -16,11 +16,13 @@ import android.content.SharedPreferences;
 public class AppConfiguration {
    private static final String PREF_FILENAME = "LifeAlertAppCfg";
    private static final String PREF_SENSITIVITY = "Sensitivity";
-   private static final String PREF_EMERGENCY_CONTACT_ROWID = "EmergencyContactRowId";
    private static final String PREF_CALL_911 = "Call911";
    private static final String PREF_USER_NAME = "UserName";
    private static final String PREF_USER_ADDRESS = "UserAddress";
    private static final String PREF_USER_PHONE = "UserPhone";
+   private static final String PREF_EMERGENCY_NAME = "EmergencyName";
+   private static final String PREF_EMERGENCY_ADDRESS = "EmergencyAddress";
+   private static final String PREF_EMERGENCY_PHONE = "EmergencyPhone";
    private static final String PREF_VOICE_MAIL_PATH = "VoiceMailPath";
    private static final String PREF_TEXT_MSG = "TextMsg";
    
@@ -39,20 +41,13 @@ public class AppConfiguration {
       localPrefs = pref.getAll();
    }
    
-   public static Float getSensitivity() {
-      return (Float) getPref(PREF_SENSITIVITY);
+   public static Sensitivity getSensitivity() {
+      String val = (String) getPref(PREF_SENSITIVITY);
+      return val != null ? Sensitivity.valueOf(val) : null;
    }
    
-   public static void setSensitivity(float val) {
-      updatePref(PREF_SENSITIVITY, val);
-   }
-   
-   public static Long getEmergencyContactRowId() {
-      return (Long) getPref(PREF_EMERGENCY_CONTACT_ROWID);
-   }
-
-   public static void setEmergencyContactRowId(long val) {
-      updatePref(PREF_EMERGENCY_CONTACT_ROWID, val);
+   public static void setSensitivity(Sensitivity val) {
+      updatePref(PREF_SENSITIVITY, val.toString());
    }
    
    public static Boolean getCall911() {
@@ -85,6 +80,30 @@ public class AppConfiguration {
 
    public static void setUserPhone(String val) {
       updatePref(PREF_USER_PHONE, val);
+   }
+   
+   public static String getEmergencyName() {
+      return (String) getPref(PREF_EMERGENCY_NAME);
+   }
+
+   public static void setEmergencyName(String val) {
+      updatePref(PREF_EMERGENCY_NAME, val);
+   }
+
+   public static String getEmergencyAddress() {
+      return (String) getPref(PREF_EMERGENCY_ADDRESS);
+   }
+
+   public static void setEmergencyAddress(String val) {
+      updatePref(PREF_EMERGENCY_ADDRESS, val);
+   }
+   
+   public static String getEmergencyPhone() {
+      return (String) getPref(PREF_EMERGENCY_PHONE);
+   }
+
+   public static void setEmergencyPhone(String val) {
+      updatePref(PREF_EMERGENCY_PHONE, val);
    }
    
    public static String getVoiceMailPath() {
