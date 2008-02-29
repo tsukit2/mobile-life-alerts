@@ -39,11 +39,7 @@
     <string name="sensitivity_normal">Normal</string>
     <string name="sensitivity_sensitive">Sensitive</string>
     <string name="sensitivity_verysensitive">Very Sensitive</string>
-    <string name="sensitivity_teststatus">Test Status:</string>
-    <string name="sensitivity_teststatus_needshaking">Click Test button to start</string>
-    <string name="sensitivity_teststatus_ok">Okay!</string>
-    <string name="sensitivity_teststatus_notok">Still not good</string>
-    <string name="sensitivity_accept">Done</string>
-    <string name="sensitivity_testagain">Test</string>
-    <string name="sensitivity_testing_insession">Testing is already in session. Please shake your device.</string>
+    <string name="sensitivity_teststatus_ok">You did it!!!</string>
+    <string name="sensitivity_testagain">Test Again</string>
+    <string name="sensitivity_testing_insession">Choose your sensitivity. Then shake your device and see if the impact is at the level you like. </string>
 </resources>
