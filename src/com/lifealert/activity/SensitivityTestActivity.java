@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -21,47 +22,31 @@ import com.lifealert.config.Sensitivity;
 
 public class SensitivityTestActivity extends Activity implements Runnable {
 
-   private static final int[] SENSITIVITY_BARS = {
-      R.id.sensitivity_bar_0, 
-      R.id.sensitivity_bar_1, 
-      R.id.sensitivity_bar_2, 
-      R.id.sensitivity_bar_3, 
-      R.id.sensitivity_bar_4, 
-      R.id.sensitivity_bar_5, 
-      R.id.sensitivity_bar_6, 
-      R.id.sensitivity_bar_7, 
-      R.id.sensitivity_bar_8, 
-      R.id.sensitivity_bar_9, 
-      R.id.sensitivity_bar_10, 
-   };
-   
+   private static final int[] SENSITIVITY_BARS = { R.id.sensitivity_bar_0,
+         R.id.sensitivity_bar_1, R.id.sensitivity_bar_2,
+         R.id.sensitivity_bar_3, R.id.sensitivity_bar_4,
+         R.id.sensitivity_bar_5, R.id.sensitivity_bar_6,
+         R.id.sensitivity_bar_7, R.id.sensitivity_bar_8,
+         R.id.sensitivity_bar_9, R.id.sensitivity_bar_10, };
+
    private static final int[] SENSITIVITY_BAR_COLORS = {
-      R.color.sensitivity_bar_0, 
-      R.color.sensitivity_bar_1, 
-      R.color.sensitivity_bar_2, 
-      R.color.sensitivity_bar_3, 
-      R.color.sensitivity_bar_4, 
-      R.color.sensitivity_bar_5, 
-      R.color.sensitivity_bar_6, 
-      R.color.sensitivity_bar_7, 
-      R.color.sensitivity_bar_8, 
-      R.color.sensitivity_bar_9, 
-      R.color.sensitivity_bar_10, 
-   };
-   
+         R.color.sensitivity_bar_0, R.color.sensitivity_bar_1,
+         R.color.sensitivity_bar_2, R.color.sensitivity_bar_3,
+         R.color.sensitivity_bar_4, R.color.sensitivity_bar_5,
+         R.color.sensitivity_bar_6, R.color.sensitivity_bar_7,
+         R.color.sensitivity_bar_8, R.color.sensitivity_bar_9,
+         R.color.sensitivity_bar_10, };
+
    private static final int[] SENSITIVITY_RADIOS = {
-      R.id.sensitivity_verysensitive,
-      R.id.sensitivity_sensitive,
-      R.id.sensitivity_normal,
-      R.id.sensitivity_somewhat,
-      R.id.sensitivity_notsensitive,
-   };
-   
+         R.id.sensitivity_verysensitive, R.id.sensitivity_sensitive,
+         R.id.sensitivity_normal, R.id.sensitivity_somewhat,
+         R.id.sensitivity_notsensitive, };
+
    private View[] bars;
    private boolean testing;
    private RadioButton[] rbuttons;
    private Sensitivity curSensitivity;
-   private TextView statusText;
+   private LinearLayout statusText;
 
    @Override
    protected void onCreate(Bundle icicle) {
@@ -69,107 +54,142 @@ public class SensitivityTestActivity extends Activity implements Runnable {
       super.onCreate(icicle);
       setContentView(R.layout.sensitivity);
       
+      // TODO: remove this
+      AppConfiguration.init(this);
+
       // initialize the bar references so it's faster to access
       bars = new View[11];
       for (int i = 0; i < bars.length; ++i) {
          bars[i] = findViewById(SENSITIVITY_BARS[i]);
       }
-      
+
       // initialize the rbutton so we can control the check of the button
       rbuttons = new RadioButton[5];
       for (int i = 0; i < rbuttons.length; ++i) {
          rbuttons[i] = (RadioButton) findViewById(SENSITIVITY_RADIOS[i]);
       }
-      
-      // get a hold of the status text and initialize it
-      statusText = (TextView) findViewById(R.id.sensitivity_teststatus);
-      statusText.setText(R.string.sensitivity_teststatus_needshaking);
-      
+
+      // get a hold of the status status panel
+      statusText = (LinearLayout) findViewById(R.id.sensitivity_status);
+
       // make selection. Choose normal if if it's not already there
       curSensitivity = AppConfiguration.getSensitivity();
       if (curSensitivity == null) {
          AppConfiguration.setSensitivity(curSensitivity = Sensitivity.NORMAL);
       }
       setRadioButtons(curSensitivity);
-      
+
       // reset bar color
       resetBarColor();
-      
+
       // wire the event handler
       for (int i = 0; i < rbuttons.length; ++i) {
          rbuttons[i].setOnClickListener(onRadioClicked);
       }
-      
+
       Button testButton = (Button) findViewById(R.id.sensitivity_testagain);
       testButton.setOnClickListener(onTestClicked);
-      
+
       // now start testing
       org.openintents.provider.Hardware.mContentResolver = getContentResolver();
+      startTesting();
    }
    
+   @Override
+   protected void onStart() {
+      super.onStart();
+      startTestingThread();
+   }
+
+   @Override
+   protected void onStop() {
+      super.onStop();
+      stopTestingThread();
+   }
+
    private OnClickListener onRadioClicked = new OnClickListener() {
+      private boolean clicking;
+
       public void onClick(View view) {
-         for (int i = 0; i < rbuttons.length; ++i) {
-            if (rbuttons[i] == view) {
-               AppConfiguration.setSensitivity(curSensitivity = Sensitivity.values()[i]);
-            } else {
-               rbuttons[i].setChecked(false);
+         if (!clicking) {
+            clicking = true;
+            for (int i = 0; i < rbuttons.length; ++i) {
+               if (rbuttons[i] == view) {
+                  AppConfiguration.setSensitivity(curSensitivity = Sensitivity
+                        .values()[i]);
+               } else {
+                  rbuttons[i].setChecked(false);
+               }
             }
+            clicking = false;
          }
       }
    };
-   
+
    private OnClickListener onTestClicked = new OnClickListener() {
       public void onClick(View view) {
-         if (testing) {
-            NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            man.notifyWithText(R.string.sensitivity_testing_insession,
-                  getString(R.string.sensitivity_testing_insession),
-                  NotificationManager.LENGTH_LONG, null);
-         } else {
-            startTesting();
-         }
+         startTesting();
       }
    };
-   
-   
-   
-   
+
    private void setRadioButtons(Sensitivity sen) {
       for (int i = 0; i < rbuttons.length; ++i) {
          rbuttons[i].setChecked(i == sen.ordinal());
       }
    }
-   
+
    private void startTesting() {
-      testing = true;
-      new Thread(this).start();
-      statusText.setText(R.string.sensitivity_teststatus_notok);
+      // notify the user first
+      NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+      man.notifyWithText(R.string.sensitivity_testing_insession,
+            getString(R.string.sensitivity_testing_insession),
+            NotificationManager.LENGTH_LONG, null);
+      
+      // turn off the status
+      statusText.setVisibility(View.INVISIBLE);
    }
    
+   private void startTestingThread() {
+      testing = true;
+      new Thread(this).start();
+   }
+   
+   private void stopTestingThread() {
+      testing = false;
+   }
+   
+   private void testSatisfied() {
+      // then start the testing session
+      statusText.setVisibility(View.VISIBLE);
+   }
+
    private void resetBarColor() {
       // reset the bar colors
       for (int i = 0; i < bars.length; ++i) {
          bars[i].setBackground(R.color.sensitivity_bar_inactive);
+         bars[i].invalidate();
       }
    }
-   
+
    private void updateBarColor(int barVal) {
       // set the bar color if it's equal or beyond the given bar val
       for (int i = 0; i < bars.length; ++i) {
-         bars[i].setBackground(i < barVal ? SENSITIVITY_BAR_COLORS[i] : R.color.sensitivity_bar_inactive);
+         bars[i].setBackground(i < barVal ? SENSITIVITY_BAR_COLORS[i]
+               : R.color.sensitivity_bar_inactive);
+         bars[i].invalidate();
       }
    }
-   
+
    private Handler handler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
          // update the bar color
          updateBarColor(msg.what);
-         
+
          // check if the sensitivity is met
-         if (msg.what >= curSensitivity.ordinal()) {
-            
+         if ((msg.what - 3) / 2 >= curSensitivity.ordinal()) {
+            Log.e("***", msg.what + ", " + curSensitivity.ordinal(), null);
+            testSatisfied();
          }
       }
    };
@@ -180,34 +200,35 @@ public class SensitivityTestActivity extends Activity implements Runnable {
          // enable the accelerometer
          Sensors.connectSimulator();
          Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
-
+         
          // draw the value from the accelero0meter
          float[][] data = new float[2][3];
          int prevBarVal = 0;
-         for (int x1 = 0, x2 = 0; testing; x2 = x1, x1 = (x1+1) % 2) {
+         for (int x1 = 0, x2 = 0; testing; x2 = x1, x1 = (x1 + 1) % 2) {
             // read the raw value
             Sensors.readSensor(Sensors.SENSOR_ACCELEROMETER, data[x1]);
-            float rawVal = Math.max(
-                  Math.max(Math.abs(data[x1][0] - data[x2][0]), Math.abs(data[x1][1] - data[x2][1])),
-                  Math.abs(data[x1][2] - data[x2][2]));
-            
+            float rawVal = Math.max(Math.max(Math
+                  .abs(data[x1][0] - data[x2][0]), Math.abs(data[x1][1]
+                  - data[x2][1])), Math.abs(data[x1][2] - data[x2][2]));
+
             // scale the value to the bar and update bar if need to
             int barVal = Math.min(Math.round(rawVal / Sensitivity.SCALE), 11);
             if (barVal != prevBarVal) {
                handler.sendEmptyMessage(barVal);
                prevBarVal = barVal;
             }
-            
+
             // wait a little bit before try again
             Thread.sleep(500);
          }
-         
-         // disable the accelerometer
-         Sensors.disconnectSimulator();
-         Sensors.disableSensor(Sensors.SENSOR_ACCELEROMETER);
+
       } catch (InterruptedException ex) {
          Log.e("LifeAlert", ex.getMessage(), ex);
       }
+
+      // disable the accelerometer
+      Sensors.disconnectSimulator();
+      Sensors.disableSensor(Sensors.SENSOR_ACCELEROMETER);
    }
-   
+
 }

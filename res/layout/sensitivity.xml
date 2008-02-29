@@ -207,50 +207,27 @@
       android:padding="5dip">
 
       <LinearLayout
+         id="@+id/sensitivity_status"      
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         android:paddingBottom="10dip"
-         android:gravity="center_horizontal">
+         android:orientation="vertical">
+
          <TextView
-            android:text="@string/sensitivity_teststatus"
-            android:textAlign="end"
-            android:textSize="16sp"
-            android:paddingRight="5dip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-         <TextView
-            id="@+id/sensitivity_teststatus"
-            android:textAlign="start"
-            android:text="@string/sensitivity_teststatus_needshaking"
+            android:textAlign="center"
+            android:text="@string/sensitivity_teststatus_ok"
             android:textStyle="bold"
             android:textSize="16sp"
             android:textColor="#00ff00"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
-      </LinearLayout>
-
-      <LinearLayout
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal">
 
          <Button
             id="@+id/sensitivity_testagain"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:text="@string/sensitivity_testagain"
-            android:textSize="16sp"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-
-         <Button
-            id="@+id/sensitivity_accept"
-            android:text="@string/sensitivity_accept"
-            android:textSize="16sp"
-            android:layout_weight="1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-
+            android:textSize="16sp" />
       </LinearLayout>
+
    </LinearLayout>
 </LinearLayout>
