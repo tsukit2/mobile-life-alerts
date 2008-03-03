@@ -15,7 +15,7 @@
       <TableLayout
          android:layout_width="fill_parent"
          android:layout_height="fill_parent"
-         android:stretchColumns="1">
+         android:shrinkColumns="1">
 
          <TableRow>
             <Button
@@ -27,18 +27,19 @@
                android:layout_height="fill_parent"
                android:orientation="vertical">
                <EditText
-                  id="@+id/userName"
+                  id="@+id/config_userName"
                   android:hint="@string/config_username_hint"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
                <EditText
-                  id="@+id/userAddr"
+                  id="@+id/config_userAddr"
                   android:hint="@string/config_useraddr_hint"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
                <EditText
-                  id="@+id/userPhone"
+                  id="@+id/config_userPhone"
                   android:hint="@string/config_userphone_hint"
+                  android:phoneNumber="true"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
             </LinearLayout>
@@ -55,17 +56,18 @@
                android:layout_height="fill_parent"
                android:orientation="vertical">
                <EditText
-                  id="@+id/emergencyName"
+                  id="@+id/config_emergencyName"
                   android:hint="@string/config_emergencyname_hint"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
                <EditText
-                  id="@+id/emergencyAddr"
+                  id="@+id/config_emergencyAddr"
                   android:hint="@string/config_emergencyaddr_hint"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
                <EditText
-                  id="@+id/emergencyPhone"
+                  id="@+id/config_emergencyPhone"
+                  android:phoneNumber="true"
                   android:hint="@string/config_emergencyphone_hint"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
@@ -75,13 +77,13 @@
 
          <TableRow>
             <TextView android:text="@string/config_call911" />
-            <CheckBox id="@+id/call911" />
+            <CheckBox id="@+id/config_call911" />
          </TableRow>
 
          <TableRow>
             <TextView android:text="@string/config_textmsg" />
             <EditText
-               id="@+id/textMsg"
+               id="@+id/config_textMsg"
                android:lines="3"
                android:hint="@string/config_textmsg_hint"
                android:layout_width="fill_parent"
@@ -90,11 +92,11 @@
 
          <TableRow>
             <Button
-               id="@+id/voiceMail"
+               id="@+id/config_voiceMail"
                android:text="@string/config_voicemsg"
                android:textAlign="start" />
             <TextView
-               id="@+id/voiceMailStatus"
+               id="@+id/config_voiceMailStatus"
                android:text="Recorded"
                android:layout_width="fill_parent"
                android:layout_height="fill_parent" />
@@ -102,11 +104,11 @@
 
          <TableRow>
             <Button
+               id="@+id/config_sensitivity"
                android:text="@string/config_sensitivity"
                android:textAlign="start" />
-            <Spinner
-               id="@+id/sensitivity"
-               android:hint="@string/config_sensitivity_hint"
+            <TextView
+               id="@+id/config_sensitivity_status"
                android:layout_width="fill_parent"
                android:layout_height="wrap_content"
                android:drawSelectorOnTop="true" />
@@ -117,7 +119,7 @@
    </ScrollView>
 
    <LinearLayout
-      id="@+id/statusColor"
+      id="@+id/config_statusColor"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
@@ -138,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
          <TextView
-            id="@+id/status"
+            id="@+id/config_status"
             android:textAlign="start"
             android:text="@string/config_systemstatus_active"
             android:textStyle="bold"

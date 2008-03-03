@@ -25,7 +25,7 @@
     <string name="config_voicemsg_recorded">Recorded</string>
     <string name="config_voicemsg_norecorded">Need Record</string>
     <string name="config_sensitivity">Sensitivity</string>
-    <string name="config_sensitivity_hint">Shaking sensitivity</string>
+    <string name="config_sensitivity_status">Not Set</string>
     <string name="config_systemstatus">System Status:</string>
     <string name="config_systemstatus_active">Active</string>
     <string name="config_systemstatus_inactive">Inactive</string>
