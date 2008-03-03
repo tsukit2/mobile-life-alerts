@@ -54,9 +54,6 @@ public class SensitivityTestActivity extends Activity implements Runnable {
       super.onCreate(icicle);
       setContentView(R.layout.sensitivity);
       
-      // TODO: remove this
-      AppConfiguration.init(this);
-
       // initialize the bar references so it's faster to access
       bars = new View[11];
       for (int i = 0; i < bars.length; ++i) {
@@ -117,6 +114,10 @@ public class SensitivityTestActivity extends Activity implements Runnable {
                if (rbuttons[i] == view) {
                   AppConfiguration.setSensitivity(curSensitivity = Sensitivity
                         .values()[i]);
+                  rbuttons[i].requestFocus();
+                  if (!rbuttons[i].isChecked()) {
+                     rbuttons[i].setChecked(true);
+                  }
                } else {
                   rbuttons[i].setChecked(false);
                }
@@ -134,7 +135,12 @@ public class SensitivityTestActivity extends Activity implements Runnable {
 
    private void setRadioButtons(Sensitivity sen) {
       for (int i = 0; i < rbuttons.length; ++i) {
-         rbuttons[i].setChecked(i == sen.ordinal());
+         if (i == sen.ordinal()) {
+            rbuttons[i].setChecked(true);
+            rbuttons[i].requestFocus();
+         } else {
+            rbuttons[i].setChecked(false);
+         }
       }
    }
 
