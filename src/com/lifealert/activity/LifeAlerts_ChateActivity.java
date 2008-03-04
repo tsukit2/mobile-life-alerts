@@ -197,7 +197,7 @@ public class LifeAlerts_ChateActivity extends Activity {
 				  Contacts.Phones.MOBILE_TYPE,
 				  "topsecret@secret.com",
 				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE); 
-        addNewContactHelper("Hit Me!", 
+        addNewContactHelper("Who the hell is this!?!", 
 				  "(555) 239 0340",
 				  Contacts.Phones.MOBILE_TYPE,
 				  "whoisthis@dontknow.com",

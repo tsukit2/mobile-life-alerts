@@ -25,12 +25,7 @@ public class SelectEmergencyNumberActivity extends ListActivity {
 		super.onCreate(icicle);
 		setContentView(R.layout.select_emergency);
 		
-		// Get the list of contacts
-	    
-
-		// An array specifying which columns to return. 
-		// The provider exposes a list of column names it returns for a specific
-		// query, or you can get all columns and iterate through them. 
+		// Start to get the list of contacts	    
 		String[] projection = new String[] {
 		    android.provider.BaseColumns._ID,
 		    android.provider.Contacts.PeopleColumns.NAME,
@@ -55,21 +50,32 @@ public class SelectEmergencyNumberActivity extends ListActivity {
 	    String phoneNumber;
 	    String entry;
 	    EmergencyPersonInfo personInfo;
-	    while (managedCursor.next()) {
-	        // Get the field values
-	        id = managedCursor.getLong(idColumn);
-	    	name = managedCursor.getString(nameColumn);
-	        phoneNumber = managedCursor.getString(phoneColumn);
-	        entry = name + ", " + phoneNumber;
-	        
-	        // Add this contact so that it can be displayed
-	        items.add(entry);
-	        
-	        // Add this contact to the hash
-	        personInfo = new EmergencyPersonInfo(id, name, phoneNumber);
-	        nameIdHash.put(items.indexOf(entry), personInfo);
+	    
+	    // Check if any contacts exist
+	    if (managedCursor.first()) {
+	    	//If at least a contact, loop through and display to user
+	    	
+	    	do {
+		        // Get the field values
+		        id = managedCursor.getLong(idColumn);
+		    	name = managedCursor.getString(nameColumn);
+		        phoneNumber = managedCursor.getString(phoneColumn);
+		        entry = name + ", " + phoneNumber;
+		        
+		        // Add this contact so that it can be displayed
+		        items.add(entry);
+		        
+		        // Add this contact to the hash
+		        personInfo = new EmergencyPersonInfo(id, name, phoneNumber);
+		        nameIdHash.put(items.indexOf(entry), personInfo);
+	    	}
+		    while (managedCursor.next());
 	    } 
-        
+	    else {
+	    	//If there are no contacts, inform user so
+           	items.add(getString(R.string.no_emergency_contact));
+	    }
+	    
         // Now create an array adapter and set it to display using our row
         ArrayAdapter<String> contacts = 
             new ArrayAdapter<String>(this, R.layout.notes_row, items);
