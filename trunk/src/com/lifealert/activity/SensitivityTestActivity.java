@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 import com.lifealert.config.Sensitivity;
+import com.lifealert.service.ShakeDetectorService;
 
 public class SensitivityTestActivity extends Activity implements Runnable {
 
@@ -88,7 +89,6 @@ public class SensitivityTestActivity extends Activity implements Runnable {
       testButton.setOnClickListener(onTestClicked);
 
       // now start testing
-      org.openintents.provider.Hardware.mContentResolver = getContentResolver();
       startTesting();
    }
    
@@ -112,9 +112,15 @@ public class SensitivityTestActivity extends Activity implements Runnable {
             clicking = true;
             for (int i = 0; i < rbuttons.length; ++i) {
                if (rbuttons[i] == view) {
+                  // set the sensitivity
                   AppConfiguration.setSensitivity(curSensitivity = Sensitivity
                         .values()[i]);
                   rbuttons[i].requestFocus();
+                  
+                  // update the shake detector
+                  ShakeDetectorService.setSensitivity(curSensitivity);
+                  
+                  // this is unfortunate that we have to do this
                   if (!rbuttons[i].isChecked()) {
                      rbuttons[i].setChecked(true);
                   }
@@ -203,11 +209,10 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    @Override
    public void run() {
       try {
-         // enable the accelerometer
-         Sensors.connectSimulator();
-         Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
+         // put the shake alert on hold
+         ShakeDetectorService.setOnHold(true);
          
-         // draw the value from the accelero0meter
+         // draw the value from the accelerometer
          float[][] data = new float[2][3];
          int prevBarVal = 0;
          for (int x1 = 0, x2 = 0; testing; x2 = x1, x1 = (x1 + 1) % 2) {
@@ -232,9 +237,8 @@ public class SensitivityTestActivity extends Activity implements Runnable {
          Log.e("LifeAlert", ex.getMessage(), ex);
       }
 
-      // disable the accelerometer
-      Sensors.disconnectSimulator();
-      Sensors.disableSensor(Sensors.SENSOR_ACCELEROMETER);
+      // put the shake alert back off hold
+      ShakeDetectorService.setOnHold(false);
    }
 
 }
