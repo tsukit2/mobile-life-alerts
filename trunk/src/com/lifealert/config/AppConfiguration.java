@@ -17,9 +17,11 @@ public class AppConfiguration {
    private static final String PREF_FILENAME = "LifeAlertAppCfg";
    private static final String PREF_SENSITIVITY = "Sensitivity";
    private static final String PREF_CALL_911 = "Call911";
+   private static final String PREF_USER_CONTACT_ID = "UserContactId";
    private static final String PREF_USER_NAME = "UserName";
    private static final String PREF_USER_ADDRESS = "UserAddress";
    private static final String PREF_USER_PHONE = "UserPhone";
+   private static final String PREF_EMERGENCY_CONTACT_ID = "EmergencyContactId";
    private static final String PREF_EMERGENCY_NAME = "EmergencyName";
    private static final String PREF_EMERGENCY_ADDRESS = "EmergencyAddress";
    private static final String PREF_EMERGENCY_PHONE = "EmergencyPhone";
@@ -28,6 +30,7 @@ public class AppConfiguration {
    
    private static SharedPreferences pref;
    private static Map<String, ?> localPrefs;
+   private static boolean isUserContact = true;
    
    /**
     * Initialize this class so that it can be used later on. Always call this method before any other
@@ -62,7 +65,15 @@ public class AppConfiguration {
       return (String) getPref(PREF_USER_NAME);
    }
 
-   public static void setUserName(String val) {
+   public static boolean isUserContact() {
+	return isUserContact;
+}
+
+public static void setIsUserContact(boolean isUserContact) {
+	AppConfiguration.isUserContact = isUserContact;
+}
+
+public static void setUserName(String val) {
       updatePref(PREF_USER_NAME, val);
    }
 
@@ -121,6 +132,22 @@ public class AppConfiguration {
    public static void setTextMsg(String val) {
       updatePref(PREF_TEXT_MSG, val);
    }
+   
+   public static String getUserContactId() {
+		return PREF_USER_CONTACT_ID;
+  }
+	
+  public static void setUserContactId(Long val) {
+		updatePref(PREF_USER_CONTACT_ID, val);
+  }
+	
+  public static String getEmergencyContactId() {
+		return PREF_EMERGENCY_CONTACT_ID;
+  }
+  
+  public static void setEmergencyContactId(Long val) {
+		updatePref(PREF_EMERGENCY_CONTACT_ID, val);
+  }
    
    /**
     * Helper method to get the preference. This centralize the access so we can check for the initialization.

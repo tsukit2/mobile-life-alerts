@@ -4,29 +4,97 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.lifealert.EmergencyPersonInfo;
-import com.lifealert.R;
-import com.lifealert.R.layout;
-
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+
+import com.lifealert.EmergencyPersonInfo;
+import com.lifealert.R;
+import com.lifealert.config.AppConfiguration;
 
 public class SelectEmergencyNumberActivity extends ListActivity {
 	
 	private HashMap nameIdHash = new HashMap();
-	private List<String> items = new ArrayList<String>();
 	
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.select_emergency);
 		
-		// Start to get the list of contacts	    
+		// Get contacts
+		List<String> contactItems = getContacts();
+	    
+        // Now create an array adapter and set it to display using our row
+        ArrayAdapter<String> contacts = 
+            new ArrayAdapter<String>(this, R.layout.notes_row, contactItems);
+        setListAdapter(contacts);
+
+	}
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        
+        super.onListItemClick(l, v, position, id);
+        EmergencyPersonInfo personInfo = (EmergencyPersonInfo) nameIdHash.get(position);
+        
+        // Store the selected contact info in the AppConfiguration
+        if (AppConfiguration.isUserContact()) {
+        	//Store User Contact info
+        	AppConfiguration.setUserContactId(personInfo.getPersonId());
+        	AppConfiguration.setUserName(personInfo.getName());
+        	AppConfiguration.setUserPhone(personInfo.getPhoneNumber());
+        	//TODO: Need to get the email retrieval to work 
+        	//AppConfiguration.setUserAddress(personInfo.getEmail());
+        }
+        else {
+        	//Store Emergency Contact info
+        	AppConfiguration.setEmergencyContactId(personInfo.getPersonId());
+        	AppConfiguration.setEmergencyName(personInfo.getName());
+        	AppConfiguration.setEmergencyPhone(personInfo.getPhoneNumber());
+        	//TODO: Need to get the email retrieval to work 
+        	//AppConfiguration.setEmergencyAddress(personInfo.getEmail());
+        }
+        
+        /****************************************************************/
+        // TODO:  Remove this block of code (between the **** lines) for production version
+        // Store the selected info into the bean class
+        Bundle bundle = new Bundle();
+        
+        bundle.putLong(LifeAlerts_ChateActivity.PERSON_ID, personInfo.getPersonId());
+        bundle.putString(LifeAlerts_ChateActivity.SELECTED_PHONE, personInfo.getPhoneNumber());
+        bundle.putString(LifeAlerts_ChateActivity.SELECTED_NAME, personInfo.getName());
+        /****************************************************************/
+        
+        	   
+        setResult(RESULT_OK, null, bundle);
+        finish();      
+        
+    }	
+
+    @Override
+    protected void onFreeze(Bundle outState) {
+        super.onFreeze(outState);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+         
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    
+    public List<String> getContacts() {
+    	
+    	List<String> returnContacts = new ArrayList<String>();
+    	
+    	// Start to get the list of contacts	    
 		String[] projection = new String[] {
 		    android.provider.BaseColumns._ID,
 		    android.provider.Contacts.PeopleColumns.NAME,
@@ -59,50 +127,13 @@ public class SelectEmergencyNumberActivity extends ListActivity {
 	        entry = name + ", " + phoneNumber;
 	        
 	        // Add this contact so that it can be displayed
-	        items.add(entry);
+	        returnContacts.add(entry);
 	        
 	        // Add this contact to the hash
 	        personInfo = new EmergencyPersonInfo(id, name, phoneNumber);
-	        nameIdHash.put(items.indexOf(entry), personInfo);    
+	        nameIdHash.put(returnContacts.indexOf(entry), personInfo);    
 	    }
 	    
-        // Now create an array adapter and set it to display using our row
-        ArrayAdapter<String> contacts = 
-            new ArrayAdapter<String>(this, R.layout.notes_row, items);
-        setListAdapter(contacts);
-
-	}
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        
-        super.onListItemClick(l, v, position, id);
-        Bundle bundle = new Bundle();
-        
-        EmergencyPersonInfo personInfo = (EmergencyPersonInfo) nameIdHash.get(position);
-        bundle.putLong(LifeAlerts_ChateActivity.PERSON_ID, personInfo.getPersonId());
-        bundle.putString(LifeAlerts_ChateActivity.SELECTED_PHONE, personInfo.getPhoneNumber());
-        bundle.putString(LifeAlerts_ChateActivity.SELECTED_NAME, personInfo.getName());
-       
-        setResult(RESULT_OK, null, bundle);
-        finish();      
-        
-    }	
-
-    @Override
-    protected void onFreeze(Bundle outState) {
-        super.onFreeze(outState);
+	    return returnContacts;
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-         
-    }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-    
 }

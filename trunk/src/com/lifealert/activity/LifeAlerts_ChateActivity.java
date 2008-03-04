@@ -6,11 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.lifealert.R;
-import com.lifealert.R.id;
-import com.lifealert.R.layout;
-import com.lifealert.R.string;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -21,6 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.Menu.Item;
 import android.widget.TextView;
+
+import com.lifealert.R;
+import com.lifealert.config.AppConfiguration;
 
 public class LifeAlerts_ChateActivity extends Activity {
 
@@ -47,7 +45,10 @@ public class LifeAlerts_ChateActivity extends Activity {
         cleanTestData();
         
     	// Create the test Contacts
-    	//initializeContactsTestData();
+    	initializeContactsTestData();
+    	
+    	// Initialize the AppConfiguration object
+    	AppConfiguration.init(this);
     	
     	// Display the screen
     	displayInitialScreen();
