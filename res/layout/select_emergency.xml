@@ -10,6 +10,6 @@
 	  	<TextView id="@+id/android:empty"
 	          android:layout_width="fill_parent"
 	        	android:layout_height="fill_parent"
-	        	android:text="No contacts available to select!"/>  
+	        	android:text="No emergency contact stored. Please add one and come back."/>  
 
 </LinearLayout>

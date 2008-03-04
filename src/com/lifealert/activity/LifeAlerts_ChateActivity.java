@@ -43,10 +43,13 @@ public class LifeAlerts_ChateActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         
-    	// clean all contacts first before starting
-    	initializeContactsTestData();
+        // Clean up the contacts first
+        cleanTestData();
+        
+    	// Create the test Contacts
+    	//initializeContactsTestData();
     	
-    	//Display the screen
+    	// Display the screen
     	displayInitialScreen();
         
                
@@ -178,8 +181,6 @@ public class LifeAlerts_ChateActivity extends Activity {
      * Initialize the test contacts data
      */
     private void initializeContactsTestData() {
-    	// delete the contacts from phone
-    	getContentResolver().delete(Contacts.People.CONTENT_URI, null, null);
     	
         // add a test person to the database
         addNewContactHelper("Chate Luu", 
@@ -202,6 +203,14 @@ public class LifeAlerts_ChateActivity extends Activity {
 				  Contacts.Phones.MOBILE_TYPE,
 				  "whoisthis@dontknow.com",
 				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE); 
+    }
+    
+    /**
+     * Clean up the contacts
+     */
+    public void cleanTestData() {
+    	// delete the contacts from phone
+    	getContentResolver().delete(Contacts.People.CONTENT_URI, null, null);
     }
     
     /**

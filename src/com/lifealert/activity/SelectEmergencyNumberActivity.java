@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class SelectEmergencyNumberActivity extends ListActivity {
 	
@@ -50,30 +51,19 @@ public class SelectEmergencyNumberActivity extends ListActivity {
 	    String phoneNumber;
 	    String entry;
 	    EmergencyPersonInfo personInfo;
-	    
-	    // Check if any contacts exist
-	    if (managedCursor.first()) {
+	    while (managedCursor.next()) {
 	    	//If at least a contact, loop through and display to user
-	    	
-	    	do {
-		        // Get the field values
-		        id = managedCursor.getLong(idColumn);
-		    	name = managedCursor.getString(nameColumn);
-		        phoneNumber = managedCursor.getString(phoneColumn);
-		        entry = name + ", " + phoneNumber;
-		        
-		        // Add this contact so that it can be displayed
-		        items.add(entry);
-		        
-		        // Add this contact to the hash
-		        personInfo = new EmergencyPersonInfo(id, name, phoneNumber);
-		        nameIdHash.put(items.indexOf(entry), personInfo);
-	    	}
-		    while (managedCursor.next());
-	    } 
-	    else {
-	    	//If there are no contacts, inform user so
-           	items.add(getString(R.string.no_emergency_contact));
+    	    id = managedCursor.getLong(idColumn);
+	    	name = managedCursor.getString(nameColumn);
+	        phoneNumber = managedCursor.getString(phoneColumn);
+	        entry = name + ", " + phoneNumber;
+	        
+	        // Add this contact so that it can be displayed
+	        items.add(entry);
+	        
+	        // Add this contact to the hash
+	        personInfo = new EmergencyPersonInfo(id, name, phoneNumber);
+	        nameIdHash.put(items.indexOf(entry), personInfo);    
 	    }
 	    
         // Now create an array adapter and set it to display using our row
