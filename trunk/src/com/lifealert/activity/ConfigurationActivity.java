@@ -1,5 +1,7 @@
 package com.lifealert.activity;
 
+import org.openintents.hardware.Sensors;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 import com.lifealert.config.Sensitivity;
+import com.lifealert.service.ShakeDetectorService;
 
 public class ConfigurationActivity extends Activity {
    /** Called when the activity is first created. */
@@ -21,6 +24,11 @@ public class ConfigurationActivity extends Activity {
       // set the content view
       super.onCreate(icicle);
       setContentView(R.layout.configuration);
+    
+      // TODO: move this to app main: enable the accelerometer
+      org.openintents.provider.Hardware.mContentResolver = getContentResolver();
+      Sensors.connectSimulator();
+      Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
       
       // TODO: remove this
       AppConfiguration.init(this);
@@ -30,12 +38,15 @@ public class ConfigurationActivity extends Activity {
 
       Button senButton = (Button) findViewById(R.id.config_sensitivity);
       senButton.setOnClickListener(sensitivityClicked);
+      
+      Button actButton = (Button) findViewById(R.id.config_activiate);
+      actButton.setOnClickListener(activateClicked);
    }
    
    @Override
    protected void onStart() {
       super.onStart();
-      populateConfigurations();
+      populateCongiruations();
    }
    
    @Override
@@ -44,7 +55,7 @@ public class ConfigurationActivity extends Activity {
       saveConfigurations();
    }
    
-   private void populateConfigurations() {
+   private void populateCongiruations() {
       // load off the information and set to the control
       String userName = AppConfiguration.getUserName();
       ((TextView) findViewById(R.id.config_userName)).setText(userName);
@@ -80,6 +91,15 @@ public class ConfigurationActivity extends Activity {
       ((TextView) findViewById(R.id.config_sensitivity_status)).setText(
             sens == null ? getText(R.string.config_sensitivity_status)
                   : sens.getLabel());
+      
+      ((TextView) findViewById(R.id.config_status))
+            .setText(ShakeDetectorService.isRunning() ? R.string.config_systemstatus_active
+                  : R.string.config_systemstatus_inactive);
+
+      ((Button) findViewById(R.id.config_activiate))
+            .setText(ShakeDetectorService.isRunning() ? R.string.config_systemaction_deactivate
+                  : R.string.config_systemaction_activate);
+      
    }
 
    private void saveConfigurations() {
@@ -109,13 +129,18 @@ public class ConfigurationActivity extends Activity {
             ((TextView) findViewById(R.id.config_textMsg)).getText().toString());
       
    }
+   
+   private boolean configCompleted() {
+      // TODO: put more code here
+      return true;
+   }
 
    private OnClickListener voiceMailClicked = new OnClickListener() {
       public void onClick(View view) {
          NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
          notMan.notifyWithText(R.string.notification_no_voicemail,
                getText(R.string.notification_no_voicemail),
-               NotificationManager.LENGTH_LONG,
+               NotificationManager.LENGTH_SHORT,
                null);
       }
    };
@@ -127,9 +152,29 @@ public class ConfigurationActivity extends Activity {
       }
    };
    
-//   private OnClickListener sensitivityClicked = new OnClickListener(){
-//      public void onClick(View arg0) {
-//         startSubActivity(intent, requestCode)
-//      }
-//   };
+   private OnClickListener activateClicked = new OnClickListener() {
+      public void onClick(View view) {
+         if (ShakeDetectorService.isRunning()) {
+            Intent intent = new Intent(getApplication(), ShakeDetectorService.class);
+            stopService(intent);
+            ((TextView) findViewById(R.id.config_status)).setText(R.string.config_systemstatus_inactive);
+            ((Button) findViewById(R.id.config_activiate)).setText(R.string.config_systemaction_activate);
+         } else {
+            if (configCompleted()) {
+               // if config is completed, then the service can start
+               Intent intent = new Intent(getApplication(), ShakeDetectorService.class);
+               startService(intent, null);
+               ((TextView) findViewById(R.id.config_status)).setText(R.string.config_systemstatus_active);
+               ((Button) findViewById(R.id.config_activiate)).setText(R.string.config_systemaction_deactivate);
+            } else {
+               NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+               notMan.notifyWithText(R.string.config_is_incomplete,
+                     getText(R.string.config_is_incomplete),
+                     NotificationManager.LENGTH_SHORT,
+                     null);
+            }
+         }
+      }
+   };
+   
 }
