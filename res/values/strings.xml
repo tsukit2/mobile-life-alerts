@@ -6,7 +6,7 @@
     <string name="email_emergency">Email Emergency Contact</string>
     <string name="monitor_life">Dial Emergency No.</string>
     <string name="confirm_emergency_contact">Confirm Selected Contact</string>
-    <string name="no_emergency_contact">No emergency contact stored. Select one from menu.</string>
+    <string name="no_emergency_contact">No emergency contact stored. Please select one from menu."</string>
     <string name="selected_emergency_contact">You've selected emergency contact: </string>
     <string name="intro_greeting">WELCOME TO LIFE MONITOR APPLICATION (CHATE'S PORTION)</string>
 
@@ -33,6 +33,7 @@
     <string name="config_systemaction_deactivate">Deactiviate</string>
     
     <string name="notification_no_voicemail">The emulator doesn't support voice recording yet. So we go with a pre-recorded voice, assuming the user has already recorded it.</string>
+    <string name="config_is_incomplete">The configuration is not complete. Please complete all the settings first.</string>
     
     <string name="sensitivity_notsensitive">Not Sensitive</string>
     <string name="sensitivity_somewhat">Somewhat</string>
