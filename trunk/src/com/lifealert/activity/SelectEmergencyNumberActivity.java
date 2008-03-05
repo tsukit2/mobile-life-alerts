@@ -18,11 +18,19 @@ import com.lifealert.config.AppConfiguration;
 public class SelectEmergencyNumberActivity extends ListActivity {
 	
 	private HashMap nameIdHash = new HashMap();
+	private Bundle extras = null;
+	private String contactType = null;
 	
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.select_emergency);
+		
+		// Get the bundle's extra data passed from the invoking class
+		extras = getIntent().getExtras();
+        if (extras != null) {
+            contactType = extras.getString(ConfigurationActivity.CONTACT_TYPE);
+        }
 		
 		// Get contacts
 		List<String> contactItems = getContacts();
@@ -41,7 +49,7 @@ public class SelectEmergencyNumberActivity extends ListActivity {
         EmergencyPersonInfo personInfo = (EmergencyPersonInfo) nameIdHash.get(position);
         
         // Store the selected contact info in the AppConfiguration
-        if (AppConfiguration.isUserContact()) {
+        if (ConfigurationActivity.USER_CONTACT_TYPE.equals(contactType)) {
         	//Store User Contact info
         	AppConfiguration.setUserContactId(personInfo.getPersonId());
         	AppConfiguration.setUserName(personInfo.getName());

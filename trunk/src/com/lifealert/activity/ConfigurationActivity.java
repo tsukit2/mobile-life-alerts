@@ -18,6 +18,12 @@ import com.lifealert.config.Sensitivity;
 import com.lifealert.service.ShakeDetectorService;
 
 public class ConfigurationActivity extends Activity {
+	
+   //The "Bundle" key to be used by the SelectEmergencyNumber activity
+   public static final String CONTACT_TYPE = "contactType";  
+   public static final String USER_CONTACT_TYPE = "userContactType";
+   public static final String EMERGENCY_CONTACT_TYPE = "emergencyContactType";
+	
    /** Called when the activity is first created. */
    @Override
    public void onCreate(Bundle icicle) {
