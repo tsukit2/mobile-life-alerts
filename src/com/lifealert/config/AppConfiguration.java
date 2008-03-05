@@ -30,7 +30,6 @@ public class AppConfiguration {
    
    private static SharedPreferences pref;
    private static Map<String, ?> localPrefs;
-   private static boolean isUserContact = true;
    
    /**
     * Initialize this class so that it can be used later on. Always call this method before any other
@@ -65,15 +64,7 @@ public class AppConfiguration {
       return (String) getPref(PREF_USER_NAME);
    }
 
-   public static boolean isUserContact() {
-	return isUserContact;
-}
-
-public static void setIsUserContact(boolean isUserContact) {
-	AppConfiguration.isUserContact = isUserContact;
-}
-
-public static void setUserName(String val) {
+   public static void setUserName(String val) {
       updatePref(PREF_USER_NAME, val);
    }
 
@@ -133,16 +124,16 @@ public static void setUserName(String val) {
       updatePref(PREF_TEXT_MSG, val);
    }
    
-   public static String getUserContactId() {
-		return PREF_USER_CONTACT_ID;
+   public static Long getUserContactId() {
+		return (Long) getPref(PREF_USER_CONTACT_ID);
   }
 	
   public static void setUserContactId(Long val) {
 		updatePref(PREF_USER_CONTACT_ID, val);
   }
 	
-  public static String getEmergencyContactId() {
-		return PREF_EMERGENCY_CONTACT_ID;
+  public static Long getEmergencyContactId() {
+		return (Long) getPref(PREF_EMERGENCY_CONTACT_ID);
   }
   
   public static void setEmergencyContactId(Long val) {
