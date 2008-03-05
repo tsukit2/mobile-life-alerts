@@ -46,7 +46,7 @@ public class ConfigurationActivity extends Activity {
    @Override
    protected void onStart() {
       super.onStart();
-      populateCongiruations();
+      populateConfigurations();
    }
    
    @Override
@@ -55,7 +55,7 @@ public class ConfigurationActivity extends Activity {
       saveConfigurations();
    }
    
-   private void populateCongiruations() {
+   private void populateConfigurations() {
       // load off the information and set to the control
       String userName = AppConfiguration.getUserName();
       ((TextView) findViewById(R.id.config_userName)).setText(userName);
