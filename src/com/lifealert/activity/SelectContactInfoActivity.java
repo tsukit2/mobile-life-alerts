@@ -15,7 +15,7 @@ import com.lifealert.EmergencyPersonInfo;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 
-public class SelectEmergencyNumberActivity extends ListActivity {
+public class SelectContactInfoActivity extends ListActivity {
 	
 	private HashMap nameIdHash = new HashMap();
 	private Bundle extras = null;
