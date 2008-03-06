@@ -127,7 +127,7 @@ public class LifeAlerts_ChateActivity extends Activity {
      * Navigate to the screen to select an emergency number
      */
     private void selectEmergency() {
-    	Intent intent = new Intent(this, SelectEmergencyNumberActivity.class);
+    	Intent intent = new Intent(this, SelectContactInfoActivity.class);
     	startSubActivity(intent, ACTIVITY_SELECT_CONTACT);
     }
 

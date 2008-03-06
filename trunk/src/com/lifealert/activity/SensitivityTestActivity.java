@@ -155,7 +155,7 @@ public class SensitivityTestActivity extends Activity implements Runnable {
       NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
       man.notifyWithText(R.string.sensitivity_testing_insession,
             getString(R.string.sensitivity_testing_insession),
-            NotificationManager.LENGTH_LONG, null);
+            NotificationManager.LENGTH_SHORT, null);
       
       // turn off the status
       statusText.setVisibility(View.INVISIBLE);

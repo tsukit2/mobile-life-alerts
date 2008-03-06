@@ -50,10 +50,6 @@ public class ShakeDetectorService extends Service implements Runnable {
       // let the parent do it first
       super.onStart(startId, arguments);
       
-      // enable the accelerometer
-      Sensors.connectSimulator();
-      Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
-      
       // now initialize it self
       new Thread(this).start();
    }
@@ -82,7 +78,6 @@ public class ShakeDetectorService extends Service implements Runnable {
    public void run() {
       // start the flag
       working = true;
-      Log.e("Foo", "Start!", null);
       
       try {
          // draw the value from the accelerometer
@@ -95,18 +90,11 @@ public class ShakeDetectorService extends Service implements Runnable {
                   - data[x2][1])), Math.abs(data[x1][2] - data[x2][2]));
 
             // determine if it meets the desired sensitivity
-            Log.e("Foo", String.valueOf(rawVal), null);
             if (rawVal >= curSensitivity.getVal() && !onHold) {
-               /*
                // if so, kick off the alert
                Intent intent = new Intent(getApplication(), ShakeAlertActivity.class);
                intent.setLaunchFlags(Intent.NEW_TASK_LAUNCH);
                startActivity(intent);
-               */
-               
-               // if so, call the emergency contact
-               callEmergencyNumber();
-            
             	
                // put this service on hold
                onHold = true;
@@ -123,27 +111,4 @@ public class ShakeDetectorService extends Service implements Runnable {
          stopSelf();
       }
    }
-   
-   /**
-    * Navigate to the Dialer activity screen and call the emergency contact
-    * TODO: Need to figure out how to play the recorded audio over the phone.
-    */
-   private void callEmergencyNumber() {
-      //Get the emergency contact from the AppConfiguration 
-   	  Long personToContact = AppConfiguration.getEmergencyContactId();
-   	  
-   	  if (personToContact == null) {
-   		// Set contact to user of this phone, if emergency contact doesn't exist
-   		personToContact = AppConfiguration.getUserContactId();
-   	  }
-   	  
-  	  //Dial the assigned emergency contact number
-      Intent intent = new Intent(android.content.Intent.CALL_ACTION);
-      ContentURI phoneURIString = Contacts.Phones.CONTENT_URI;
-      phoneURIString = phoneURIString.addId(personToContact);
-    	
-      intent.setData(phoneURIString);
-      startActivity(intent);
-      
-   }   
 }

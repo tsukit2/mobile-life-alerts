@@ -39,6 +39,12 @@ public class ConfigurationActivity extends Activity {
       // TODO: remove this
       AppConfiguration.init(this);
 
+      Button uiButton = (Button) findViewById(R.id.config_userInfo);
+      uiButton.setOnClickListener(userInfoClicked);
+      
+      Button eiButton = (Button) findViewById(R.id.config_emergencyInfo);
+      eiButton.setOnClickListener(emergencyInfoClicked);
+      
       Button vmButton = (Button) findViewById(R.id.config_voiceMail);
       vmButton.setOnClickListener(voiceMailClicked);
 
@@ -137,7 +143,52 @@ public class ConfigurationActivity extends Activity {
    }
    
    private boolean configCompleted() {
-      // TODO: put more code here
+      // save off the information 
+      String userName = ((TextView) findViewById(R.id.config_userName)).getText().toString();
+      if (userName == null || "".equals(userName)) {
+         return false;
+      }
+      
+      String userAddr = ((TextView) findViewById(R.id.config_userAddr)).getText().toString();
+      if (userAddr == null || "".equals(userAddr)) {
+         return false;
+      }
+
+      String userPhone = ((TextView) findViewById(R.id.config_userPhone)).getText().toString();
+      if (userPhone == null || "".equals(userPhone)) {
+         return false;
+      }
+
+      String emergencyName = ((TextView) findViewById(R.id.config_emergencyName)).getText().toString();
+      if (emergencyName == null || "".equals(emergencyName)) {
+         return false;
+      }
+
+      String emergencyAddr = ((TextView) findViewById(R.id.config_emergencyAddr)).getText().toString();
+      if (emergencyAddr == null || "".equals(emergencyAddr)) {
+         return false;
+      }
+
+      String emergencyPhone = ((TextView) findViewById(R.id.config_emergencyPhone)).getText().toString();
+      if (emergencyPhone == null || "".equals(emergencyPhone)) {
+         return false;
+      }
+
+      String textMsg = ((TextView) findViewById(R.id.config_textMsg)).getText().toString();
+      if (textMsg == null || "".equals(textMsg)) {
+         return false;
+      }
+
+      String voiceMsg = AppConfiguration.getVoiceMailPath();
+      if (textMsg == null || "".equals(voiceMsg)) {
+         return false;
+      }
+
+      if (AppConfiguration.getSensitivity() == null) {
+         return false;
+      }
+      
+      // if we reach here, it's good to go
       return true;
    }
 
@@ -157,6 +208,23 @@ public class ConfigurationActivity extends Activity {
          startSubActivity(intent, 0);
       }
    };
+   
+   private OnClickListener userInfoClicked = new OnClickListener() {
+      public void onClick(View view) {
+         Intent intent = new Intent(getApplication(), SelectContactInfoActivity.class);
+         intent.putExtra(CONTACT_TYPE, USER_CONTACT_TYPE);
+         startSubActivity(intent, 0);
+      }
+   };
+   
+   private OnClickListener emergencyInfoClicked = new OnClickListener() {
+      public void onClick(View view) {
+         Intent intent = new Intent(getApplication(), SelectContactInfoActivity.class);
+         intent.putExtra(CONTACT_TYPE, EMERGENCY_CONTACT_TYPE);
+         startSubActivity(intent, 0);
+      }
+   };
+   
    
    private OnClickListener activateClicked = new OnClickListener() {
       public void onClick(View view) {
