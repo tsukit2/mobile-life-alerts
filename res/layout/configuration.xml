@@ -20,6 +20,7 @@
 
          <TableRow>
             <Button
+               id="@+id/config_userInfo"
                android:text="@string/config_userinfo"
                android:textAlign="start" />
 
@@ -49,6 +50,7 @@
 
          <TableRow>
             <Button
+               id="@+id/config_emergencyInfo"
                android:text="@string/config_emergencyinfo"
                android:textAlign="start" />
 
