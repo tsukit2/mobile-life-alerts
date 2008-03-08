@@ -30,7 +30,7 @@
     <string name="config_systemstatus_active">Active</string>
     <string name="config_systemstatus_inactive">Inactive</string>
     <string name="config_systemaction_activate">Activate</string>
-    <string name="config_systemaction_deactivate">Deactiviate</string>
+    <string name="config_systemaction_deactivate">Deactivate</string>
     
     <string name="notification_no_voicemail">The emulator doesn't support voice recording yet. So we go with a pre-recorded voice, assuming the user has already recorded it.</string>
     <string name="config_is_incomplete">The configuration is not complete. Please complete all the settings first.</string>
