@@ -1,11 +1,5 @@
 package com.lifealert.activity;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -17,6 +11,7 @@ import android.view.Menu;
 import android.view.Menu.Item;
 import android.widget.TextView;
 
+import com.lifealert.GmailSender;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 
@@ -29,6 +24,8 @@ public class LifeAlerts_ChateActivity extends Activity {
 	private final int EMAIL_EMERGENCY_ID = Menu.FIRST + 2;
 	private final int ACTIVITY_SELECT_CONTACT = 0;
 	private final String EMERGENCY_CONTACT_FILE = "emergencyContactFile.txt";
+	private final String TEST_GMAIL_USERNAME = "mobilelifealerts";
+	private final String TEST_GMAIL_PASSWORD = "mobilelifealerts";
 	private TextView mainTextView;
 	//private static Long personId;
 	
@@ -76,7 +73,7 @@ public class LifeAlerts_ChateActivity extends Activity {
             callEmergencyNumber();
             break;
         case EMAIL_EMERGENCY_ID:
-        	//emailEmergencyContact();
+        	emailEmergencyContact();
         	break;
     	}	
         
@@ -91,28 +88,18 @@ public class LifeAlerts_ChateActivity extends Activity {
         switch(requestCode) {
         case ACTIVITY_SELECT_CONTACT:
         	
-        	if (extras != null) {
+        	if (!"".equals(AppConfiguration.getEmergencyName())) {
 	        	//Process the selected contact info
-	            Long id = extras.getLong(PERSON_ID);
-	            String phoneNumber = extras.getString(SELECTED_PHONE);
-	            String name = extras.getString(SELECTED_NAME);
+	            String name = AppConfiguration.getEmergencyName();
+	            String phoneNumber = AppConfiguration.getEmergencyPhone();
+	            String email = AppConfiguration.getEmergencyAddress();
 	            
-	        	//The old way:  personId = id;
 	
-	            // Store values into a file for future retrieval
-	            try {
-	            	FileOutputStream outFile = openFileOutput(EMERGENCY_CONTACT_FILE, MODE_PRIVATE);
-	            	outFile.write(id.toString().getBytes());
-	
-	            	//Display the selected contact on the screen
-	                String selectedContact =  name + ", " + phoneNumber; 
-	                mainTextView = (TextView) findViewById(R.id.main_text);
-	        		mainTextView.setText(R.string.selected_emergency_contact);
-	        		mainTextView.append("\n\n\t" + selectedContact);
-	            }
-	            catch (IOException e) {
-	            	Log.e("Cannot output to emergency contact file: " + e.getMessage(), e.getStackTrace().toString());
-	            }            
+            	//Display the selected contact on the screen
+                String selectedContact =  name + "\n\t" + phoneNumber + "\n\t" + email; 
+                mainTextView = (TextView) findViewById(R.id.main_text);
+        		mainTextView.setText(R.string.selected_emergency_contact);
+        		mainTextView.append("\n\n\t" + selectedContact);
         	}
         	else {
         		displayInitialScreen();
@@ -127,8 +114,10 @@ public class LifeAlerts_ChateActivity extends Activity {
      * Navigate to the screen to select an emergency number
      */
     private void selectEmergency() {
-    	Intent intent = new Intent(this, SelectContactInfoActivity.class);
-    	startSubActivity(intent, ACTIVITY_SELECT_CONTACT);
+    	
+        Intent intent = new Intent(getApplication(), SelectContactInfoActivity.class);
+        intent.putExtra(ConfigurationActivity.CONTACT_TYPE, ConfigurationActivity.EMERGENCY_CONTACT_TYPE);
+        startSubActivity(intent, ACTIVITY_SELECT_CONTACT);
     }
 
     /**
@@ -136,33 +125,24 @@ public class LifeAlerts_ChateActivity extends Activity {
      * TODO: Need to figure out how to play the recorded audio over the phone.
      */
     private void callEmergencyNumber() {
-    	//Get the emergency contact from the file
-    	Long personId = null;
-    	
-    	try {
-    		FileInputStream inFile = openFileInput(EMERGENCY_CONTACT_FILE);
-    		BufferedReader buf = new BufferedReader(new InputStreamReader(inFile));
-    		personId = new Long(buf.readLine());
-    	}
-    	catch(IOException e) {
-        	Log.e("Cannot read emergency contact file: " + e.getMessage(), e.getStackTrace().toString());    		
-    	}
-    	
-    	//Dial the assigned emergency contact number
-    	if (personId != null) {
-    		
-	    	Intent intent = new Intent(android.content.Intent.CALL_ACTION);
-	        ContentURI phoneURIString = Contacts.Phones.CONTENT_URI;
-	    	phoneURIString = phoneURIString.addId(new Long(personId));
-	    	
-	        intent.setData(phoneURIString);
-	        startActivity(intent);
-	        
-    	}
-    	else {
-    		mainTextView = (TextView) findViewById(R.id.main_text);
-    		mainTextView.setText(R.string.no_emergency_contact);
-    	}
+        //Get the emergency contact from the AppConfiguration 
+        //Long personToContact = AppConfiguration.getEmergencyContactId();
+        String numberToContact = AppConfiguration.getEmergencyPhone();
+  	   
+        if (numberToContact == null) {
+      	  // Set contact to user of this phone, if emergency contact doesn't exist
+      	  numberToContact = AppConfiguration.getUserPhone();
+        }
+        
+        ContentURI contentUri = ContentURI.create(numberToContact);
+          
+        //Dial the assigned emergency contact number
+        Intent intent = new Intent(android.content.Intent.CALL_ACTION);
+        //ContentURI phoneURIString = Contacts.Phones.CONTENT_URI;
+        //phoneURIString = phoneURIString.addId(personToContact);
+        
+        intent.setData(contentUri/*phoneURIString*/);
+        startActivity(intent);
     }
 
     /**
@@ -176,6 +156,18 @@ public class LifeAlerts_ChateActivity extends Activity {
     	intent.setData();
     	startActivity(intent);
     	*/
+    	String subject = "Test from moblie life alerts app";
+    	String body = "Testing to see if this email goes through.";
+    	String sender = "Mobile Life Alerts App";
+    	String recipients = "Test Gmail Account";
+    	
+    	GmailSender gmailSender = new GmailSender(TEST_GMAIL_USERNAME, TEST_GMAIL_PASSWORD);
+    	try {
+    		gmailSender.sendMail(subject, body, sender, recipients);
+    	}
+    	catch (Exception e) {
+    		Log.e("SendGmail has error", e.getMessage(), e);
+    	}
     }
     
     /**
