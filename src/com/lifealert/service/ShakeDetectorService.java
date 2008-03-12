@@ -58,6 +58,7 @@ public class ShakeDetectorService extends Service implements Runnable {
    protected void onCreate() {
       // TODO Auto-generated method stub
       super.onCreate();
+      AppConfiguration.init(getApplication());
       
       // pre-obtain the sensitivity
       curSensitivity = AppConfiguration.getSensitivity();

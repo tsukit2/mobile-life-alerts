@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
    xmlns:android="http://schemas.android.com/apk/res/android"
+   android:gravity="center"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
    android:orientation="vertical">
-   >
-
-   <TextView
+   <LinearLayout
       android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:text="Alert!!!" />
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+      >
 
+      <TextView
+         android:textAlign="center"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:paddingBottom="10dip"
+         android:textSize="24dip"
+         android:textStyle="bold"
+         android:text="@string/alert_are_you_okay" />
+
+      <TextView
+         android:textAlign="center"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/alert_please_press_button" />
+
+      <Button
+         id="@+id/alert_okay_button"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:paddingTop="20dip"
+         android:paddingBottom="20dip"
+         android:textSize="64dip"
+         android:text="@string/alert_yes" />
+
+      <TextView
+         android:text="@string/alert_will_call_msg"
+         android:textAlign="center"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content" />
+      <TextView
+         id="@+id/alert_timeleft"
+         android:text="30"
+         android:textAlign="center"
+         android:textSize="32dip"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content" />
+      <TextView
+         android:text="@string/alert_second"
+         android:textAlign="center"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content" />
+
+   </LinearLayout>
 </LinearLayout>

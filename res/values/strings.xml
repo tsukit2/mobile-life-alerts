@@ -32,7 +32,7 @@
     <string name="config_systemaction_activate">Activate</string>
     <string name="config_systemaction_deactivate">Deactivate</string>
     
-    <string name="notification_no_voicemail">The emulator doesn't support voice recording yet. So we go with a pre-recorded voice, assuming the user has already recorded it.</string>
+    <string name="notification_no_voicemail">The emulator doesn't support voice recording yet. So we just assume that the voice now has been recorded.</string>
     <string name="config_is_incomplete">The configuration is not complete. Please complete all the settings first.</string>
     
     <string name="sensitivity_notsensitive">Not Sensitive</string>
@@ -43,4 +43,12 @@
     <string name="sensitivity_teststatus_ok">You did it!!!</string>
     <string name="sensitivity_testagain">Test Again</string>
     <string name="sensitivity_testing_insession">Choose your sensitivity. Then shake your device and see if the impact is at the level you like. </string>
+    
+    <string name="alert_are_you_okay">Are you okay?</string>
+    <string name="alert_please_press_button">Please confirm that you are okay by pressing the button below.</string>
+    <string name="alert_yes">YES!</string>
+    <string name="alert_will_call_msg">I will start contacting people if I am not hearing from you in</string>
+    <string name="alert_second">second(s)</string>
+    <string name="alert_okay_notification">Thank God! I'm glad that you are okay.</string>
+    
 </resources>
