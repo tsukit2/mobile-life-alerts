@@ -194,6 +194,12 @@ public class ConfigurationActivity extends Activity {
 
    private OnClickListener voiceMailClicked = new OnClickListener() {
       public void onClick(View view) {
+         // add value and save it off
+         AppConfiguration.setVoiceMailPath("dummy");
+         saveConfigurations();
+         populateConfigurations();
+         
+         // now notify the user that we cannot record the voice
          NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
          notMan.notifyWithText(R.string.notification_no_voicemail,
                getText(R.string.notification_no_voicemail),
@@ -236,6 +242,7 @@ public class ConfigurationActivity extends Activity {
          } else {
             if (configCompleted()) {
                // if config is completed, then the service can start
+               saveConfigurations();
                Intent intent = new Intent(getApplication(), ShakeDetectorService.class);
                startService(intent, null);
                ((TextView) findViewById(R.id.config_status)).setText(R.string.config_systemstatus_active);

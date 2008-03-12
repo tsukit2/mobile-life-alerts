@@ -109,8 +109,7 @@ public class AppConfiguration {
    }
    
    public static String getVoiceMailPath() {
-      return "foo";
-      // TODO: remove the above line: return (String) getPref(PREF_VOICE_MAIL_PATH);
+      return (String) getPref(PREF_VOICE_MAIL_PATH);
    }
 
    public static void setVoiceMailPath(String val) {
