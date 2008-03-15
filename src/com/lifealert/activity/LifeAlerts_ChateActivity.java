@@ -98,11 +98,12 @@ public class LifeAlerts_ChateActivity extends Activity {
 	        	//Process the selected contact info
 	            String name = AppConfiguration.getEmergencyName();
 	            String phoneNumber = AppConfiguration.getEmergencyPhone();
-	            String email = AppConfiguration.getEmergencyAddress();
+	            String email = AppConfiguration.getEmergencyEmail();
+	            String address = AppConfiguration.getEmergencyAddress();
 	            
 	
             	//Display the selected contact on the screen
-                String selectedContact =  name + "\n\t" + phoneNumber + "\n\t" + email; 
+                String selectedContact =  name + "\n\t" + phoneNumber + "\n\t" + email + "\n\t" + address; 
                 mainTextView = (TextView) findViewById(R.id.main_text);
         		mainTextView.setText(R.string.selected_emergency_contact);
         		mainTextView.append("\n\n\t" + selectedContact);
@@ -210,25 +211,29 @@ public class LifeAlerts_ChateActivity extends Activity {
 				  Contacts.Phones.WORK_TYPE,
 				  "chate.luu@wellsfargo.com",
 				  Contacts.ContactMethods.EMAIL_KIND_WORK_TYPE,
-				  "455 Market St.\nSan Francisco, CA 94105");
+				  "455 Market St., San Francisco, CA 94105",
+				  Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE);
         addNewContactHelper("Jane Doe", 
 				  "(415) 999 1111",
 				  Contacts.Phones.HOME_TYPE,
 				  "janedoe@company.com",
 				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
-				  "333 Market St.\nSan Francisco, CA 94105");
+				  "333 Market St., San Francisco, CA 94105",
+				  Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE);
         addNewContactHelper("Toppsy Kretts", 
 				  "(415) 000 9999",
 				  Contacts.Phones.MOBILE_TYPE,
 				  "topsecret@secret.com",
 				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
-				  "525 Market St.\nSan Francisco, CA 94105"); 
+				  "525 Market St., San Francisco, CA 94105",
+				  Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE); 
         addNewContactHelper("Who the hell is this!?!", 
 				  "(555) 239 0340",
 				  Contacts.Phones.MOBILE_TYPE,
 				  "whoisthis@dontknow.com",
 				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
-				  "45 Fremont St.\nSan Francisco, CA 94105"); 
+				  "45 Fremont St., San Francisco, CA 94105",
+				  Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE); 
     }
     
     /**
@@ -248,7 +253,7 @@ public class LifeAlerts_ChateActivity extends Activity {
      * @param emailType = type of email
      */
     private void addNewContactHelper(String name, String phoneNumber, int phoneType,
-    								 String email, int emailType, String address) {
+    								 String email, int emailType, String address, int addressType) {
     	ContentValues values = new ContentValues();
         values.put(Contacts.People.NAME, name);
         
@@ -277,7 +282,7 @@ public class LifeAlerts_ChateActivity extends Activity {
         values.clear();
         values.put(Contacts.ContactMethods.PERSON_ID, personPathLeaf);
         values.put(Contacts.ContactMethods.KIND, Contacts.ContactMethods.POSTAL_KIND);
-        values.put(Contacts.ContactMethods.TYPE, Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE);
+        values.put(Contacts.ContactMethods.TYPE, addressType);
         values.put(Contacts.ContactMethods.DATA, address);    
         ContentURI newAddressURI = getContentResolver().insert(newPersonURI.addPath(Contacts.ContactMethods.CONTENT_URI.getPath()), values);
     }
