@@ -16,18 +16,25 @@ public class ContactInfo {
 	 * @param name
 	 * @param phoneNumber
 	 */
-	public ContactInfo(Long personId, String name, String phoneNumber) {
-		super();
+	public ContactInfo(Long personId, String name, String phoneNumber, String phoneNumberType) {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
+		this.phoneNumberType = phoneNumberType;
 		this.personId = personId;
 	}
-
-	public ContactInfo(Long personId, String name, String phoneNumber
+	
+	/**
+	 * Constructor
+	 * @param personId
+	 * @param name
+	 * @param phoneNumber
+	 * @param email
+	 */
+	public ContactInfo(Long personId, String name, String phoneNumber, String phoneNumberType
 			, String email) {
-		super();
 		this.name = name;
 		this.phoneNumber = phoneNumber;
+		this.phoneNumberType = phoneNumberType;
 		this.email = email;
 		this.personId = personId;
 	}
@@ -42,7 +49,6 @@ public class ContactInfo {
 	 */
 	public ContactInfo(Long personId, String name, String phoneNumber,
 			String phoneNumberType, String email, String emailType) {
-		super();
 		this.personId = personId;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
@@ -51,6 +57,30 @@ public class ContactInfo {
 		this.emailType = emailType;
 	}
 
+	/**
+	 * Constructor
+	 * @param personId
+	 * @param name
+	 * @param phoneNumber
+	 * @param phoneNumberType
+	 * @param email
+	 * @param emailType
+	 * @param address
+	 * @param addressType
+	 */
+	public ContactInfo(Long personId, String name, String phoneNumber,
+			String phoneNumberType, String email, String emailType,
+			String address, String addressType) {
+		this.personId = personId;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.phoneNumberType = phoneNumberType;
+		this.email = email;
+		this.emailType = emailType;
+		this.address = address;
+		this.addressType = addressType;
+	}
+	
 	public Long getPersonId() {
 		return personId;
 	}
@@ -115,5 +145,10 @@ public class ContactInfo {
 		this.addressType = addressType;
 	}
 
-	
+	public String toString() {
+		return name 
+	     		+ "\n\t" + phoneNumber
+	     		+ "\n\t" + email
+	     		+ "\n\t" + address;
+	}
 }
