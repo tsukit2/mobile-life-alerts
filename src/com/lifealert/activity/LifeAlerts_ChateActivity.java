@@ -5,7 +5,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.ContentURI;
 import android.os.Bundle;
+import android.os.DeadObjectException;
+import android.os.IServiceManager;
+import android.os.ServiceManagerNative;
 import android.provider.Contacts;
+import android.telephony.IPhone;
 import android.util.Log;
 import android.view.Menu;
 import android.view.Menu.Item;
@@ -13,6 +17,8 @@ import android.widget.TextView;
 
 import com.lifealert.GmailSender;
 import com.lifealert.R;
+import com.lifealert.activity.ConfigurationActivity;
+import com.lifealert.activity.SelectContactInfoActivity;
 import com.lifealert.config.AppConfiguration;
 
 public class LifeAlerts_ChateActivity extends Activity {
@@ -70,7 +76,7 @@ public class LifeAlerts_ChateActivity extends Activity {
         	selectEmergency();
         	break;
         case CALL_EMERGENCY_ID:
-            callEmergencyNumber();
+            callEmergencyNumberIPhone();
             break;
         case EMAIL_EMERGENCY_ID:
         	emailEmergencyContact();
@@ -144,7 +150,30 @@ public class LifeAlerts_ChateActivity extends Activity {
         intent.setData(contentUri/*phoneURIString*/);
         startActivity(intent);
     }
+    
+    public void callEmergencyNumberIPhone() {
+    	
+    	IServiceManager sm = ServiceManagerNative.getDefault();
+    	
+    	try {
+    		IPhone phoneService = IPhone.Stub.asInterface(sm.getService("phone"));
+        	
+    		String numberToContact = AppConfiguration.getEmergencyPhone();
+    	  	   
+            if (numberToContact == null) {
+          	  // Set contact to user of this phone, if emergency contact doesn't exist
+          	  numberToContact = AppConfiguration.getUserPhone();
+            }
+            
+            phoneService.dial(numberToContact);
+    	}
+    	catch (DeadObjectException e) {
+    		Log.e("callEmergencyNumberIPhone failure", e.getMessage());
+    	}
+        	
+    }
 
+    
     /**
      * Navigate to the Dialer activity screen and call the emergency contact
      * TODO: Need to figure out how to play the recorded audio over the phone.
@@ -180,22 +209,26 @@ public class LifeAlerts_ChateActivity extends Activity {
 				  "(415) 222 5953",
 				  Contacts.Phones.WORK_TYPE,
 				  "chate.luu@wellsfargo.com",
-				  Contacts.ContactMethods.EMAIL_KIND_WORK_TYPE);
+				  Contacts.ContactMethods.EMAIL_KIND_WORK_TYPE,
+				  "455 Market St.\nSan Francisco, CA 94105");
         addNewContactHelper("Jane Doe", 
 				  "(415) 999 1111",
 				  Contacts.Phones.HOME_TYPE,
 				  "janedoe@company.com",
-				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE);
+				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
+				  "333 Market St.\nSan Francisco, CA 94105");
         addNewContactHelper("Toppsy Kretts", 
 				  "(415) 000 9999",
 				  Contacts.Phones.MOBILE_TYPE,
 				  "topsecret@secret.com",
-				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE); 
+				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
+				  "525 Market St.\nSan Francisco, CA 94105"); 
         addNewContactHelper("Who the hell is this!?!", 
 				  "(555) 239 0340",
 				  Contacts.Phones.MOBILE_TYPE,
 				  "whoisthis@dontknow.com",
-				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE); 
+				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
+				  "45 Fremont St.\nSan Francisco, CA 94105"); 
     }
     
     /**
@@ -214,7 +247,8 @@ public class LifeAlerts_ChateActivity extends Activity {
      * @param email = email of the person
      * @param emailType = type of email
      */
-    private void addNewContactHelper(String name, String phoneNumber, int phoneType, String email, int emailType) {
+    private void addNewContactHelper(String name, String phoneNumber, int phoneType,
+    								 String email, int emailType, String address) {
     	ContentValues values = new ContentValues();
         values.put(Contacts.People.NAME, name);
         
@@ -238,6 +272,13 @@ public class LifeAlerts_ChateActivity extends Activity {
         values.put(Contacts.ContactMethods.DATA, email);
         
         ContentURI newEmailURI = getContentResolver().insert(newPersonURI.addPath(Contacts.ContactMethods.CONTENT_URI.getPath()), values);
+
+        // add a physical address to the test person above
+        values.clear();
+        values.put(Contacts.ContactMethods.PERSON_ID, personPathLeaf);
+        values.put(Contacts.ContactMethods.KIND, Contacts.ContactMethods.POSTAL_KIND);
+        values.put(Contacts.ContactMethods.DATA, address);    
+        ContentURI newAddressURI = getContentResolver().insert(newPersonURI.addPath(Contacts.ContactMethods.CONTENT_URI.getPath()), values);
     }
     
     public void displayInitialScreen() {
