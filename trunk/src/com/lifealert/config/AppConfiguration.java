@@ -21,10 +21,12 @@ public class AppConfiguration {
    private static final String PREF_USER_NAME = "UserName";
    private static final String PREF_USER_ADDRESS = "UserAddress";
    private static final String PREF_USER_PHONE = "UserPhone";
+   private static final String PREF_USER_EMAIL = "UserEmail";
    private static final String PREF_EMERGENCY_CONTACT_ID = "EmergencyContactId";
    private static final String PREF_EMERGENCY_NAME = "EmergencyName";
    private static final String PREF_EMERGENCY_ADDRESS = "EmergencyAddress";
    private static final String PREF_EMERGENCY_PHONE = "EmergencyPhone";
+   private static final String PREF_EMERGENCY_EMAIL = "EmergencyEmail";
    private static final String PREF_VOICE_MAIL_PATH = "VoiceMailPath";
    private static final String PREF_TEXT_MSG = "TextMsg";
    
@@ -83,6 +85,14 @@ public class AppConfiguration {
    public static void setUserPhone(String val) {
       updatePref(PREF_USER_PHONE, val);
    }
+
+   public static String getUserEmail() {
+	  return (String) getPref(PREF_USER_EMAIL);
+   }
+
+   public static void setUserEmail(String val) {
+	  updatePref(PREF_USER_EMAIL, val);
+   }
    
    public static String getEmergencyName() {
       return (String) getPref(PREF_EMERGENCY_NAME);
@@ -106,6 +116,14 @@ public class AppConfiguration {
 
    public static void setEmergencyPhone(String val) {
       updatePref(PREF_EMERGENCY_PHONE, val);
+   }
+
+   public static String getEmergencyEmail() {
+      return (String) getPref(PREF_EMERGENCY_EMAIL);
+   }
+
+   public static void setEmergencyEmail(String val) {
+	  updatePref(PREF_EMERGENCY_EMAIL, val);
    }
    
    public static String getVoiceMailPath() {
