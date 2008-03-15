@@ -277,6 +277,7 @@ public class LifeAlerts_ChateActivity extends Activity {
         values.clear();
         values.put(Contacts.ContactMethods.PERSON_ID, personPathLeaf);
         values.put(Contacts.ContactMethods.KIND, Contacts.ContactMethods.POSTAL_KIND);
+        values.put(Contacts.ContactMethods.TYPE, Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE);
         values.put(Contacts.ContactMethods.DATA, address);    
         ContentURI newAddressURI = getContentResolver().insert(newPersonURI.addPath(Contacts.ContactMethods.CONTENT_URI.getPath()), values);
     }
