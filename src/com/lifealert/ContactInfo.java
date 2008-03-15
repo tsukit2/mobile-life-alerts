@@ -7,6 +7,8 @@ public class ContactInfo {
 	private String phoneNumberType;
 	private String email;
 	private String emailType;
+	private String address;
+	private String addressType;
 	private Long personId;
 	
 	/**
@@ -95,6 +97,22 @@ public class ContactInfo {
 
 	public void setEmailType(String emailType) {
 		this.emailType = emailType;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getAddressType() {
+		return addressType;
+	}
+
+	public void setAddressType(String addressType) {
+		this.addressType = addressType;
 	}
 
 	
