@@ -7,8 +7,10 @@
     <string name="monitor_life">Dial Emergency No.</string>
     <string name="confirm_emergency_contact">Confirm Selected Contact</string>
     <string name="no_emergency_contact">No emergency contact stored. Please select one from menu."</string>
-    <string name="selected_emergency_contact">You've selected emergency contact: </string>
+    <string name="selected_emergency_contact">You\'ve selected emergency contact: </string>
     <string name="intro_greeting">WELCOME TO LIFE MONITOR APPLICATION (CHATE'S PORTION)</string>
+
+	<string name="phone_Number_911">911</string>
 
     <string name="config_userinfo">Your Info</string>
     <string name="config_username_hint">Your name</string>
