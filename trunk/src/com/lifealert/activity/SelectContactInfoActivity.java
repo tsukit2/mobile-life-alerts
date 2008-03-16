@@ -51,22 +51,34 @@ public class SelectContactInfoActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
         ContactInfo personInfo = (ContactInfo) nameIdHash.get(position);
         
+        Long personId = personInfo.getPersonId();
+        String name = personInfo.getName();
+        
+        String phoneNumber = personInfo.getPhoneNumber();
+        phoneNumber = (phoneNumber == null) ? "" : phoneNumber;
+        
+        String email = personInfo.getEmail();
+        email = (email == null) ? "" : email;
+        
+        String address = personInfo.getAddress(); 
+        address = (address == null) ? "" : address;
+        
         // Store the selected contact info in the AppConfiguration
         if (ConfigurationActivity.USER_CONTACT_TYPE.equals(contactType)) {
         	//Store User Contact info
-        	AppConfiguration.setUserContactId(personInfo.getPersonId());
-        	AppConfiguration.setUserName(personInfo.getName());
-        	AppConfiguration.setUserPhone(personInfo.getPhoneNumber());
-        	AppConfiguration.setUserEmail(personInfo.getEmail());
-        	AppConfiguration.setUserAddress(personInfo.getAddress());
+        	AppConfiguration.setUserContactId(personId);
+        	AppConfiguration.setUserName(name);
+        	AppConfiguration.setUserPhone(phoneNumber);
+        	AppConfiguration.setUserEmail(email);
+        	AppConfiguration.setUserAddress(address);
         }
         else {
         	//Store Emergency Contact info
-        	AppConfiguration.setEmergencyContactId(personInfo.getPersonId());
-        	AppConfiguration.setEmergencyName(personInfo.getName());
-        	AppConfiguration.setEmergencyPhone(personInfo.getPhoneNumber());
-        	AppConfiguration.setEmergencyEmail(personInfo.getEmail());
-        	AppConfiguration.setEmergencyAddress(personInfo.getAddress());
+        	AppConfiguration.setEmergencyContactId(personId);
+        	AppConfiguration.setEmergencyName(name);
+        	AppConfiguration.setEmergencyPhone(phoneNumber);        		
+        	AppConfiguration.setEmergencyEmail(email);
+        	AppConfiguration.setEmergencyAddress(address);
         }
         	   
         setResult(RESULT_OK);
