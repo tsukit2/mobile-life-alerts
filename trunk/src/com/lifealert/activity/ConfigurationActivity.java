@@ -78,6 +78,9 @@ public class ConfigurationActivity extends Activity {
       String userPhone = AppConfiguration.getUserPhone();
       ((TextView) findViewById(R.id.config_userPhone)).setText(userPhone);
 
+      String userEmail = AppConfiguration.getUserEmail();
+      ((TextView) findViewById(R.id.config_userEmail)).setText(userEmail);
+
       String erName = AppConfiguration.getEmergencyName();
       ((TextView) findViewById(R.id.config_emergencyName)).setText(erName);
       
@@ -86,6 +89,9 @@ public class ConfigurationActivity extends Activity {
       
       String erPhone = AppConfiguration.getEmergencyPhone();
       ((TextView) findViewById(R.id.config_emergencyPhone)).setText(erPhone);
+      
+      String erEmail = AppConfiguration.getEmergencyEmail();
+      ((TextView) findViewById(R.id.config_emergencyEmail)).setText(erEmail);
       
       Boolean call911 = AppConfiguration.getCall911();
       ((CheckBox) findViewById(R.id.config_call911)).setChecked(call911 != null && call911.booleanValue());
@@ -125,6 +131,9 @@ public class ConfigurationActivity extends Activity {
       AppConfiguration.setUserPhone(
             ((TextView) findViewById(R.id.config_userPhone)).getText().toString());
 
+      AppConfiguration.setUserEmail(
+            ((TextView) findViewById(R.id.config_userEmail)).getText().toString());
+
       AppConfiguration.setEmergencyName(
             ((TextView) findViewById(R.id.config_emergencyName)).getText().toString());
 
@@ -134,6 +143,9 @@ public class ConfigurationActivity extends Activity {
       AppConfiguration.setEmergencyPhone(
             ((TextView) findViewById(R.id.config_emergencyPhone)).getText().toString());
       
+      AppConfiguration.setEmergencyEmail(
+            ((TextView) findViewById(R.id.config_emergencyEmail)).getText().toString());
+
       AppConfiguration.setCall911(
             ((CheckBox) findViewById(R.id.config_call911)).isChecked());
       
@@ -159,6 +171,11 @@ public class ConfigurationActivity extends Activity {
          return false;
       }
 
+      String userEmail = ((TextView) findViewById(R.id.config_userEmail)).getText().toString();
+      if (userEmail == null || "".equals(userEmail)) {
+         return false;
+      }
+
       String emergencyName = ((TextView) findViewById(R.id.config_emergencyName)).getText().toString();
       if (emergencyName == null || "".equals(emergencyName)) {
          return false;
@@ -171,6 +188,11 @@ public class ConfigurationActivity extends Activity {
 
       String emergencyPhone = ((TextView) findViewById(R.id.config_emergencyPhone)).getText().toString();
       if (emergencyPhone == null || "".equals(emergencyPhone)) {
+         return false;
+      }
+
+      String emergencyEmail = ((TextView) findViewById(R.id.config_emergencyEmail)).getText().toString();
+      if (emergencyEmail == null || "".equals(emergencyEmail)) {
          return false;
       }
 
