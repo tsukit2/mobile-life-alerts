@@ -146,9 +146,17 @@ public class ContactInfo {
 	}
 
 	public String toString() {
-		return name 
-	     		+ "\n\t" + phoneNumber
-	     		+ "\n\t" + email
-	     		+ "\n\t" + address;
+		return formatContact(name, phoneNumber, email, address);
+	}
+	
+	public static String formatContact (String inName, String inPhone, String inEmail, String inAddress) {
+		inPhone = (inPhone != null && !"".equals(inPhone)) ? "\n\t" + inPhone : "";
+		inEmail = (inEmail != null && !"".equals(inEmail)) ? "\n\t" + inEmail : "";
+		inAddress = (inAddress != null && !"".equals(inAddress)) ? "\n\t" + inAddress : "";
+		
+		return inName 
+	     		+ inPhone
+	     		+ inEmail
+	     		+ inAddress;		
 	}
 }
