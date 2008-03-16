@@ -44,6 +44,12 @@
                   android:phoneNumber="true"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
+               <EditText
+                  id="@+id/config_userEmail"
+                  android:hint="@string/config_useremail_hint"
+                  android:phoneNumber="true"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent" />
             </LinearLayout>
 
          </TableRow>
@@ -72,6 +78,12 @@
                   id="@+id/config_emergencyPhone"
                   android:phoneNumber="true"
                   android:hint="@string/config_emergencyphone_hint"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent" />
+               <EditText
+                  id="@+id/config_emergencyEmail"
+                  android:phoneNumber="true"
+                  android:hint="@string/config_emergencyemail_hint"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent" />
             </LinearLayout>

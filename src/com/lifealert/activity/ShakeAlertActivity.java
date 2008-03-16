@@ -36,6 +36,10 @@ public class ShakeAlertActivity extends Activity {
       // update the screen
       ((TextView) findViewById(R.id.alert_timeleft)).setText(String.valueOf(timeLeft));
       
+      // play sound every 10 second
+      if (timeLeft % 10 == 0 && timeLeft > 0) {
+         playSound();
+      }
    }
 
    @Override
@@ -51,13 +55,15 @@ public class ShakeAlertActivity extends Activity {
       okay = false;
       updateTimeLeft();
       
+      // now start the timing
+      handler.sendMessageDelayed(handler.obtainMessage(), 1000);
+   }
+
+   private void playSound() {
       // call out to the user
       MediaPlayer mp = MediaPlayer.create(getApplication(), R.raw.alertvoice);
       mp.prepare();
       mp.start();
-
-      // now start the timing
-      handler.sendMessageDelayed(handler.obtainMessage(), 1000);
    }
 
    @Override
@@ -97,8 +103,14 @@ public class ShakeAlertActivity extends Activity {
          updateTimeLeft();
          
          // then determine if we need to do it again
-         if (timeLeft > 0 && !okay) {
-            sendMessageDelayed(obtainMessage(), 1000);
+         if (!okay) {
+            if (timeLeft > 0) {
+               sendMessageDelayed(obtainMessage(), 1000);
+            } else {
+               // let's the ball rolling to call for help
+               Intent intent = new Intent(getApplication(), CallForHelpActivity.class);
+               startActivity(intent);
+            }
          }
       }
    };

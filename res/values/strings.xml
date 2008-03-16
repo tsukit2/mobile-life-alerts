@@ -14,10 +14,12 @@
     <string name="config_username_hint">Your name</string>
     <string name="config_useraddr_hint">Your address</string>
     <string name="config_userphone_hint">Your phone number</string>
+    <string name="config_useremail_hint">Your email address</string>
     <string name="config_emergencyinfo">Emergency Info</string>
     <string name="config_emergencyname_hint">Someone's name</string>
     <string name="config_emergencyaddr_hint">Someone's address</string>
     <string name="config_emergencyphone_hint">Someone's phone number</string>
+    <string name="config_emergencyemail_hint">Someone's email address</string>
     <string name="config_call911">Call 911?</string>
     <string name="config_textmsg">Text Message</string>
     <string name="config_textmsg_hint">Message you want to send when emergency</string>

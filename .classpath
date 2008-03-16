@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="com/lifealert/GmailSender.java|com/lifealert/activity/LifeAlerts_ChateActivity.java" kind="src" path="src"/>
 	<classpathentry kind="lib" path="C:/Android_project/AndroidMobileContest/lib/openintents-lib-0.1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Java/android_sdk_windows_m3-rc37a/android.jar">
 		<attributes>
