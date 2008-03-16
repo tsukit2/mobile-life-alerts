@@ -8,6 +8,7 @@ import android.telephony.IPhone;
 import android.util.Log;
 
 import com.lifealert.R;
+import com.lifealert.config.AppConfiguration;
 import com.lifealert.service.ShakeDetectorService;
 
 public class CallForHelpActivity extends Activity {
@@ -26,8 +27,18 @@ public class CallForHelpActivity extends Activity {
             phoneService.toggleRadioOnOff();
          }
          
-         phoneService.dial("1234567890");
-         phoneService.call("1234567890");
+         String emergencyNumber;
+         if (AppConfiguration.getCall911()) {
+        	 emergencyNumber = getString(R.string.phone_Number_911);
+         }
+         else {
+        	 emergencyNumber = AppConfiguration.getEmergencyPhone();
+         }
+         
+         
+         phoneService.dial(emergencyNumber);
+         phoneService.call(emergencyNumber);
+         
       } catch (Exception ex) {
          Log.e("Life", ex.getMessage(), ex);
       }
