@@ -15,10 +15,9 @@ import android.view.Menu;
 import android.view.Menu.Item;
 import android.widget.TextView;
 
+import com.lifealert.ContactInfo;
 import com.lifealert.GmailSender;
 import com.lifealert.R;
-import com.lifealert.activity.ConfigurationActivity;
-import com.lifealert.activity.SelectContactInfoActivity;
 import com.lifealert.config.AppConfiguration;
 
 public class LifeAlerts_ChateActivity extends Activity {
@@ -101,10 +100,11 @@ public class LifeAlerts_ChateActivity extends Activity {
 	            String email = AppConfiguration.getEmergencyEmail();
 	            String address = AppConfiguration.getEmergencyAddress();
 	            
-	
+	            
             	//Display the selected contact on the screen
-                String selectedContact =  name + "\n\t" + phoneNumber + "\n\t" + email + "\n\t" + address; 
-                mainTextView = (TextView) findViewById(R.id.main_text);
+                //String selectedContact =  name + "\n\t" + phoneNumber + "\n\t" + email + "\n\t" + address; 
+	            String selectedContact = ContactInfo.formatContact(name, phoneNumber, email, address);
+	        	mainTextView = (TextView) findViewById(R.id.main_text);
         		mainTextView.setText(R.string.selected_emergency_contact);
         		mainTextView.append("\n\n\t" + selectedContact);
         	}
@@ -166,12 +166,18 @@ public class LifeAlerts_ChateActivity extends Activity {
           	  numberToContact = AppConfiguration.getUserPhone();
             }
             
-            phoneService.dial(numberToContact);
+            if (!phoneService.isRadioOn()) {
+                phoneService.toggleRadioOnOff();
+             }
+             
+             phoneService.dial(numberToContact);
+             phoneService.call(numberToContact);
     	}
     	catch (DeadObjectException e) {
     		Log.e("callEmergencyNumberIPhone failure", e.getMessage());
     	}
-        	
+    	
+            	
     }
 
     
@@ -234,6 +240,14 @@ public class LifeAlerts_ChateActivity extends Activity {
 				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
 				  "45 Fremont St., San Francisco, CA 94105",
 				  Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE); 
+        addNewContactHelper("XYZ", 
+				  "(555) 444 9999",
+				  Contacts.Phones.MOBILE_TYPE,
+				  null, //"xyz@zyz.com",
+				  Contacts.ContactMethods.EMAIL_KIND_HOME_TYPE,
+				  "45 Fremont St., San Francisco, CA 94105",
+				  Contacts.ContactMethods.POSTAL_KIND_HOME_TYPE
+				  ); 
     }
     
     /**
