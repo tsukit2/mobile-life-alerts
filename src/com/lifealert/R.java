@@ -76,11 +76,12 @@ public final class R {
     }
     public static final class layout {
         public static final int alert=0x7f030000;
-        public static final int configuration=0x7f030001;
-        public static final int main=0x7f030002;
-        public static final int notes_row=0x7f030003;
-        public static final int select_emergency=0x7f030004;
-        public static final int sensitivity=0x7f030005;
+        public static final int callhelp=0x7f030001;
+        public static final int configuration=0x7f030002;
+        public static final int main=0x7f030003;
+        public static final int notes_row=0x7f030004;
+        public static final int select_emergency=0x7f030005;
+        public static final int sensitivity=0x7f030006;
     }
     public static final class raw {
         public static final int alertvoice=0x7f040000;
