@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
@@ -152,10 +153,11 @@ public class SensitivityTestActivity extends Activity implements Runnable {
 
    private void startTesting() {
       // notify the user first
-      NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-      man.notifyWithText(R.string.sensitivity_testing_insession,
-            getString(R.string.sensitivity_testing_insession),
-            NotificationManager.LENGTH_SHORT, null);
+      Toast.makeText(this, R.string.sensitivity_testing_insession, Toast.LENGTH_SHORT).show();
+//      NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//      man.notifyWithText(R.string.sensitivity_testing_insession,
+//            getString(R.string.sensitivity_testing_insession),
+//            NotificationManager.LENGTH_SHORT, null);
       
       // turn off the status
       statusText.setVisibility(View.INVISIBLE);

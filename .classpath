@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Android_project/AndroidMobileContest/lib/openintents-lib-0.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Java/android_sdk_windows_m3-rc37a/android.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/C:/Java/android_sdk_windows_m3-rc37a/docs/reference"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry excluding="com/lifealert/GmailSender.java|com/lifealert/activity/LifeAlerts_ChateActivity.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.project.AndroidClasspathContainerInitializer"/>
+	<classpathentry kind="lib" path="C:/Android_project/AndroidMobileContest/lib/openintents-lib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

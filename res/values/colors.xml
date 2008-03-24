@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+   <color name="config_status_on">#00FF00</color>
+   <color name="config_status_off">#FF0000</color>
+
    <color name="sensitivity_bar_inactive">#808080</color>
    
    <color name="sensitivity_bar_10">#FF0000</color>

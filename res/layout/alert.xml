@@ -18,6 +18,7 @@
          android:paddingBottom="10dip"
          android:textSize="24dip"
          android:textStyle="bold"
+         android:textColor="#0F0"
          android:text="@string/alert_are_you_okay" />
 
       <TextView
@@ -27,7 +28,7 @@
          android:text="@string/alert_please_press_button" />
 
       <Button
-         id="@+id/alert_okay_button"
+         android:id="@+id/alert_okay_button"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:paddingTop="20dip"
@@ -41,10 +42,12 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content" />
       <TextView
-         id="@+id/alert_timeleft"
+         android:id="@+id/alert_timeleft"
+         android:textColor="#F00"
          android:text="30"
          android:textAlign="center"
          android:textSize="32dip"
+         android:textStyle="bold"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content" />
       <TextView

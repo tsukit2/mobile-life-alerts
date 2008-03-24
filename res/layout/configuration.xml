@@ -12,129 +12,140 @@
       android:layout_height="fill_parent"
       android:layout_weight="1">
 
-      <TableLayout
+      <LinearLayout
+         android:paddingLeft="5dip"
+         android:paddingRight="5dip"
          android:layout_width="fill_parent"
          android:layout_height="fill_parent"
-         android:shrinkColumns="1"
-         android:stretchColumns="1">
+         android:orientation="vertical">
+         <Button
+            android:button="@android:attr/buttonStyleRight"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/config_userInfo"
+            android:text="@string/config_userinfo"
+            android:textAlign="start" />
 
-         <TableRow>
-            <Button
-               id="@+id/config_userInfo"
-               android:text="@string/config_userinfo"
-               android:textAlign="start" />
+         <EditText
+            android:id="@+id/config_userName"
+            android:hint="@string/config_username_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+         <EditText
+            android:id="@+id/config_userAddr"
+            android:hint="@string/config_useraddr_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+         <EditText
+            android:id="@+id/config_userPhone"
+            android:hint="@string/config_userphone_hint"
+            android:phoneNumber="true"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+         <EditText
+            android:id="@+id/config_userEmail"
+            android:hint="@string/config_useremail_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
+         <Button
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/config_emergencyInfo"
+            android:text="@string/config_emergencyinfo"
+            android:textAlign="start" />
+
+         <EditText
+            android:id="@+id/config_emergencyName"
+            android:hint="@string/config_emergencyname_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+         <EditText
+            android:id="@+id/config_emergencyAddr"
+            android:hint="@string/config_emergencyaddr_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+         <EditText
+            android:id="@+id/config_emergencyPhone"
+            android:phoneNumber="true"
+            android:hint="@string/config_emergencyphone_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+         <EditText
+            android:id="@+id/config_emergencyEmail"
+            android:hint="@string/config_emergencyemail_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+               android:gravity="fill_vertical"
+               android:layout_width="wrap_content"
+               android:layout_height="fill_parent"
+               android:text="@string/config_call911" />
             <LinearLayout
                android:layout_width="fill_parent"
                android:layout_height="fill_parent"
-               android:orientation="vertical">
-               <EditText
-                  id="@+id/config_userName"
-                  android:hint="@string/config_username_hint"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
-               <EditText
-                  id="@+id/config_userAddr"
-                  android:hint="@string/config_useraddr_hint"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
-               <EditText
-                  id="@+id/config_userPhone"
-                  android:hint="@string/config_userphone_hint"
-                  android:phoneNumber="true"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
-               <EditText
-                  id="@+id/config_userEmail"
-                  android:hint="@string/config_useremail_hint"
-                  android:phoneNumber="true"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
+               android:gravity="right">
+               <CheckBox
+                  android:layout_width="wrap_content"
+                  android:layout_height="fill_parent"
+                  android:id="@+id/config_call911" />
             </LinearLayout>
+         </LinearLayout>
 
-         </TableRow>
+         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/config_textmsg" />
+         <EditText
+            android:id="@+id/config_textMsg"
+            android:hint="@string/config_textmsg_hint"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-         <TableRow>
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
             <Button
-               id="@+id/config_emergencyInfo"
-               android:text="@string/config_emergencyinfo"
-               android:textAlign="start" />
-
-            <LinearLayout
-               android:layout_width="fill_parent"
+               android:layout_width="wrap_content"
                android:layout_height="fill_parent"
-               android:orientation="vertical">
-               <EditText
-                  id="@+id/config_emergencyName"
-                  android:hint="@string/config_emergencyname_hint"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
-               <EditText
-                  id="@+id/config_emergencyAddr"
-                  android:hint="@string/config_emergencyaddr_hint"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
-               <EditText
-                  id="@+id/config_emergencyPhone"
-                  android:phoneNumber="true"
-                  android:hint="@string/config_emergencyphone_hint"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
-               <EditText
-                  id="@+id/config_emergencyEmail"
-                  android:phoneNumber="true"
-                  android:hint="@string/config_emergencyemail_hint"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent" />
-            </LinearLayout>
-
-         </TableRow>
-
-         <TableRow>
-            <TextView android:text="@string/config_call911" />
-            <CheckBox id="@+id/config_call911" />
-         </TableRow>
-
-         <TableRow>
-            <TextView android:text="@string/config_textmsg" />
-            <EditText
-               id="@+id/config_textMsg"
-               android:lines="3"
-               android:hint="@string/config_textmsg_hint"
-               android:layout_width="fill_parent"
-               android:layout_height="fill_parent" />
-         </TableRow>
-
-         <TableRow>
-            <Button
-               id="@+id/config_voiceMail"
+               android:id="@+id/config_voiceMail"
                android:text="@string/config_voicemsg"
                android:textAlign="start" />
             <TextView
-               id="@+id/config_voiceMailStatus"
-               android:text="Recorded"
+               android:gravity="fill_vertical"
+               android:id="@+id/config_voiceMailStatus"
+               android:textAlign="end"
                android:layout_width="fill_parent"
                android:layout_height="fill_parent" />
-         </TableRow>
+         </LinearLayout>
 
-         <TableRow>
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
             <Button
-               id="@+id/config_sensitivity"
+               android:layout_width="wrap_content"
+               android:layout_height="fill_parent"
+               android:id="@+id/config_sensitivity"
                android:text="@string/config_sensitivity"
                android:textAlign="start" />
             <TextView
-               id="@+id/config_sensitivity_status"
+               android:id="@+id/config_sensitivity_status"
+               android:textAlign="end"
+               android:gravity="fill_vertical"
                android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
+               android:layout_height="fill_parent"
                android:drawSelectorOnTop="true" />
-         </TableRow>
+         </LinearLayout>
 
-      </TableLayout>
-
+      </LinearLayout>
    </ScrollView>
 
    <LinearLayout
-      id="@+id/config_statusColor"
+      android:id="@+id/config_statusColor"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
@@ -155,18 +166,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
          <TextView
-            id="@+id/config_status"
+            android:id="@+id/config_status"
             android:textAlign="start"
             android:text="@string/config_systemstatus_active"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:textColor="#00ff00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
       </LinearLayout>
 
       <Button
-         id="@+id/config_activiate"
+         android:id="@+id/config_activiate"
          android:text="@string/config_systemaction_deactivate"
          android:textSize="16sp"
          android:layout_width="fill_parent"
