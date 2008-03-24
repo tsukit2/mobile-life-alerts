@@ -1,25 +1,16 @@
 package com.lifealert.service;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.openintents.hardware.Sensors;
 
-import com.lifealert.R;
 import com.lifealert.activity.ShakeAlertActivity;
 import com.lifealert.config.AppConfiguration;
 import com.lifealert.config.Sensitivity;
 
 import android.app.Service;
 import android.content.Intent;
-import android.net.ContentURI;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Contacts;
 import android.util.Log;
-import android.widget.TextView;
 
 public class ShakeDetectorService extends Service implements Runnable {
    private static boolean working;
@@ -71,11 +62,6 @@ public class ShakeDetectorService extends Service implements Runnable {
    }
 
    @Override
-   public IBinder getBinder() {
-      return null;
-   }
-
-   @Override
    public void run() {
       // start the flag
       working = true;
@@ -111,5 +97,11 @@ public class ShakeDetectorService extends Service implements Runnable {
          working = false;
          stopSelf();
       }
+   }
+
+   @Override
+   public IBinder onBind(Intent arg0) {
+      // TODO Auto-generated method stub
+      return null;
    }
 }

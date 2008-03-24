@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
@@ -109,15 +110,21 @@ public class ConfigurationActivity extends Activity {
       ((TextView) findViewById(R.id.config_sensitivity_status)).setText(
             sens == null ? getText(R.string.config_sensitivity_status)
                   : sens.getLabel());
-      
-      ((TextView) findViewById(R.id.config_status))
-            .setText(ShakeDetectorService.isRunning() ? R.string.config_systemstatus_active
-                  : R.string.config_systemstatus_inactive);
+
+      setStatusColor(ShakeDetectorService.isRunning());
 
       ((Button) findViewById(R.id.config_activiate))
             .setText(ShakeDetectorService.isRunning() ? R.string.config_systemaction_deactivate
                   : R.string.config_systemaction_activate);
       
+   }
+   
+   private void setStatusColor(boolean flag) {
+      TextView status = (TextView) findViewById(R.id.config_status);
+      status.setText(flag ? R.string.config_systemstatus_active
+            : R.string.config_systemstatus_inactive);
+      status.setTextColor(getResources().getColor(
+            flag ? R.color.config_status_on : R.color.config_status_off));
    }
 
    private void saveConfigurations() {
@@ -220,13 +227,16 @@ public class ConfigurationActivity extends Activity {
          AppConfiguration.setVoiceMailPath("dummy");
          saveConfigurations();
          populateConfigurations();
-         
+
          // now notify the user that we cannot record the voice
-         NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-         notMan.notifyWithText(R.string.notification_no_voicemail,
-               getText(R.string.notification_no_voicemail),
-               NotificationManager.LENGTH_SHORT,
-               null);
+         Toast.makeText(ConfigurationActivity.this, R.string.notification_no_voicemail, Toast.LENGTH_SHORT).show();
+
+         
+         //         NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//         notMan.notifyWithText(R.string.notification_no_voicemail,
+//               getText(R.string.notification_no_voicemail),
+//               NotificationManager.LENGTH_SHORT,
+//               null);
       }
    };
 
@@ -259,7 +269,7 @@ public class ConfigurationActivity extends Activity {
          if (ShakeDetectorService.isRunning()) {
             Intent intent = new Intent(getApplication(), ShakeDetectorService.class);
             stopService(intent);
-            ((TextView) findViewById(R.id.config_status)).setText(R.string.config_systemstatus_inactive);
+            setStatusColor(false);
             ((Button) findViewById(R.id.config_activiate)).setText(R.string.config_systemaction_activate);
          } else {
             if (configCompleted()) {
@@ -267,14 +277,15 @@ public class ConfigurationActivity extends Activity {
                saveConfigurations();
                Intent intent = new Intent(getApplication(), ShakeDetectorService.class);
                startService(intent, null);
-               ((TextView) findViewById(R.id.config_status)).setText(R.string.config_systemstatus_active);
+               setStatusColor(true);
                ((Button) findViewById(R.id.config_activiate)).setText(R.string.config_systemaction_deactivate);
             } else {
-               NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-               notMan.notifyWithText(R.string.config_is_incomplete,
-                     getText(R.string.config_is_incomplete),
-                     NotificationManager.LENGTH_SHORT,
-                     null);
+               Toast.makeText(ConfigurationActivity.this, R.string.config_is_incomplete, Toast.LENGTH_SHORT).show();
+//               NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//               notMan.notifyWithText(R.string.config_is_incomplete,
+//                     getText(R.string.config_is_incomplete),
+//                     NotificationManager.LENGTH_SHORT,
+//                     null);
             }
          }
       }

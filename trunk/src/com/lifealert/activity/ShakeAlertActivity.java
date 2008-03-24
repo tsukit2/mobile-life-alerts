@@ -1,18 +1,20 @@
 package com.lifealert.activity;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.ContentURI;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Contacts;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
@@ -21,6 +23,7 @@ import com.lifealert.service.ShakeDetectorService;
 public class ShakeAlertActivity extends Activity {
    private int timeLeft;
    private boolean okay;
+   private MediaPlayer player;
 
    @Override
    protected void onCreate(Bundle icicle) {
@@ -29,8 +32,25 @@ public class ShakeAlertActivity extends Activity {
       setContentView(R.layout.alert);
       
       // wire the button click
-      ((Button) findViewById(R.id.alert_okay_button)).setOnClickListener(onOkayClicked);
+      Button okayButton = (Button) findViewById(R.id.alert_okay_button);
+      okayButton.setOnClickListener(onOkayClicked);
+      okayButton.requestFocus();
+      
+      // load the file
+      try {
+         player = MediaPlayer.create(this, R.raw.alertvoice);
+      } catch (Exception ex) {
+         Log.e("Life", ex.getMessage(), ex);
+         throw new RuntimeException(ex);
+      }
    }
+
+   @Override
+   protected void onDestroy() {
+      player.release();
+      super.onDestroy();
+   }
+
    
    private void updateTimeLeft() {
       // update the screen
@@ -61,9 +81,8 @@ public class ShakeAlertActivity extends Activity {
 
    private void playSound() {
       // call out to the user
-      MediaPlayer mp = MediaPlayer.create(getApplication(), R.raw.alertvoice);
-      mp.prepare();
-      mp.start();
+      player.seekTo(0);
+      player.start();
    }
 
    @Override
@@ -84,11 +103,13 @@ public class ShakeAlertActivity extends Activity {
          okay = true;
    
          // notify user
-         NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-         notMan.notifyWithText(R.string.config_is_incomplete,
-               getText(R.string.alert_okay_notification),
-               NotificationManager.LENGTH_SHORT,
-               null);
+         Toast.makeText(ShakeAlertActivity.this, R.string.alert_okay_notification, Toast.LENGTH_SHORT).show();
+//         NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//         Notification notice = new Notification();
+//         notMan.notify(new Notification(this, R.string.config_is_incomplete,
+//               getText(R.string.alert_okay_notification),
+//               NotificationManager.LENGTH_SHORT,
+//               null);
          
          // finish this activity
          finish();
@@ -119,23 +140,23 @@ public class ShakeAlertActivity extends Activity {
     * Navigate to the Dialer activity screen and call the emergency contact
     * TODO: Need to figure out how to play the recorded audio over the phone.
     */
-   private void callEmergencyNumber() {
-      // Get the emergency contact from the AppConfiguration
-      Long personToContact = AppConfiguration.getEmergencyContactId();
-
-      if (personToContact == null) {
-         // Set contact to user of this phone, if emergency contact doesn't
-         // exist
-         personToContact = AppConfiguration.getUserContactId();
-      }
-
-      // Dial the assigned emergency contact number
-      Intent intent = new Intent(android.content.Intent.CALL_ACTION);
-      ContentURI phoneURIString = Contacts.Phones.CONTENT_URI;
-      phoneURIString = phoneURIString.addId(personToContact);
-
-      intent.setData(phoneURIString);
-      startActivity(intent);
-
-   }
+//   private void callEmergencyNumber() {
+//      // Get the emergency contact from the AppConfiguration
+//      Long personToContact = AppConfiguration.getEmergencyContactId();
+//
+//      if (personToContact == null) {
+//         // Set contact to user of this phone, if emergency contact doesn't
+//         // exist
+//         personToContact = AppConfiguration.getUserContactId();
+//      }
+//
+//      // Dial the assigned emergency contact number
+//      Intent intent = new Intent(android.content.Intent.CALL_ACTION);
+//      ContentURI phoneURIString = Contacts.Phones.CONTENT_URI;
+//      phoneURIString = phoneURIString.addId(personToContact);
+//
+//      intent.setData(phoneURIString);
+//      startActivity(intent);
+//
+//   }
 }
