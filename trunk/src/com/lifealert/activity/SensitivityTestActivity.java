@@ -49,6 +49,8 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    private RadioButton[] rbuttons;
    private Sensitivity curSensitivity;
    private LinearLayout statusText;
+   private Thread thread;
+
 
    @Override
    protected void onCreate(Bundle icicle) {
@@ -165,11 +167,18 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    
    private void startTestingThread() {
       testing = true;
-      new Thread(this).start();
+      thread = new Thread(this);
+      thread.start();
    }
    
    private void stopTestingThread() {
       testing = false;
+      try {
+         if (thread != null) thread.join();
+      } catch (InterruptedException e) {
+         Log.e("Life", e.getMessage(), e);
+         throw new RuntimeException(e);
+      }
    }
    
    private void testSatisfied() {
@@ -237,10 +246,10 @@ public class SensitivityTestActivity extends Activity implements Runnable {
 
       } catch (InterruptedException ex) {
          Log.e("LifeAlert", ex.getMessage(), ex);
+      } finally {
+         // put the shake alert back off hold
+         ShakeDetectorService.setOnHold(false);
       }
-
-      // put the shake alert back off hold
-      ShakeDetectorService.setOnHold(false);
    }
 
 }
