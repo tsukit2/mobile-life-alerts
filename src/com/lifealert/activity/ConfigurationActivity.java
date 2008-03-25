@@ -4,14 +4,18 @@ import org.openintents.hardware.Sensors;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TabHost.TabSpec;
 
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
@@ -31,12 +35,30 @@ public class ConfigurationActivity extends Activity {
       // set the content view
       super.onCreate(icicle);
       setContentView(R.layout.configuration);
-    
-      // TODO: move this to app main: enable the accelerometer
+
+      Context context = this;
+      Resources res = context.getResources();
+      
+      TabHost tabHost = (TabHost)findViewById(R.id.tabhost);
+      tabHost.setup();
+      
+      TabSpec tabspec = tabHost.newTabSpec("about");
+      tabspec.setIndicator(res.getString(R.string.config_about), res.getDrawable(R.drawable.config_about));
+      tabspec.setContent(R.id.about);
+      tabHost.addTab(tabspec);
+      
+      tabspec = tabHost.newTabSpec("settings");
+      tabspec.setIndicator(res.getString(R.string.config_settings), res.getDrawable(R.drawable.config_settings));
+      tabspec.setContent(R.id.settings);
+      tabHost.addTab(tabspec);
+      
+      tabHost.setCurrentTab(0);
+
       org.openintents.provider.Hardware.mContentResolver = getContentResolver();
       Sensors.connectSimulator();
       Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
-      
+
+
       // TODO: remove this
       AppConfiguration.init(this);
 
@@ -59,6 +81,7 @@ public class ConfigurationActivity extends Activity {
    @Override
    protected void onStart() {
       super.onStart();
+
       populateConfigurations();
    }
    

@@ -40,7 +40,11 @@ public class ShakeDetectorService extends Service implements Runnable {
    protected void onStart(int startId, Bundle arguments) {
       // let the parent do it first
       super.onStart(startId, arguments);
-      
+
+      org.openintents.provider.Hardware.mContentResolver = getContentResolver();
+      Sensors.connectSimulator();
+      Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
+
       // now initialize it self
       new Thread(this).start();
    }
@@ -50,7 +54,7 @@ public class ShakeDetectorService extends Service implements Runnable {
       // TODO Auto-generated method stub
       super.onCreate();
       AppConfiguration.init(getApplication());
-      
+
       // pre-obtain the sensitivity
       curSensitivity = AppConfiguration.getSensitivity();
    }
