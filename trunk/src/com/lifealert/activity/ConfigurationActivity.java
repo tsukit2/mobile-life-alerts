@@ -54,10 +54,11 @@ public class ConfigurationActivity extends Activity {
       
       tabHost.setCurrentTab(0);
 
-      org.openintents.provider.Hardware.mContentResolver = getContentResolver();
-      Sensors.connectSimulator();
-      Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
-
+      if (!ShakeDetectorService.isRunning()) {
+         org.openintents.provider.Hardware.mContentResolver = getContentResolver();
+         Sensors.connectSimulator();
+         Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
+      }
 
       // TODO: remove this
       AppConfiguration.init(this);
