@@ -40,7 +40,9 @@ public class SelectContactInfoActivity extends ListActivity {
 	    
         // Now create an array adapter and set it to display using our row
         ArrayAdapter<String> contacts = 
-            new ArrayAdapter<String>(this, R.layout.notes_row, contactItems);
+            new ArrayAdapter<String>(this, 
+                  android.R.layout.simple_list_item_1
+                  /*R.layout.notes_row*/, contactItems);
         setListAdapter(contacts);
 
 	}

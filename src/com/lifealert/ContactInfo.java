@@ -146,7 +146,8 @@ public class ContactInfo {
 	}
 
 	public String toString() {
-		return formatContact(name, phoneNumber, email, address);
+      return formatContact(name, phoneNumber, null, null);
+//		return formatContact(name, phoneNumber, email, address);
 	}
 	
 	public static String formatContact (String inName, String inPhone, String inEmail, String inAddress) {
