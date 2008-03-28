@@ -7,11 +7,9 @@ import android.os.IServiceManager;
 import android.os.Message;
 import android.os.ServiceManagerNative;
 import android.telephony.IPhone;
-import android.telephony.Phone;
 import android.telephony.PhoneStateIntentReceiver;
-import android.telephony.ServiceState;
-import android.telephony.Phone.State;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
@@ -25,6 +23,7 @@ public class CallForHelpActivity extends Activity {
 	private IPhone phoneService;
 	private boolean call911Next = false;
 	private boolean called911 = false;
+	private boolean calledEmergency = false;
 	private static int idleCounter = 0;
 	
 	@Override
@@ -51,7 +50,7 @@ public class CallForHelpActivity extends Activity {
 
 			//Call emergency number
 			String emergencyNumber = formatPhoneNumber(AppConfiguration.getEmergencyPhone());         
-			callPhoneNumber(emergencyNumber);
+			callPhoneNumber(emergencyNumber, true);
 
 		} catch (Exception ex) {
 			Log.e("Life", ex.getMessage(), ex);
@@ -81,7 +80,7 @@ public class CallForHelpActivity extends Activity {
 	 * @param number
 	 * @throws Exception
 	 */
-	private void callPhoneNumber(String number) throws Exception {
+	private void callPhoneNumber(String number, boolean watchTime) throws Exception {
 		if (phoneService != null) {
 			phoneService.endCall(true);
 		}
@@ -95,6 +94,12 @@ public class CallForHelpActivity extends Activity {
 		phoneService.dial(number);
 		phoneService.call(number);
 		
+      // now start the timing if need to
+		idleCounter = 0;
+		if (watchTime) {
+   		idleCounter = 30;
+         idleHandler.sendMessageDelayed(idleHandler.obtainMessage(), 1000);
+		}
 	}
 
 	/**
@@ -138,28 +143,47 @@ public class CallForHelpActivity extends Activity {
 				switch (phoneStateIntentReceiver.getPhoneState()) {
 					case OFFHOOK:
 						Log.d(getClass().getName(), "****Phone picked up!");
-						
-						//Calling 911 if phone is picked up or hanged up
-						if (call911Next && !called911) {
-							try {
-								Thread.sleep(20000);
-	
-								//So that 911 won't get called again
-								call911Next = false; 
-								called911 = true;
-								
-								callPhoneNumber(getString(R.string.phone_Number_911));
-							}
-							catch(Exception ex) {
-								Log.e("Life", ex.getMessage(), ex);
-							}
-						}
-	
+						calledEmergency = true;
+//						
+//						//Calling 911 if phone is picked up or hanged up
+//						if (call911Next && !called911) {
+//							try {
+//								Thread.sleep(20000);
+//	
+//								//So that 911 won't get called again
+//								call911Next = false; 
+//								called911 = true;
+//								
+//								callPhoneNumber(getString(R.string.phone_Number_911));
+//							}
+//							catch(Exception ex) {
+//								Log.e("Life", ex.getMessage(), ex);
+//							}
+//						}
+//	
 						break;
 					case RINGING:
 						break;
 					case IDLE:
 						Log.d(getClass().getName(), "****Phone idle!");
+						
+						if (idleCounter > 0 && calledEmergency) {
+                     if (call911Next && !called911) {
+                        Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy, we next call 911", Toast.LENGTH_SHORT).show();
+                        
+                        // So that 911 won't get called again
+                        call911Next = false;
+                        called911 = true;
+
+                        try {
+                           callPhoneNumber(getString(R.string.phone_Number_911),
+                                 false);
+                        } catch(Exception ex) {
+                           Log.e("Life", ex.getMessage(), ex);
+                        }
+                     }
+                  }
+						
 						break;
 					default:
 						Log.d(getClass().getName(), "****Some unknown phone state!");
@@ -175,5 +199,17 @@ public class CallForHelpActivity extends Activity {
 		
 	};   
 
+   private Handler idleHandler = new Handler() {
+      @Override
+      public void handleMessage(Message msg) {
+         // update time left
+         --idleCounter;
+         
+         // then determine if we need to do it again
+         if (idleCounter > 0) {
+            sendMessageDelayed(obtainMessage(), 1000);
+         } 
+      }
+   };
 
 }
