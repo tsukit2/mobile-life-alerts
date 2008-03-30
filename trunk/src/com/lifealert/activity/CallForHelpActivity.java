@@ -17,15 +17,24 @@ import com.lifealert.service.ShakeDetectorService;
 
 public class CallForHelpActivity extends Activity {
 	
+	//State variable declarations
+	private final int CALL_EMERGENCY_CONTACT = 0;
+	private final int CALL_911_NUMBER = 1;
+	private final int COMPLETED_CALLS = 2;
+	
 	//Variable declarations
+	private int currentState;
 	private final static int RECEIVER_NOTIFICATION_ID = 1;
 	private PhoneStateIntentReceiver phoneStateIntentReceiver;
 	private IServiceManager sm;
 	private IPhone phoneService;
-	private boolean call911Next = false;
-	private boolean called911 = false;
+	String emergencyNumber;
+	//private boolean call911Next = false;
+	private boolean needToCall911 = false;
 	private boolean calledEmergency = false;
-	private static int idleCounter = 0;
+	private static int idleCounter = 0; //Override with value from R class
+	private int callEmergencyMax = 0; //Override with value from R class
+	private int callCounter = 0;
 
 	private Handler idleHandler = new Handler() {
 		@Override
@@ -45,6 +54,12 @@ public class CallForHelpActivity extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.callhelp);
 
+		//Initialize current state
+		currentState = CALL_EMERGENCY_CONTACT;
+			
+		//Get the max number of times to call each emergency number
+		callEmergencyMax = (new Integer(getString(R.string.call_emergency_max_conter)));
+		
 		//Register the PhoneStateIntentReceiver
 		phoneStateIntentReceiver = new PhoneStateIntentReceiver(this, new ServiceStateHandler());
 		phoneStateIntentReceiver.notifyPhoneCallState(RECEIVER_NOTIFICATION_ID);
@@ -55,17 +70,18 @@ public class CallForHelpActivity extends Activity {
 
 			//Prepare the dialer IPhone interface 
 			sm = ServiceManagerNative.getDefault();
-
-
+			
 			//Set call 911 flag or assigned emergency number
 			if (AppConfiguration.getCall911()) {
-				call911Next = true;
+				needToCall911 = true;
 			}
-
+			
 			//Call emergency number
-			String emergencyNumber = formatPhoneNumber(AppConfiguration.getEmergencyPhone());         
+			emergencyNumber = formatPhoneNumber(AppConfiguration.getEmergencyPhone());  
 			callPhoneNumber(emergencyNumber, true);
+			Toast.makeText(CallForHelpActivity.this, "Call the emergency number first: " + emergencyNumber, Toast.LENGTH_SHORT).show();
 
+			
 		} catch (Exception ex) {
 			Log.e("Life", ex.getMessage(), ex);
 		}
@@ -111,7 +127,7 @@ public class CallForHelpActivity extends Activity {
 		// now start the timing if need to
 		idleCounter = 0;
 		if (watchTime) {
-			idleCounter = 30;
+			idleCounter = (new Integer(getString(R.string.call_emergency_idle_max_counter))).intValue();
 			idleHandler.sendMessageDelayed(idleHandler.obtainMessage(), 1000);
 		}
 	}
@@ -152,55 +168,21 @@ public class CallForHelpActivity extends Activity {
 			Log.e("PhoneCallStateNotified", msg.toString()); 
 
 			switch (msg.what) {
-				case RECEIVER_NOTIFICATION_ID:
-	
+				case RECEIVER_NOTIFICATION_ID:	
 					//Detect phone state changes  
 					switch (phoneStateIntentReceiver.getPhoneState()) {
 						case OFFHOOK:
-							Log.d(getClass().getName(), "****Phone picked up!");
+							Log.d(getClass().getName(), "****Phone OFFHOOK!");
 							calledEmergency = true;
-							
-							/*
-							//Calling 911 if phone is picked up or hanged up
-							if (call911Next && !called911) {
-								try {
-									Thread.sleep(20000);
-				
-									//So that 911 won't get called again
-									call911Next = false; 
-									called911 = true;
-				
-									callPhoneNumber(getString(R.string.phone_Number_911));
-								}
-								catch(Exception ex) {
-									Log.e("Life", ex.getMessage(), ex);
-								}
-							}
-							*/
-		
+							Log.d(getClass().getName(), "****calledEmergency = TRUE!");
+							//handle911Call(); (original version)
 							break;
 						case RINGING:
+							Log.d(getClass().getName(), "****Phone RINGING!");
 							break;
 						case IDLE:
-							Log.d(getClass().getName(), "****Phone idle!");
-		
-							if (idleCounter > 0 && calledEmergency) {
-								if (call911Next && !called911) {
-									Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy, we next call 911", Toast.LENGTH_SHORT).show();
-		
-									// So that 911 won't get called again
-									call911Next = false;
-									called911 = true;
-		
-									try {
-										callPhoneNumber(getString(R.string.phone_Number_911),
-												false);
-									} catch(Exception ex) {
-										Log.e("Life", ex.getMessage(), ex);
-									}
-								}
-							}
-		
+							Log.d(getClass().getName(), "****Phone IDLE!");
+							handleNextCall();
 							break;
 						default:
 							Log.d(getClass().getName(), "****Some unknown phone state!");
@@ -212,6 +194,67 @@ public class CallForHelpActivity extends Activity {
 			}  //end outer switch
 			
 		} //end handleMessage method
+
+		
+		private void handleNextCall() {
+			
+			Log.e(getClass().getName(), "***idleCounter=" + idleCounter + ", calledEmergency=" + calledEmergency);
+			
+			if (idleCounter > 0 && calledEmergency) {
+				
+				callCounter = callCounter + 1;
+				calledEmergency=false;
+				
+				Log.e(getClass().getName(), "****INSIDE handleNextCall IF METHOD***! CallCounter=" + callCounter);
+
+				//Set the next state if call counter max reached
+				if (callCounter == callEmergencyMax) {
+					Log.e(getClass().getName(),"CALL COUNTER MAX REACHED"); 
+					if (currentState == CALL_EMERGENCY_CONTACT) {
+						
+						currentState = CALL_911_NUMBER;
+						callCounter = 0;
+					}
+					else {
+						currentState = COMPLETED_CALLS;
+					}
+				}
+				
+				//Check which number to call, depending on the current state
+				if (currentState == CALL_911_NUMBER && needToCall911) {
+					
+					//Call 911
+					Log.e(getClass().getName(),"***CALL_911_NUMBER*****");
+					
+					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
+									+ " We next call 911.", Toast.LENGTH_SHORT).show();
+
+					try {
+						callPhoneNumber(getString(R.string.phone_Number_911),
+								true);
+					} catch(Exception ex) {
+						Log.e("Life", ex.getMessage(), ex);
+					}
+				}
+				else if (currentState == CALL_EMERGENCY_CONTACT) {
+					Log.e(getClass().getName(),"***CALL_EMERGENCY_CONTACT*****");
+					//Call Emergency contact number
+					
+					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
+							+ " We next call Emergency Contact " + emergencyNumber, Toast.LENGTH_SHORT).show();
+
+					try {
+						callPhoneNumber(emergencyNumber, true);
+					} catch(Exception ex) {
+						Log.e(getClass().getName(), ex.getMessage(), ex);
+					}					
+				}
+				else {
+					; //Do nothing
+				}
+			}
+
+		} //end handle911Call method
 		
 	} //end inner class  
 
