@@ -114,7 +114,7 @@ public class CallForHelpActivity extends Activity {
 		if (phoneService != null) {
 			phoneService.endCall(true);
 		}
-
+		
 		phoneService = IPhone.Stub.asInterface(sm.getService("phone"));
 
 		if (!phoneService.isRadioOn()) {
@@ -128,6 +128,7 @@ public class CallForHelpActivity extends Activity {
 		idleCounter = 0;
 		if (watchTime) {
 			idleCounter = (new Integer(getString(R.string.call_emergency_idle_max_counter))).intValue();
+	      idleHandler.removeMessages(idleHandler.obtainMessage().what);
 			idleHandler.sendMessageDelayed(idleHandler.obtainMessage(), 1000);
 		}
 	}
