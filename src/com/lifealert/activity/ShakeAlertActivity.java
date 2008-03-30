@@ -71,7 +71,7 @@ public class ShakeAlertActivity extends Activity {
       ShakeDetectorService.setOnHold(true);
 
       // initialize the time
-      timeLeft = 30;
+      timeLeft = (new Integer(getString(R.string.alert_time_left)));
       okay = false;
       updateTimeLeft();
       
