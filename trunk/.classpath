@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="com/lifealert/GmailSender.java|com/lifealert/activity/LifeAlerts_ChateActivity.java" kind="src" path="src"/>
+	<classpathentry excluding="com/lifealert/activity/LifeAlerts_ChateActivity.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.project.AndroidClasspathContainerInitializer"/>
-	<classpathentry kind="lib" path="C:/Android_project/AndroidMobileContest/lib/openintents-lib.jar"/>
+	<classpathentry kind="lib" path="lib/openintents-lib.jar"/>
+	<classpathentry kind="lib" path="lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/mail-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
