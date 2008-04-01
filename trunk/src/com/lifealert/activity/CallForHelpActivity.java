@@ -23,6 +23,7 @@ public class CallForHelpActivity extends Activity {
 	private final int CALL_EMERGENCY_CONTACT = 0;
 	private final int CALL_911_NUMBER = 1;
 	private final int COMPLETED_CALLS = 2;
+	private final int SEND_EMAIL = 3;
 	
 	//Variable declarations
 	private int currentState;
@@ -194,6 +195,7 @@ public class CallForHelpActivity extends Activity {
 							Log.d(getClass().getName(), "****Phone IDLE!");
 							playEmergencyVoiceMessage();
 							handleNextCall();
+							navigateToEmailEmergency();
 							break;
 						default:
 							Log.d(getClass().getName(), "****Some unknown phone state!");
@@ -205,6 +207,19 @@ public class CallForHelpActivity extends Activity {
 			}  //end outer switch
 			
 		} //end handleMessage method
+
+		/**
+		 * Go to the Send Email Activity screen.
+		 */
+		private void navigateToEmailEmergency() {
+			if (currentState == COMPLETED_CALLS) {
+				//Navigate over to send email activity
+				currentState = SEND_EMAIL;
+				Toast.makeText(CallForHelpActivity.this, "RIGHT BEFORE EMAIL", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(getApplication(), SendEmailActivity.class);
+				startActivity(intent);
+			}
+		}
 
 		/**
 		 * Play the emegency voice message the user recorded
@@ -235,12 +250,7 @@ public class CallForHelpActivity extends Activity {
 					}
 					else {
 						currentState = COMPLETED_CALLS;
-						Toast.makeText(CallForHelpActivity.this, "COMPLETED -- Call Emergency Numbers", Toast.LENGTH_SHORT).show();
-						
-						//Navigate over to send email activity
-						Intent intent = new Intent(getApplication(), SendEmailActivity.class);
-						startActivity(intent);
-			            
+						Toast.makeText(CallForHelpActivity.this, "COMPLETED -- Call Emergency Numbers", Toast.LENGTH_SHORT).show();			            
 					}
 				}
 				
