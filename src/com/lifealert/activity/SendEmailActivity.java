@@ -15,20 +15,17 @@ public class SendEmailActivity extends Activity {
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.emailhelp);
-		Toast.makeText(this, "In Email Activity", Toast.LENGTH_LONG).show();
-
+		
 		//Get the emergency contact email address
 		String emergencyEmail = AppConfiguration.getEmergencyEmail();
 
 		if (emergencyEmail != null && !"".equals(emergencyEmail)) {
 			Toast.makeText(SendEmailActivity.this
 					, "Sending an emergency email to the following email adress: " + emergencyEmail
-					, Toast.LENGTH_LONG).show();
+					, Toast.LENGTH_SHORT).show();
 
 			sendEmergencyEmail(emergencyEmail);
 			
-			Toast.makeText(this, "Send emergency email -- COMPLETED", Toast.LENGTH_LONG).show();
-
 		}
 		else {
 			//No emergency email set. Display message.
