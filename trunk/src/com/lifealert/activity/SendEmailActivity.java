@@ -3,7 +3,6 @@ package com.lifealert.activity;
 import com.lifealert.GmailSender;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
-import com.lifealert.service.ShakeDetectorService;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,7 +18,7 @@ public class SendEmailActivity extends Activity {
 		Toast.makeText(this, "In Email Activity", Toast.LENGTH_LONG).show();
 
 		//Get the emergency contact email address
-		String emergencyEmail = null;//AppConfiguration.getEmergencyEmail();
+		String emergencyEmail = AppConfiguration.getEmergencyEmail();
 
 		if (emergencyEmail != null && !"".equals(emergencyEmail)) {
 			Toast.makeText(SendEmailActivity.this
