@@ -1,6 +1,8 @@
 package com.lifealert.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IServiceManager;
@@ -29,13 +31,13 @@ public class CallForHelpActivity extends Activity {
 	private IServiceManager sm;
 	private IPhone phoneService;
 	String emergencyNumber;
-	//private boolean call911Next = false;
 	private boolean needToCall911 = false;
 	private boolean calledEmergency = false;
 	private static int idleCounter = 0; //Override with value from R class
 	private int callEmergencyMax = 0; //Override with value from R class
 	private int callCounter = 0;
-
+	private MediaPlayer player;
+	
 	private Handler idleHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -54,6 +56,14 @@ public class CallForHelpActivity extends Activity {
 		super.onCreate(icicle);
 		setContentView(R.layout.callhelp);
 
+		//Initialize the media player
+		try {
+			player = MediaPlayer.create(this, R.raw.help_voicemail);
+	    } catch (Exception ex) {
+	    	Log.e(getClass().getName(), ex.getMessage(), ex);
+	        throw new RuntimeException(ex);
+	    }
+		
 		//Initialize current state
 		currentState = CALL_EMERGENCY_CONTACT;
 			
@@ -79,7 +89,9 @@ public class CallForHelpActivity extends Activity {
 			//Call emergency number
 			emergencyNumber = formatPhoneNumber(AppConfiguration.getEmergencyPhone());  
 			callPhoneNumber(emergencyNumber, true);
-			Toast.makeText(CallForHelpActivity.this, "Call the emergency number first: " + emergencyNumber, Toast.LENGTH_SHORT).show();
+			Toast.makeText(CallForHelpActivity.this
+					, "Call the emergency number first: " + emergencyNumber
+					, Toast.LENGTH_SHORT).show();
 
 			
 		} catch (Exception ex) {
@@ -180,6 +192,7 @@ public class CallForHelpActivity extends Activity {
 							break;
 						case IDLE:
 							Log.d(getClass().getName(), "****Phone IDLE!");
+							playEmergencyVoiceMessage();
 							handleNextCall();
 							break;
 						default:
@@ -193,7 +206,19 @@ public class CallForHelpActivity extends Activity {
 			
 		} //end handleMessage method
 
-		
+		/**
+		 * Play the emegency voice message the user recorded
+		 */
+		private void playEmergencyVoiceMessage() {
+			if (idleCounter > 0 && calledEmergency) {
+				player.seekTo(0);
+				player.start();
+			}
+		}
+
+		/**
+		 * Handle the logic on which number to call next
+		 */
 		private void handleNextCall() {
 			
 			if (idleCounter > 0 && calledEmergency) {
@@ -210,6 +235,12 @@ public class CallForHelpActivity extends Activity {
 					}
 					else {
 						currentState = COMPLETED_CALLS;
+						Toast.makeText(CallForHelpActivity.this, "COMPLETED -- Call Emergency Numbers", Toast.LENGTH_SHORT).show();
+						
+						//Navigate over to send email activity
+						Intent intent = new Intent(getApplication(), SendEmailActivity.class);
+						startActivity(intent);
+			            
 					}
 				}
 				
