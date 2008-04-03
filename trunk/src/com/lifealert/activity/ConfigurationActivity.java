@@ -35,6 +35,10 @@ public class ConfigurationActivity extends Activity {
       super.onCreate(icicle);
       setContentView(R.layout.configuration);
 
+      // initialize the app config so the rest of the app can use
+      AppConfiguration.init(this);
+
+      // the following is to initialize the tabs in the config screen
       Context context = this;
       Resources res = context.getResources();
       
@@ -53,15 +57,14 @@ public class ConfigurationActivity extends Activity {
       
       tabHost.setCurrentTab(0);
 
+      // if the service is not already running, make sure to initialize the simulator
       if (!ShakeDetectorService.isRunning()) {
          org.openintents.provider.Hardware.mContentResolver = getContentResolver();
          Sensors.connectSimulator();
          Sensors.enableSensor(Sensors.SENSOR_ACCELEROMETER);
       }
 
-      // TODO: remove this
-      AppConfiguration.init(this);
-
+      // wire the event listeners
       Button uiButton = (Button) findViewById(R.id.config_userInfo);
       uiButton.setOnClickListener(userInfoClicked);
       
@@ -152,6 +155,8 @@ public class ConfigurationActivity extends Activity {
 
    private void saveConfigurations() {
       // save off the information 
+      AppConfiguration.beginBatchEdit();
+      
       AppConfiguration.setUserName(
             ((TextView) findViewById(R.id.config_userName)).getText().toString());
       
@@ -182,6 +187,7 @@ public class ConfigurationActivity extends Activity {
       AppConfiguration.setTextMsg(
             ((TextView) findViewById(R.id.config_textMsg)).getText().toString());
       
+      AppConfiguration.commitBatchEdit();
    }
    
    private boolean configCompleted() {
@@ -246,10 +252,13 @@ public class ConfigurationActivity extends Activity {
 
    private OnClickListener voiceMailClicked = new OnClickListener() {
       public void onClick(View view) {
-         // add value and save it off
+         // add value refresh the screen
          AppConfiguration.setVoiceMailPath("dummy");
-         saveConfigurations();
-         populateConfigurations();
+         String voiceMsg = AppConfiguration.getVoiceMailPath();
+         ((TextView) findViewById(R.id.config_voiceMailStatus)).setText(
+               getText(voiceMsg == null 
+                     ? R.string.config_voicemsg_norecorded
+                     : R.string.config_voicemsg_recorded));
 
          // now notify the user that we cannot record the voice
          Toast.makeText(ConfigurationActivity.this, R.string.notification_no_voicemail, Toast.LENGTH_SHORT).show();

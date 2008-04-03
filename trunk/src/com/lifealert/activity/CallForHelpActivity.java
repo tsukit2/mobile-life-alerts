@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.IServiceManager;
 import android.os.Message;
@@ -55,7 +56,7 @@ public class CallForHelpActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.callhelp);
+//		setContentView(R.layout.callhelp);
 
 		//Initialize the media player
 		try {
@@ -126,9 +127,9 @@ public class CallForHelpActivity extends Activity {
 	private void callPhoneNumber(String number, boolean watchTime) throws Exception {
 		if (phoneService != null) {
 			phoneService.endCall(true);
+		} else {
+		   phoneService = IPhone.Stub.asInterface(sm.getService("phone"));
 		}
-		
-		phoneService = IPhone.Stub.asInterface(sm.getService("phone"));
 
 		if (!phoneService.isRadioOn()) {
 			phoneService.toggleRadioOnOff();
@@ -213,11 +214,26 @@ public class CallForHelpActivity extends Activity {
 		 */
 		private void navigateToEmailEmergency() {
 			if (currentState == COMPLETED_CALLS) {
-				//Navigate over to send email activity
-				currentState = SEND_EMAIL;
-				Toast.makeText(CallForHelpActivity.this, "RIGHT BEFORE EMAIL", Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent(getApplication(), SendEmailActivity.class);
-				startActivity(intent);
+	         try {
+	            //Navigate over to send email activity
+	            currentState = SEND_EMAIL;
+
+	            // clean up everything
+	            idleHandler.removeMessages(idleHandler.obtainMessage().what);
+               phoneService.endCall(true);
+//               phoneService.toggleRadioOnOff();
+               phoneStateIntentReceiver.unregisterIntent();
+               player.stop();
+               
+               // then move on to email
+               Intent intent = new Intent(getApplication(), SendEmailActivity.class);
+               startActivity(intent);
+
+               // make sure to finish this so it won't come back
+               finish();
+            } catch (Exception ex) {
+               Log.e("Life", ex.getMessage(), ex);
+            }
 			}
 		}
 
@@ -255,17 +271,20 @@ public class CallForHelpActivity extends Activity {
 				}
 				
 				//Check which number to call, depending on the current state
-				if (currentState == CALL_911_NUMBER && needToCall911) {
-					
-					//Call 911
-					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
-									+ " We next call 911.", Toast.LENGTH_SHORT).show();
-
-					try {
-						callPhoneNumber(getString(R.string.phone_Number_911),
-								true);
-					} catch(Exception ex) {
-						Log.e(getClass().getName(), ex.getMessage(), ex);
+				if (currentState == CALL_911_NUMBER) {
+					if (needToCall911) {
+   					//Call 911
+   					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
+   									+ " We next call 911.", Toast.LENGTH_SHORT).show();
+   
+   					try {
+   						callPhoneNumber(getString(R.string.phone_Number_911),
+   								true);
+   					} catch(Exception ex) {
+   						Log.e(getClass().getName(), ex.getMessage(), ex);
+   					}
+					} else {
+					   currentState = COMPLETED_CALLS;
 					}
 				}
 				else if (currentState == CALL_EMERGENCY_CONTACT) {

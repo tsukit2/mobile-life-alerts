@@ -31,7 +31,8 @@ public class AppConfiguration {
    private static final String PREF_TEXT_MSG = "TextMsg";
    
    private static SharedPreferences pref;
-   private static Map<String, ?> localPrefs;
+   private static SharedPreferences.Editor batchEdit;
+   private static Map<String, Object> localPrefs;
    
    /**
     * Initialize this class so that it can be used later on. Always call this method before any other
@@ -42,7 +43,22 @@ public class AppConfiguration {
    public static void init(ApplicationContext context) {
       // load up the preference for later use
       pref = context.getSharedPreferences(PREF_FILENAME, Context.MODE_PRIVATE);
-      localPrefs = pref.getAll();
+      localPrefs = (Map<String, Object>) pref.getAll();
+   }
+   
+   public static void beginBatchEdit() {
+      if (batchEdit != null) {
+         throw new IllegalStateException("Already in batch edit mode. Commit first!");
+      }
+      batchEdit = pref.edit();
+   }
+   
+   public static void commitBatchEdit() {
+      if (batchEdit == null) {
+         throw new IllegalStateException("Not currently in batch edit mode.");
+      }
+      batchEdit.commit();
+      batchEdit = null;
    }
    
    public static Sensitivity getSensitivity() {
@@ -184,7 +200,7 @@ public class AppConfiguration {
       }
       
       // update the actual preference and commit it right away
-      SharedPreferences.Editor edit = pref.edit();
+      SharedPreferences.Editor edit = batchEdit != null ? batchEdit : pref.edit();
       if (val instanceof String) {
          edit.putString(key, (String) val);
       } else if (val instanceof Float) {
@@ -192,10 +208,14 @@ public class AppConfiguration {
       } else if (val instanceof Boolean) {
          edit.putBoolean(key, ((Boolean) val).booleanValue());
       }
-      edit.commit();
       
-      // then refresh the local prefs
-      localPrefs = pref.getAll();
+      // commit only if it's not batch mode
+      if (batchEdit == null) {
+         edit.commit();
+      }
+      
+      // update the local pref
+      localPrefs.put(key, val);
    }
    
    /**
