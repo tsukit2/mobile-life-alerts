@@ -131,6 +131,7 @@ public class ShakeAlertActivity extends Activity {
                // let's the ball rolling to call for help
                Intent intent = new Intent(getApplication(), CallForHelpActivity.class);
                startActivity(intent);
+               finish();
             }
          }
       }

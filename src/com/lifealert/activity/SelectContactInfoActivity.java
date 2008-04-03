@@ -66,6 +66,7 @@ public class SelectContactInfoActivity extends ListActivity {
         address = (address == null) ? "" : address;
         
         // Store the selected contact info in the AppConfiguration
+        AppConfiguration.beginBatchEdit();
         if (ConfigurationActivity.USER_CONTACT_TYPE.equals(contactType)) {
         	//Store User Contact info
         	AppConfiguration.setUserContactId(personId);
@@ -82,7 +83,7 @@ public class SelectContactInfoActivity extends ListActivity {
         	AppConfiguration.setEmergencyEmail(email);
         	AppConfiguration.setEmergencyAddress(address);
         }
-        	   
+        AppConfiguration.commitBatchEdit();
         setResult(RESULT_OK);
         finish();      
         
