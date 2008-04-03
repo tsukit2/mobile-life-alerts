@@ -54,7 +54,7 @@ public class SendEmailActivity extends Activity {
 		String sender = AppConfiguration.getUserEmail();
 		String recipients = AppConfiguration.getEmergencyEmail();
 
-		GmailSender gmailSender = new GmailSender("tsukit", "nanarmja");
+		GmailSender gmailSender = new GmailSender("to_change", "to_change");
 		try {
 			gmailSender.sendMail(subject, body, sender, recipients);
 		}
