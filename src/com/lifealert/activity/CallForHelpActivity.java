@@ -126,7 +126,8 @@ public class CallForHelpActivity extends Activity {
 	private void callPhoneNumber(String number, boolean watchTime) throws Exception {
 		if (phoneService != null) {
 			phoneService.endCall(true);
-		} else {
+		} 
+		else {
 		   phoneService = IPhone.Stub.asInterface(sm.getService("phone"));
 		}
 
@@ -263,31 +264,30 @@ public class CallForHelpActivity extends Activity {
 				
 				//Set the next state if call counter max reached
 				if (callCounter == callEmergencyMax) {
-					if (currentState == CALL_EMERGENCY_CONTACT) {
+					if (currentState == CALL_EMERGENCY_CONTACT && needToCall911) {
 						
 						currentState = CALL_911_NUMBER;
 						callCounter = 0;
 					}
 					else {
-						currentState = COMPLETED_CALLS;	            
+						currentState = COMPLETED_CALLS;	  
 					}
 				}
 				
 				//Check which number to call, depending on the current state
 				if (currentState == CALL_911_NUMBER) {
 					if (needToCall911) {
-   					//Call 911
-   					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
-   									+ " We next call 911.", Toast.LENGTH_SHORT).show();
-   
-   					try {
-   						callPhoneNumber(getString(R.string.phone_Number_911),
-   								true);
-   					} catch(Exception ex) {
-   						Log.e(getClass().getName(), ex.getMessage(), ex);
-   					}
+						//Call 911
+						Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
+										+ " We next call 911.", Toast.LENGTH_SHORT).show();
+						   
+	   					try {
+	   						callPhoneNumber(getString(R.string.phone_Number_911),true);
+	   					} catch(Exception ex) {
+	   						Log.e(getClass().getName(), ex.getMessage(), ex);
+	   					}
 					} else {
-					   currentState = COMPLETED_CALLS;
+						currentState = COMPLETED_CALLS;
 					}
 				}
 				else if (currentState == CALL_EMERGENCY_CONTACT) {
