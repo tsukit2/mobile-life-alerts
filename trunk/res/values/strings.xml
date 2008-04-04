@@ -11,6 +11,7 @@
    <string name="sending_email">Please wait while sending email...</string>
    <string name="sent_email">Email sending completed</string>
    <string name="no_email_set">No emergency email set. No email was sent.</string>
+   <string name="email_failed">Email cannot be sent.  Possible errors.</string>
  
    <string name="alert_time_left">10</string>
    <string name="call_emergency_max_conter">2</string>
