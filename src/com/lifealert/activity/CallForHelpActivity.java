@@ -56,7 +56,6 @@ public class CallForHelpActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-//		setContentView(R.layout.callhelp);
 
 		//Initialize the media player
 		try {
@@ -170,7 +169,7 @@ public class CallForHelpActivity extends Activity {
 
 		return newNumber;
 	}	
-
+	
 	/**
 	 * ServiceStateHandler - private internal class
 	 * @author Chate Luu
@@ -214,26 +213,31 @@ public class CallForHelpActivity extends Activity {
 		 */
 		private void navigateToEmailEmergency() {
 			if (currentState == COMPLETED_CALLS) {
-	         try {
-	            //Navigate over to send email activity
-	            currentState = SEND_EMAIL;
-
-	            // clean up everything
-	            idleHandler.removeMessages(idleHandler.obtainMessage().what);
-               phoneService.endCall(true);
-//               phoneService.toggleRadioOnOff();
-               phoneStateIntentReceiver.unregisterIntent();
-               player.stop();
-               
-               // then move on to email
-               Intent intent = new Intent(getApplication(), SendEmailActivity.class);
-               startActivity(intent);
-
-               // make sure to finish this so it won't come back
-               finish();
-            } catch (Exception ex) {
-               Log.e("Life", ex.getMessage(), ex);
-            }
+				 try {
+				    //Navigate over to send email activity
+				    currentState = SEND_EMAIL;
+				
+				    //Clean up everything
+				    idleHandler.removeMessages(idleHandler.obtainMessage().what);
+				    phoneService.endCall(true);
+				    phoneStateIntentReceiver.unregisterIntent();
+				    
+				    //Loop until the voicemail finishes playing.  Then end the player.
+				    while(player.isPlaying()) {
+				    	;
+				    }
+				    
+				    player.release();
+				   
+				    //Then move on to email
+				    Intent intent = new Intent(getApplication(), SendEmailActivity.class);
+				    startActivity(intent);
+				
+				    //Make sure to finish this so it won't come back
+				    finish();
+				} catch (Exception ex) {
+				   Log.e("Life", ex.getMessage(), ex);
+				}
 			}
 		}
 
@@ -265,8 +269,7 @@ public class CallForHelpActivity extends Activity {
 						callCounter = 0;
 					}
 					else {
-						currentState = COMPLETED_CALLS;
-						Toast.makeText(CallForHelpActivity.this, "COMPLETED -- Call Emergency Numbers", Toast.LENGTH_SHORT).show();			            
+						currentState = COMPLETED_CALLS;	            
 					}
 				}
 				
