@@ -43,6 +43,7 @@ public class SendEmailActivity extends Activity {
 		
 		setContentView(R.layout.emailhelp);
 		textView = (TextView) findViewById(R.id.email_help);
+		textView.setAlignment(android.text.Layout.Alignment.ALIGN_CENTER);
 		textView.setText(R.string.sending_email);
 		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 		setProgressBarVisibility(true);
@@ -78,10 +79,11 @@ public class SendEmailActivity extends Activity {
 		String subject = "EMERGENCY -- NEED HELP -- " + AppConfiguration.getUserName();
 		String body = AppConfiguration.getTextMsg();
 		String sender = AppConfiguration.getUserEmail();
+		String senderPassword = "moblielifealerts_01";
 		String recipients = AppConfiguration.getEmergencyEmail();
 
 		//TODO: Remove hardcoded password of user's Gmail account
-		GmailSender gmailSender = new GmailSender(recipients, "moblielifealerts_01"); 
+		GmailSender gmailSender = new GmailSender(sender, senderPassword); 
 		try {
 			gmailSender.sendMail(subject, body, sender, recipients);
 		}
