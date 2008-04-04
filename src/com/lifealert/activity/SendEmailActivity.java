@@ -6,75 +6,51 @@ import com.lifealert.config.AppConfiguration;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.Window;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SendEmailActivity extends Activity {
 	
-	private TextView textView;
+	private String emergencyEmail;
 	
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.emailhelp);
+		TextView textView = (TextView) findViewById(R.id.email_help);
+			
+		//Get the emergency contact email address
+        emergencyEmail = AppConfiguration.getEmergencyEmail();
+        if (emergencyEmail != null && !"".equals(emergencyEmail)) {
+        	new Thread(new Runnable() {
+                public void run() {
+                	sendEmergencyEmail(emergencyEmail);                    
+                } //end run
+            }).start();
+
+        }
+        else {
+           //No emergency email set. Display message.
+           textView.setText(R.string.no_email_set);
+        }
         
-		emailHandler.sendEmptyMessage(0);
-				
+
+    	//Update text to completed (although we're not sure if the email
+    	//in the other thread got sent already or not. The other thread cannot
+    	//set the text on the UI of this thread.
+    	ProgressDialog.show(SendEmailActivity.this,
+                "Send Emergency Email Message", getString(R.string.sent_email), true, true);
+
 	}
-
-	
-    private Handler emailHandler = new Handler() {
-      @Override
-      public void handleMessage(Message msg) {
-         //Get the emergency contact email address
-         String emergencyEmail = AppConfiguration.getEmergencyEmail();
-
-         if (emergencyEmail != null && !"".equals(emergencyEmail)) {
-        	 
-        	// Request for the progress bar to be shown in the title
-        	setProgressBarVisibility(true);
-        	textView = (TextView) findViewById(R.id.email_help);
-            //textView.setAlignment(android.text.Layout.Alignment.ALIGN_CENTER);
-            //textView.setText(R.string.sending_email);
-            
-            sendEmergencyEmail(emergencyEmail);
-            
-            setProgressBarVisibility(false);
-	    	textView.setText(R.string.sent_email);
-	    	
-    		
-            //Move to the final screen
-		    //Intent intent = new Intent(getApplication(), AppCompleteActivity.class);
-		    //startActivity(intent);
-		    
-		    //finish();
-         }
-         else {
-            //No emergency email set. Display message.
-            Toast.makeText(SendEmailActivity.this
-                  , "No emergency email set. No email was sent.", Toast.LENGTH_LONG).show();
-         }
-        
-      }
-    };
-	
 	
 	/**
 	 * Send an emergency message to the emergency contact email
 	 * @param emergencyEmail
 	 */
 	private void sendEmergencyEmail(String emergencyEmail) {
-		
-		//ProgressDialog.show(SendEmailActivity.this,
-        //        "Send Emergency Email Message", "Please wait while sending email...", true, true);
 			
 		String subject = "EMERGENCY -- NEED HELP -- " + AppConfiguration.getUserName();
 		String body = AppConfiguration.getTextMsg();
