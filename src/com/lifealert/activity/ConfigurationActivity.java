@@ -108,6 +108,9 @@ public class ConfigurationActivity extends Activity {
       String userEmail = AppConfiguration.getUserEmail();
       ((TextView) findViewById(R.id.config_userEmail)).setText(userEmail);
 
+      String userEmailPassword = AppConfiguration.getUserEmailPassword();
+      ((TextView) findViewById(R.id.config_userEmailPassword)).setText(userEmailPassword);
+      
       String erName = AppConfiguration.getEmergencyName();
       ((TextView) findViewById(R.id.config_emergencyName)).setText(erName);
       
@@ -168,7 +171,10 @@ public class ConfigurationActivity extends Activity {
 
       AppConfiguration.setUserEmail(
             ((TextView) findViewById(R.id.config_userEmail)).getText().toString());
-
+      
+      AppConfiguration.setUserEmailPassword(
+              ((TextView) findViewById(R.id.config_userEmailPassword)).getText().toString());
+      
       AppConfiguration.setEmergencyName(
             ((TextView) findViewById(R.id.config_emergencyName)).getText().toString());
 
@@ -209,6 +215,11 @@ public class ConfigurationActivity extends Activity {
 
       String userEmail = ((TextView) findViewById(R.id.config_userEmail)).getText().toString();
       if (userEmail == null || "".equals(userEmail)) {
+         return false;
+      }
+      
+      String userEmailPassword = ((TextView) findViewById(R.id.config_userEmailPassword)).getText().toString();
+      if (userEmailPassword == null || "".equals(userEmailPassword)) {
          return false;
       }
 
