@@ -8,6 +8,7 @@
    <string name="confirm_emergency_contact">Confirm Selected Contact</string>
    <string name="no_emergency_contact">No emergency contact stored. Please select one from menu."</string>
    <string name="selected_emergency_contact">You\'ve selected emergency contact:</string>
+   <string name="email_subject_line">"EMERGENCY -- NEED HELP -- "</string>
    <string name="sending_email">Please wait while sending email to emergency contact...</string>
    <string name="sent_email">Completed sending email to emergency contact</string>
    <string name="no_email_set">No emergency email set. No email was sent.</string>
