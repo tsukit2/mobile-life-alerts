@@ -37,7 +37,7 @@ public class CallForHelpActivity extends Activity {
 	private boolean calledEmergency = false;
 	private static int idleCounter = 0; //Override with value from R class
 	private int callEmergencyMax = 0; //Override with value from R class
-	private int callCounter = 0;
+	private int callCounter;
 	private MediaPlayer player;
 	
 	private Handler idleHandler = new Handler() {
@@ -76,28 +76,22 @@ public class CallForHelpActivity extends Activity {
 		phoneStateIntentReceiver.notifyPhoneCallState(RECEIVER_NOTIFICATION_ID);
 		phoneStateIntentReceiver.registerIntent();
 
-		// let's make a phone call now
-		try {
-
-			//Prepare the dialer IPhone interface 
-			sm = ServiceManagerNative.getDefault();
-			
-			//Set call 911 flag or assigned emergency number
-			if (AppConfiguration.getCall911()) {
-				needToCall911 = true;
-			}
-			
-			//Call emergency number
-			emergencyNumber = formatPhoneNumber(AppConfiguration.getEmergencyPhone());  
-			callPhoneNumber(emergencyNumber, true);
-			Toast.makeText(CallForHelpActivity.this
-					, "Call the emergency number first: " + emergencyNumber
-					, Toast.LENGTH_SHORT).show();
-
-			
-		} catch (Exception ex) {
-			Log.e(getClass().getName(), ex.getMessage(), ex);
+		//Prepare the dialer IPhone interface 
+		sm = ServiceManagerNative.getDefault();
+		
+		//Set call 911 flag or assigned emergency number
+		if (AppConfiguration.getCall911()) {
+			needToCall911 = true;
 		}
+		
+		//Reformat the phone number to the Phone Intent's preference
+		emergencyNumber = formatPhoneNumber(AppConfiguration.getEmergencyPhone());
+		
+		//Make the first call
+		callCounter = -1;
+		idleCounter = 1;
+		calledEmergency = true;
+		handleNextCall();
 	}
 
 	@Override
@@ -170,6 +164,107 @@ public class CallForHelpActivity extends Activity {
 
 		return newNumber;
 	}	
+
+	/**
+	 * Go to the Send Email Activity screen.
+	 */
+	private void navigateToEmailEmergency() {
+		if (currentState == COMPLETED_CALLS) {
+			 try {
+			    //Navigate over to send email activity
+			    currentState = SEND_EMAIL;
+			
+			    //Clean up everything
+			    idleHandler.removeMessages(idleHandler.obtainMessage().what);
+			    phoneService.endCall(true);
+			    phoneStateIntentReceiver.unregisterIntent();
+			    
+			    //Loop until the voicemail finishes playing.  Then end the player.
+			    while(player.isPlaying()) {
+			    	;
+			    }
+			    
+			    player.release();
+			   
+			    //Then move on to email
+			    Intent intent = new Intent(getApplication(), SendEmailActivity.class);
+			    startActivity(intent);
+			
+			    //Make sure to finish this so it won't come back
+			    finish();
+			} catch (Exception ex) {
+			   Log.e("Life", ex.getMessage(), ex);
+			}
+		}
+	}
+
+	/**
+	 * Play the emergency voice message the user recorded
+	 */
+	private void playEmergencyVoiceMessage() {
+		if (idleCounter > 0 && calledEmergency) {
+			player.seekTo(0);
+			player.start();
+		}
+	}
+
+	/**
+	 * Handle the logic on which number to call next
+	 */
+	protected void handleNextCall() {
+		
+		if (idleCounter > 0 && calledEmergency) {
+			
+			callCounter = callCounter + 1;
+			calledEmergency=false;
+			
+			//Set the next state if call counter max reached
+			if (callCounter == callEmergencyMax) {
+				if (currentState == CALL_EMERGENCY_CONTACT && needToCall911) {
+					
+					currentState = CALL_911_NUMBER;
+					callCounter = 0;
+				}
+				else {
+					currentState = COMPLETED_CALLS;	  
+				}
+			}
+			
+			//Check which number to call, depending on the current state
+			if (currentState == CALL_911_NUMBER) {
+				if (needToCall911) {
+					//Call 911
+					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
+									+ " We next call 911.", Toast.LENGTH_SHORT).show();
+					   
+   					try {
+   						callPhoneNumber(getString(R.string.phone_Number_911),true);
+   					} catch(Exception ex) {
+   						Log.e(getClass().getName(), ex.getMessage(), ex);
+   					}
+				} else {
+					currentState = COMPLETED_CALLS;
+				}
+			}
+			else if (currentState == CALL_EMERGENCY_CONTACT) {
+				
+				//Call Emergency contact number
+				Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
+						+ " We next call Emergency Contact " + emergencyNumber, Toast.LENGTH_SHORT).show();
+
+				try {
+					callPhoneNumber(emergencyNumber, true);
+				} catch(Exception ex) {
+					Log.e(getClass().getName(), ex.getMessage(), ex);
+				}					
+			}
+			else {
+				; //Do nothing
+			}
+		}
+
+	} //end handle911Call method
+	
 	
 	/**
 	 * ServiceStateHandler - private internal class
@@ -205,110 +300,8 @@ public class CallForHelpActivity extends Activity {
 					break;
 				default:
 					break;
-			}  //end outer switch
-			
-		} //end handleMessage method
-
-		/**
-		 * Go to the Send Email Activity screen.
-		 */
-		private void navigateToEmailEmergency() {
-			if (currentState == COMPLETED_CALLS) {
-				 try {
-				    //Navigate over to send email activity
-				    currentState = SEND_EMAIL;
-				
-				    //Clean up everything
-				    idleHandler.removeMessages(idleHandler.obtainMessage().what);
-				    phoneService.endCall(true);
-				    phoneStateIntentReceiver.unregisterIntent();
-				    
-				    //Loop until the voicemail finishes playing.  Then end the player.
-				    while(player.isPlaying()) {
-				    	;
-				    }
-				    
-				    player.release();
-				   
-				    //Then move on to email
-				    Intent intent = new Intent(getApplication(), SendEmailActivity.class);
-				    startActivity(intent);
-				
-				    //Make sure to finish this so it won't come back
-				    finish();
-				} catch (Exception ex) {
-				   Log.e("Life", ex.getMessage(), ex);
-				}
-			}
-		}
-
-		/**
-		 * Play the emegency voice message the user recorded
-		 */
-		private void playEmergencyVoiceMessage() {
-			if (idleCounter > 0 && calledEmergency) {
-				player.seekTo(0);
-				player.start();
-			}
-		}
-
-		/**
-		 * Handle the logic on which number to call next
-		 */
-		private void handleNextCall() {
-			
-			if (idleCounter > 0 && calledEmergency) {
-				
-				callCounter = callCounter + 1;
-				calledEmergency=false;
-				
-				//Set the next state if call counter max reached
-				if (callCounter == callEmergencyMax) {
-					if (currentState == CALL_EMERGENCY_CONTACT && needToCall911) {
-						
-						currentState = CALL_911_NUMBER;
-						callCounter = 0;
-					}
-					else {
-						currentState = COMPLETED_CALLS;	  
-					}
-				}
-				
-				//Check which number to call, depending on the current state
-				if (currentState == CALL_911_NUMBER) {
-					if (needToCall911) {
-						//Call 911
-						Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
-										+ " We next call 911.", Toast.LENGTH_SHORT).show();
-						   
-	   					try {
-	   						callPhoneNumber(getString(R.string.phone_Number_911),true);
-	   					} catch(Exception ex) {
-	   						Log.e(getClass().getName(), ex.getMessage(), ex);
-	   					}
-					} else {
-						currentState = COMPLETED_CALLS;
-					}
-				}
-				else if (currentState == CALL_EMERGENCY_CONTACT) {
-					
-					//Call Emergency contact number
-					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
-							+ " We next call Emergency Contact " + emergencyNumber, Toast.LENGTH_SHORT).show();
-
-					try {
-						callPhoneNumber(emergencyNumber, true);
-					} catch(Exception ex) {
-						Log.e(getClass().getName(), ex.getMessage(), ex);
-					}					
-				}
-				else {
-					; //Do nothing
-				}
-			}
-
-		} //end handle911Call method
-		
+			}  //end outer switch			
+		} //end handleMessage method		
 	} //end inner class  
 
 }
