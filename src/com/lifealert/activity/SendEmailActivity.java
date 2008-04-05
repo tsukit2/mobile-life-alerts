@@ -1,12 +1,11 @@
 package com.lifealert.activity;
 
-import com.lifealert.GmailSender;
-import com.lifealert.R;
-import com.lifealert.config.AppConfiguration;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,7 +13,10 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.lifealert.GmailSender;
+import com.lifealert.R;
+import com.lifealert.config.AppConfiguration;
 
 public class SendEmailActivity extends Activity {
 	
@@ -115,8 +117,19 @@ public class SendEmailActivity extends Activity {
 		StringBuffer finalBody = new StringBuffer();
 		finalBody.append(userName + ",\n\n");
 		finalBody.append(originalMsg + "\n\n");
+		
+		LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationProvider provider = locMan.getProviders().get(0); //locMan.getBestProvider(new Criteria());
+		Location curLoc = locMan.getCurrentLocation("gps");
+		double latitude = curLoc.getLatitude();
+		double longitude = curLoc.getLongitude();
+
+		finalBody.append("My current location:\n");
+		finalBody.append("\tLatitude - " + latitude);
+		finalBody.append("\tLongitude - " + longitude);
+		finalBody.append("\n\n");
 		finalBody.append("From,\n" + emergencyName);
-				
+		
 		return finalBody.toString();
 	}
 	
