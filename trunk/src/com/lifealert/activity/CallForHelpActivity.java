@@ -91,7 +91,7 @@ public class CallForHelpActivity extends Activity {
 		callCounter = -1;
 		idleCounter = 1;
 		calledEmergency = true;
-		handleNextCall();
+		handleNextCall(false);
 	}
 
 	@Override
@@ -211,7 +211,7 @@ public class CallForHelpActivity extends Activity {
 	/**
 	 * Handle the logic on which number to call next
 	 */
-	protected void handleNextCall() {
+	protected void handleNextCall(boolean displayMsgBetweenCalls) {
 		
 		if (idleCounter > 0 && calledEmergency) {
 			
@@ -249,9 +249,11 @@ public class CallForHelpActivity extends Activity {
 			else if (currentState == CALL_EMERGENCY_CONTACT) {
 				
 				//Call Emergency contact number
-				Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
+				if (displayMsgBetweenCalls) {
+					Toast.makeText(CallForHelpActivity.this, "Assuming the line is busy."
 						+ " We next call Emergency Contact " + emergencyNumber, Toast.LENGTH_SHORT).show();
-
+				}
+				
 				try {
 					callPhoneNumber(emergencyNumber, true);
 				} catch(Exception ex) {
@@ -290,7 +292,7 @@ public class CallForHelpActivity extends Activity {
 						case IDLE:
 							Log.d(getClass().getName(), "****Phone IDLE!");
 							playEmergencyVoiceMessage();
-							handleNextCall();
+							handleNextCall(true);
 							navigateToEmailEmergency();
 							break;
 						default:
