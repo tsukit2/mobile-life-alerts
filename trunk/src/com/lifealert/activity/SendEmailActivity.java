@@ -44,7 +44,6 @@ public class SendEmailActivity extends Activity {
 		setContentView(R.layout.emailhelp);
 		textView = (TextView) findViewById(R.id.email_help);
 		textView.setAlignment(android.text.Layout.Alignment.ALIGN_CENTER);
-		textView.setText(R.string.sending_email);
 		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 		setProgressBarVisibility(true);
 		
@@ -54,7 +53,12 @@ public class SendEmailActivity extends Activity {
 		
 		//Get the emergency contact email address
         emergencyEmail = AppConfiguration.getEmergencyEmail();
+        
         if (emergencyEmail != null && !"".equals(emergencyEmail)) {
+        	//Set the screen display
+        	textView.setText(R.string.sending_email);	
+        	
+            //Send the email in a separate thread
         	new Thread(new Runnable() {
                 public void run() {
                 	sendEmergencyEmail(emergencyEmail);                    
@@ -77,11 +81,14 @@ public class SendEmailActivity extends Activity {
 	private void sendEmergencyEmail(String emergencyEmail) {
 			
 		String subject = "EMERGENCY -- NEED HELP -- " + AppConfiguration.getUserName();
-		String body = AppConfiguration.getTextMsg();
 		String sender = AppConfiguration.getUserEmail();
 		String senderPassword = AppConfiguration.getUserEmailPassword();
 		String recipients = AppConfiguration.getEmergencyEmail();
-
+		String body = formatEmailBody(AppConfiguration.getUserName(),
+								 	  AppConfiguration.getEmergencyName(), 
+								 	  AppConfiguration.getTextMsg());
+		
+		
 		//TODO: Remove hardcoded password of user's Gmail account
 		GmailSender gmailSender = new GmailSender(sender, senderPassword); 
 		try {
@@ -93,4 +100,20 @@ public class SendEmailActivity extends Activity {
 		}
 
 	}	
+	
+	/**
+	 * Format the emergency email body
+	 * @param userName
+	 * @param emergencyName
+	 * @param originalMsg
+	 * @return
+	 */
+	private String formatEmailBody(String userName, String emergencyName, String originalMsg) {
+		StringBuffer finalBody = new StringBuffer();
+		finalBody.append(userName + ",\n\n");
+		finalBody.append(originalMsg + "\n\n");
+		finalBody.append("From,\n" + emergencyName);
+				
+		return finalBody.toString();
+	}
 }
