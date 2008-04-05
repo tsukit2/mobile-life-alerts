@@ -6,6 +6,7 @@ import com.lifealert.config.AppConfiguration;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +30,7 @@ public class SendEmailActivity extends Activity {
 			
 			if (emailSent) {
 				textView.setText(R.string.sent_email);
+				navigateSummaryScreen();
 			}
 			
 		}
@@ -116,5 +118,11 @@ public class SendEmailActivity extends Activity {
 		finalBody.append("From,\n" + emergencyName);
 				
 		return finalBody.toString();
+	}
+	
+	private void navigateSummaryScreen() {
+		emailHandler.removeMessages(emailHandler.obtainMessage().what);
+		Intent intent = new Intent(getApplication(), SummaryActivity.class);
+	    startActivity(intent);
 	}
 }
