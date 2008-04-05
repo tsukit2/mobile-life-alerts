@@ -14,9 +14,9 @@ public class SummaryActivity extends Activity {
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		
-		TextView t1 = (TextView)findViewById(R.id.summary_911_called);
+		TextView text911Called = (TextView)findViewById(R.id.summary_911_called);
 		if (!AppConfiguration.getCall911()) {
-			t1.setVisibility(View.GONE);
+			text911Called.setVisibility(View.GONE);
 		}
 		
 	}
