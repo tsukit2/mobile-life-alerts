@@ -79,7 +79,12 @@
                      android:hint="@string/config_useremail_hint"
                      android:layout_width="fill_parent"
                      android:layout_height="fill_parent" />
-
+				  <EditText
+                     android:id="@+id/config_userEmailPassword"
+                     android:hint="@string/config_useremailpassword_hint"
+                     android:password="true"
+                     android:layout_width="fill_parent"
+                     android:layout_height="fill_parent" />
                   <Button
                      style="?android:attr/buttonStyleRight"
                      android:layout_width="wrap_content"

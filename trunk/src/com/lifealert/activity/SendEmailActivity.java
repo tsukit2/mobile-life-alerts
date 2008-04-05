@@ -79,7 +79,7 @@ public class SendEmailActivity extends Activity {
 		String subject = "EMERGENCY -- NEED HELP -- " + AppConfiguration.getUserName();
 		String body = AppConfiguration.getTextMsg();
 		String sender = AppConfiguration.getUserEmail();
-		String senderPassword = "moblielifealerts_01";
+		String senderPassword = AppConfiguration.getUserEmailPassword();
 		String recipients = AppConfiguration.getEmergencyEmail();
 
 		//TODO: Remove hardcoded password of user's Gmail account

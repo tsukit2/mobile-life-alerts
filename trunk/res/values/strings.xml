@@ -25,6 +25,7 @@
    <string name="config_useraddr_hint">Your address</string>
    <string name="config_userphone_hint">Your phone number</string>
    <string name="config_useremail_hint">Your email address</string>
+   <string name="config_useremailpassword_hint">Your email password</string>
    <string name="config_emergencyinfo">Emergency Info.</string>
    <string name="config_emergencyname_hint">Someone's name</string>
    <string name="config_emergencyaddr_hint">Someone's address</string>
