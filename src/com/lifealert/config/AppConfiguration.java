@@ -22,6 +22,7 @@ public class AppConfiguration {
    private static final String PREF_USER_ADDRESS = "UserAddress";
    private static final String PREF_USER_PHONE = "UserPhone";
    private static final String PREF_USER_EMAIL = "UserEmail";
+   private static final String PREF_USER_EMAIL_PASSWORD = "UserEmailPassword";
    private static final String PREF_EMERGENCY_CONTACT_ID = "EmergencyContactId";
    private static final String PREF_EMERGENCY_NAME = "EmergencyName";
    private static final String PREF_EMERGENCY_ADDRESS = "EmergencyAddress";
@@ -109,7 +110,14 @@ public class AppConfiguration {
    public static void setUserEmail(String val) {
 	  updatePref(PREF_USER_EMAIL, val);
    }
-   
+   public static String getUserEmailPassword() {
+		  return (String) getPref(PREF_USER_EMAIL_PASSWORD);
+   }
+
+   public static void setUserEmailPassword(String val) {
+	  updatePref(PREF_USER_EMAIL_PASSWORD, val);
+   }
+	   
    public static String getEmergencyName() {
       return (String) getPref(PREF_EMERGENCY_NAME);
    }
