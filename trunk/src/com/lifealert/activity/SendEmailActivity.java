@@ -80,7 +80,8 @@ public class SendEmailActivity extends Activity {
 	 */
 	private void sendEmergencyEmail(String emergencyEmail) {
 			
-		String subject = "EMERGENCY -- NEED HELP -- " + AppConfiguration.getUserName();
+		String subject = getString(R.string.email_subject_line) 
+							+ AppConfiguration.getUserName();
 		String sender = AppConfiguration.getUserEmail();
 		String senderPassword = AppConfiguration.getUserEmailPassword();
 		String recipients = AppConfiguration.getEmergencyEmail();
