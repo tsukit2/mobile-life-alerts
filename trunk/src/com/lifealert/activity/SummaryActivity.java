@@ -13,6 +13,7 @@ public class SummaryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
+		setContentView(R.layout.summary);
 		
 		TextView text911Called = (TextView)findViewById(R.id.summary_911_called);
 		if (!AppConfiguration.getCall911()) {

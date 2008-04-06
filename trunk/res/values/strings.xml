@@ -75,5 +75,7 @@
    <string name="alert_will_call_msg">I will start contacting people if I am not hearing from you in</string>
    <string name="alert_second">second(s)</string>
    <string name="alert_okay_notification">Thank God! I'm glad that you are okay.</string>
+   
+   <string name="geocode_location_address">455 Market St. San Francisco, California</string>
 
 </resources>
