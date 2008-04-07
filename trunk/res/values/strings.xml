@@ -13,11 +13,12 @@
    <string name="sent_email">Completed sending email to emergency contact</string>
    <string name="no_email_set">No emergency email set. No email was sent.</string>
    <string name="email_failed">Email cannot be sent.  Possible errors.</string>
+   
    <string name="summary_actions">Summary of emergency actions:</string>
-   <string name="summary_emergency_detected">- Application detected emergency situation</string>
-   <string name="summary_emergency_num_called">- Emergency contact number called</string>
-   <string name="summary_911_called">- Emergency 911 number also called</string>
-   <string name="summary_email_sent">- Email sent to emergency contact</string>
+   <string name="summary_emergency_detected">Emergency situation detected</string>
+   <string name="summary_emergency_num_called">Emergency contact number called</string>
+   <string name="summary_911_called">Emergency 911 number called</string>
+   <string name="summary_email_sent">Email sent to emergency contact</string>
  
    <string name="alert_time_left">10</string>
    <string name="call_emergency_max_conter">2</string>
