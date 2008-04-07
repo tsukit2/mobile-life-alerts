@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.lifealert.ActionStatusEnum;
 import com.lifealert.GmailSender;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
@@ -26,6 +27,7 @@ public class SendEmailActivity extends Activity {
    private String emergencyEmail;
    private TextView textView;
    private ProgressBar progressBar;
+   private Bundle extras;
 
    private Handler finishEmailingHandler = new Handler() {
       @Override
@@ -35,6 +37,7 @@ public class SendEmailActivity extends Activity {
             finishEmailingHandler.sendMessageDelayed(obtainMessage(1), 1000);
          } else {
             Intent intent = new Intent(getApplication(), SummaryActivity.class);
+            intent.putExtras(extras);
             startActivity(intent);
             finish();
          }
@@ -44,6 +47,9 @@ public class SendEmailActivity extends Activity {
    @Override
    protected void onCreate(Bundle icicle) {
       super.onCreate(icicle);
+      
+      //Get the Bundle extras
+	  extras = getIntent().getExtras();
 
       // Request for the progress bar to be shown in the title
       requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -94,9 +100,13 @@ public class SendEmailActivity extends Activity {
          // TODO: Remove hardcoded password of user's Gmail account
          GmailSender gmailSender = new GmailSender(sender, senderPassword);
          gmailSender.sendMail(subject, body, sender, recipients);
+         extras.putString(ActionStatusEnum.Actions.EMERGENCY_EMAIL_SENT.toString()
+					, ActionStatusEnum.Status.COMPLETED.toString());
       } catch (Exception ex) {
          Log.e(getClass().getName(), ex.getMessage(), ex);
          textView.setText(R.string.email_failed);
+         extras.putString(ActionStatusEnum.Actions.EMERGENCY_EMAIL_SENT.toString()
+					, ActionStatusEnum.Status.FAILED.toString());
       }
 
    }
