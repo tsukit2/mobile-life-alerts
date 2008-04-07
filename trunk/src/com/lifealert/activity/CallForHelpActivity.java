@@ -14,6 +14,7 @@ import android.telephony.PhoneStateIntentReceiver;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.lifealert.ActionStatusEnum;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 import com.lifealert.service.ShakeDetectorService;
@@ -39,6 +40,7 @@ public class CallForHelpActivity extends Activity {
 	private int callEmergencyMax = 0; //Override with value from R class
 	private int callCounter;
 	private MediaPlayer player;
+	private Bundle extras;
 	
 	private Handler idleHandler = new Handler() {
 		@Override
@@ -56,7 +58,10 @@ public class CallForHelpActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-
+		
+		//Get the Bundle extras
+		extras = getIntent().getExtras();
+		
 		//Initialize the media player
 		try {
 			player = MediaPlayer.create(this, R.raw.help_voicemail);
@@ -188,6 +193,7 @@ public class CallForHelpActivity extends Activity {
 			   
 			    //Then move on to email
 			    Intent intent = new Intent(getApplication(), SendEmailActivity.class);
+			    intent.putExtras(extras);
 			    startActivity(intent);
 			
 			    //Make sure to finish this so it won't come back
@@ -241,7 +247,12 @@ public class CallForHelpActivity extends Activity {
    						callPhoneNumber(getString(R.string.phone_Number_911),true);
    					} catch(Exception ex) {
    						Log.e(getClass().getName(), ex.getMessage(), ex);
+   						extras.putString(ActionStatusEnum.Actions.CALL_911.toString()
+   										, ActionStatusEnum.Status.FAILED.toString());
    					}
+   					
+   					extras.putString(ActionStatusEnum.Actions.CALL_911.toString()
+									, ActionStatusEnum.Status.COMPLETED.toString());
 				} else {
 					currentState = COMPLETED_CALLS;
 				}
@@ -258,7 +269,12 @@ public class CallForHelpActivity extends Activity {
 					callPhoneNumber(emergencyNumber, true);
 				} catch(Exception ex) {
 					Log.e(getClass().getName(), ex.getMessage(), ex);
-				}					
+					extras.putString(ActionStatusEnum.Actions.CALL_EMERGENCY_CONTACT.toString()
+								, ActionStatusEnum.Status.FAILED.toString());
+				}
+				
+				extras.putString(ActionStatusEnum.Actions.CALL_EMERGENCY_CONTACT.toString()
+								, ActionStatusEnum.Status.COMPLETED.toString());
 			}
 			else {
 				; //Do nothing
