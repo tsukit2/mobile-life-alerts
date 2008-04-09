@@ -7,6 +7,8 @@
    <TextView
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
+      android:textSize="17dip"
+      android:textColor="#FF0"
       android:text="@string/summary_actions" />
 
    <TableLayout
@@ -17,9 +19,11 @@
       <TableRow>
          <TextView
             android:text="@string/summary_emergency_detected"
+            android:textColor="#0F0"
             android:padding="3dip" />
          <TextView
             android:textAlign="end"
+            android:textColor="#F00"
             android:padding="3dip"
             android:id="@+id/summary_emergency_detected_status" />
       </TableRow>
@@ -27,11 +31,13 @@
       <TableRow>
          <TextView
             android:id="@+id/summary_emergency_num_called"
+            android:textColor="#0F0"
             android:text="@string/summary_emergency_num_called"
             android:padding="3dip" />
          <TextView
             android:text="@string/summary_emergency_num_called"
             android:textAlign="end"
+            android:textColor="#F00"
             android:padding="3dip"
             android:id="@+id/summary_emergency_num_called_status" />
       </TableRow>
@@ -39,10 +45,12 @@
       <TableRow>
          <TextView
             android:id="@+id/summary_911_called"
+            android:textColor="#0F0"
             android:text="@string/summary_911_called"
             android:padding="3dip" />
          <TextView
             android:textAlign="end"
+            android:textColor="#F00"
             android:padding="3dip"
             android:id="@+id/summary_911_called_status" />
       </TableRow>
@@ -50,10 +58,12 @@
       <TableRow>
          <TextView
             android:id="@+id/summary_email_sent"
+            android:textColor="#0F0"
             android:text="@string/summary_email_sent"
             android:padding="3dip" />
          <TextView
             android:textAlign="end"
+            android:textColor="#F00"
             android:padding="3dip"
             android:id="@+id/summary_email_sent_status" />
       </TableRow>
