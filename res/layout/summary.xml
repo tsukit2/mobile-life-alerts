@@ -69,4 +69,43 @@
       </TableRow>
    </TableLayout>
 
+   <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textAlign="center"
+      android:text="----------------------------"
+      android:padding="3dip" />
+   
+   <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textSize="17dip"
+      android:textColor="#FF0"
+      android:text="@string/summary_user_info" />
+   <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/summary_user"
+      android:text=""
+      android:padding="3dip" />
+
+   <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textAlign="center"
+      android:text="----------------------------"
+      android:padding="3dip" />
+   
+   <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textSize="17dip"
+      android:textColor="#FF0"
+      android:text="@string/summary_emergency_contact_info" />
+   <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/summary_emergency_contact"
+      android:text=""
+      android:padding="3dip" />
 </LinearLayout>

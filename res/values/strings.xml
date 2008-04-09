@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+   <string name="alert_time_left">30</string>
+   <string name="call_emergency_max_conter">3</string>
+   <string name="call_emergency_idle_max_counter">30</string>
+   <string name="phone_Number_911">911</string>
+   
    <string name="app_name">Android Mobile Life Monitor</string>
    <string name="call_emergency">Call Emergency No.</string>
    <string name="select_emergency">Select Emergency Contact</string>
@@ -8,22 +13,24 @@
    <string name="confirm_emergency_contact">Confirm Selected Contact</string>
    <string name="no_emergency_contact">No emergency contact stored. Please select one from menu."</string>
    <string name="selected_emergency_contact">You\'ve selected emergency contact:</string>
-   <string name="email_subject_line">"EMERGENCY -- NEED HELP -- "</string>
-   <string name="sending_email">Please wait while sending email to emergency contact...</string>
-   <string name="sent_email">Completed sending email to emergency contact</string>
-   <string name="no_email_set">No emergency email set. No email was sent.</string>
-   <string name="email_failed">Email cannot be sent.  Possible errors.</string>
    
+   <string name="email_failed">Email cannot be sent.  Possible errors.</string>
+   <string name="email_subject_line">"EMERGENCY -- NEED HELP -- "</string>
+   <string name="email_no_email_set">No emergency email set. No email was sent.</string>
+   <string name="email_sending_email">Please wait while sending email to emergency contact...</string>
+   <string name="email_sent_email">Completed sending email to emergency contact</string>
+
    <string name="summary_actions">Summary of emergency actions:</string>
    <string name="summary_emergency_detected">Emergency detected</string>
    <string name="summary_emergency_num_called">Emergency contact called</string>
    <string name="summary_911_called">Emergency 911 called</string>
    <string name="summary_email_sent">Emergency contact emailed</string>
- 
-   <string name="alert_time_left">10</string>
-   <string name="call_emergency_max_conter">2</string>
-   <string name="call_emergency_idle_max_counter">30</string>
-   <string name="phone_Number_911">911</string>
+   <string name="summary_user_info">Phone user info:</string>
+   <string name="summary_emergency_contact_info">Emergency contact info:</string>
+   <string name="summary_name">Name = </string>
+   <string name="summary_phone">Phone = </string>
+   <string name="summary_address">Address = </string>
+   <string name="summary_email">Email = </string>
 
    <string name="config_about">About</string>
    <string name="config_settings">Settings</string>

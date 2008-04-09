@@ -33,7 +33,7 @@ public class SendEmailActivity extends Activity {
       @Override
       public void handleMessage(Message msg) {
          if (msg.what == 0) {
-            textView.setText(R.string.sent_email);
+            textView.setText(R.string.email_sent_email);
             finishEmailingHandler.sendMessageDelayed(obtainMessage(1), 1000);
          } else {
             Intent intent = new Intent(getApplication(), SummaryActivity.class);
@@ -65,7 +65,7 @@ public class SendEmailActivity extends Activity {
 
       if (emergencyEmail != null && !"".equals(emergencyEmail)) {
          // Set the screen display
-         textView.setText(R.string.sending_email);
+         textView.setText(R.string.email_sending_email);
 
          // Send the email in a separate thread
          new Thread(new Runnable() {
@@ -77,7 +77,7 @@ public class SendEmailActivity extends Activity {
 
       } else {
          // No emergency email set. Display message.
-         textView.setText(R.string.no_email_set);
+         textView.setText(R.string.email_no_email_set);
       }
    }
 
