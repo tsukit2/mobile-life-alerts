@@ -15,10 +15,10 @@
    <string name="email_failed">Email cannot be sent.  Possible errors.</string>
    
    <string name="summary_actions">Summary of emergency actions:</string>
-   <string name="summary_emergency_detected">Emergency situation detected</string>
-   <string name="summary_emergency_num_called">Emergency contact number called</string>
-   <string name="summary_911_called">Emergency 911 number called</string>
-   <string name="summary_email_sent">Email sent to emergency contact</string>
+   <string name="summary_emergency_detected">Emergency detected</string>
+   <string name="summary_emergency_num_called">Emergency contact called</string>
+   <string name="summary_911_called">Emergency 911 called</string>
+   <string name="summary_email_sent">Emergency contact emailed</string>
  
    <string name="alert_time_left">10</string>
    <string name="call_emergency_max_conter">2</string>

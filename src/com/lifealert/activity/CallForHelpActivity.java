@@ -26,6 +26,7 @@ public class CallForHelpActivity extends Activity {
 	private final int CALL_911_NUMBER = 1;
 	private final int COMPLETED_CALLS = 2;
 	private final int SEND_EMAIL = 3;
+	private final int SHOW_SUMMARY = 4;
 	
 	//Variable declarations
 	private int currentState;
@@ -173,31 +174,37 @@ public class CallForHelpActivity extends Activity {
 	/**
 	 * Go to the Send Email Activity screen.
 	 */
-	private void navigateToEmailEmergency() {
+	private void navigateToNextActivity(boolean headToSummary) {
 		if (currentState == COMPLETED_CALLS) {
 			 
-			 //Release the player
- 		     player.release();
-			
-			 try {
+		     //Clean up everything
+		     idleHandler.removeMessages(idleHandler.obtainMessage().what);
+		     try {
+		    	 phoneService.endCall(true);
+		     }
+			 catch (Exception ex) {
+				 Log.e("Life", ex.getMessage(), ex);
+			 }
+		     phoneStateIntentReceiver.unregisterIntent();
+		     player.release();
+ 		     
+		     Intent intent;
+ 		     if (headToSummary) {
+ 		    	//Navigate to summary activity
+ 		    	currentState = SHOW_SUMMARY;
+ 		    	intent = new Intent(getApplication(), SummaryActivity.class);
+ 		     }
+ 		     else {
 			    //Navigate over to send email activity
 			    currentState = SEND_EMAIL;
-			
-			    //Clean up everything
-			    idleHandler.removeMessages(idleHandler.obtainMessage().what);
-			    phoneService.endCall(true);
-			    phoneStateIntentReceiver.unregisterIntent();
-			    			   
-			    //Then move on to email
-			    Intent intent = new Intent(getApplication(), SendEmailActivity.class);
-			    intent.putExtras(extras);
-			    startActivity(intent);
-			
-			    //Make sure to finish this so it won't come back
-			    finish();
-			} catch (Exception ex) {
-			   Log.e("Life", ex.getMessage(), ex);
-			}
+			    intent = new Intent(getApplication(), SendEmailActivity.class);
+ 		     }
+ 		     
+ 		     intent.putExtras(extras);
+		     startActivity(intent);
+			 
+		     //Make sure to finish this so it won't come back
+		     finish();
 		}
 	}
 
@@ -218,6 +225,15 @@ public class CallForHelpActivity extends Activity {
 			
 			callCounter = callCounter + 1;
 			calledEmergency=false;
+			
+			if (currentState == CALL_EMERGENCY_CONTACT) {
+				extras.putString(ActionStatusEnum.Actions.CALL_EMERGENCY_CONTACT.toString()
+						, ActionStatusEnum.Status.FAILED.toString());
+			}
+			else {
+				extras.putString(ActionStatusEnum.Actions.CALL_911.toString()
+						, ActionStatusEnum.Status.FAILED.toString());
+			}
 			
 			//Set the next state if call counter max reached
 			if (callCounter == callEmergencyMax) {
@@ -277,6 +293,10 @@ public class CallForHelpActivity extends Activity {
 				; //Do nothing
 			}
 		}
+		else if (idleCounter <= 0 && calledEmergency) {
+			currentState = COMPLETED_CALLS;
+			navigateToNextActivity(true);
+		}
 
 	} //end handle911Call method
 	
@@ -297,18 +317,7 @@ public class CallForHelpActivity extends Activity {
 					switch (phoneStateIntentReceiver.getPhoneState()) {
 						case OFFHOOK:
 							Log.d(getClass().getName(), "****Phone OFFHOOK!");
-							
 							calledEmergency = true;
-							if (idleCounter > 0) {
-								if (currentState == CALL_EMERGENCY_CONTACT) {
-									extras.putString(ActionStatusEnum.Actions.CALL_EMERGENCY_CONTACT.toString()
-											, ActionStatusEnum.Status.FAILED.toString());
-								}
-								else {
-									extras.putString(ActionStatusEnum.Actions.CALL_911.toString()
-											, ActionStatusEnum.Status.FAILED.toString());
-								}
-							}
 							break;
 						case RINGING:
 							Log.d(getClass().getName(), "****Phone RINGING!");
@@ -316,7 +325,7 @@ public class CallForHelpActivity extends Activity {
 						case IDLE:
 							Log.d(getClass().getName(), "****Phone IDLE!");
 							handleNextCall(true);
-							navigateToEmailEmergency();
+							navigateToNextActivity(false);
 							break;
 						default:
 							Log.d(getClass().getName(), "****Some unknown phone state!");
