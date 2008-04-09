@@ -175,6 +175,10 @@ public class CallForHelpActivity extends Activity {
 	 */
 	private void navigateToEmailEmergency() {
 		if (currentState == COMPLETED_CALLS) {
+			 
+			 //Release the player
+ 		     player.release();
+			
 			 try {
 			    //Navigate over to send email activity
 			    currentState = SEND_EMAIL;
@@ -183,14 +187,7 @@ public class CallForHelpActivity extends Activity {
 			    idleHandler.removeMessages(idleHandler.obtainMessage().what);
 			    phoneService.endCall(true);
 			    phoneStateIntentReceiver.unregisterIntent();
-			    
-			    //Loop until the voicemail finishes playing.  Then end the player.
-			    while(player.isPlaying()) {
-			    	;
-			    }
-			    
-			    player.release();
-			   
+			    			   
 			    //Then move on to email
 			    Intent intent = new Intent(getApplication(), SendEmailActivity.class);
 			    intent.putExtras(extras);
@@ -208,10 +205,8 @@ public class CallForHelpActivity extends Activity {
 	 * Play the emergency voice message the user recorded
 	 */
 	private void playEmergencyVoiceMessage() {
-		if (idleCounter > 0 && calledEmergency) {
-			player.seekTo(0);
-			player.start();
-		}
+		player.seekTo(0);
+		player.start();
 	}
 
 	/**
@@ -245,6 +240,7 @@ public class CallForHelpActivity extends Activity {
 					   
    					try {
    						callPhoneNumber(getString(R.string.phone_Number_911),true);
+   						playEmergencyVoiceMessage();
    					} catch(Exception ex) {
    						Log.e(getClass().getName(), ex.getMessage(), ex);
    						extras.putString(ActionStatusEnum.Actions.CALL_911.toString()
@@ -267,6 +263,7 @@ public class CallForHelpActivity extends Activity {
 				
 				try {
 					callPhoneNumber(emergencyNumber, true);
+					playEmergencyVoiceMessage();
 				} catch(Exception ex) {
 					Log.e(getClass().getName(), ex.getMessage(), ex);
 					extras.putString(ActionStatusEnum.Actions.CALL_EMERGENCY_CONTACT.toString()
@@ -300,14 +297,24 @@ public class CallForHelpActivity extends Activity {
 					switch (phoneStateIntentReceiver.getPhoneState()) {
 						case OFFHOOK:
 							Log.d(getClass().getName(), "****Phone OFFHOOK!");
+							
 							calledEmergency = true;
+							if (idleCounter > 0) {
+								if (currentState == CALL_EMERGENCY_CONTACT) {
+									extras.putString(ActionStatusEnum.Actions.CALL_EMERGENCY_CONTACT.toString()
+											, ActionStatusEnum.Status.FAILED.toString());
+								}
+								else {
+									extras.putString(ActionStatusEnum.Actions.CALL_911.toString()
+											, ActionStatusEnum.Status.FAILED.toString());
+								}
+							}
 							break;
 						case RINGING:
 							Log.d(getClass().getName(), "****Phone RINGING!");
 							break;
 						case IDLE:
 							Log.d(getClass().getName(), "****Phone IDLE!");
-							playEmergencyVoiceMessage();
 							handleNextCall(true);
 							navigateToEmailEmergency();
 							break;
