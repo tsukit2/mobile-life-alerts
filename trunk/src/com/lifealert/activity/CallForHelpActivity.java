@@ -174,31 +174,23 @@ public class CallForHelpActivity extends Activity {
 	/**
 	 * Go to the Send Email Activity screen.
 	 */
-	private void navigateToNextActivity(boolean headToSummary) {
+	private void navigateToNextActivity() {
 		if (currentState == COMPLETED_CALLS) {
 			 
 		     //Clean up everything
-		     idleHandler.removeMessages(idleHandler.obtainMessage().what);
 		     try {
 		    	 phoneService.endCall(true);
 		     }
 			 catch (Exception ex) {
 				 Log.e("Life", ex.getMessage(), ex);
 			 }
+			 idleHandler.removeMessages(idleHandler.obtainMessage().what);
 		     phoneStateIntentReceiver.unregisterIntent();
 		     player.release();
  		     
-		     Intent intent;
- 		     if (headToSummary) {
- 		    	//Navigate to summary activity
- 		    	currentState = SHOW_SUMMARY;
- 		    	intent = new Intent(getApplication(), SummaryActivity.class);
- 		     }
- 		     else {
-			    //Navigate over to send email activity
-			    currentState = SEND_EMAIL;
-			    intent = new Intent(getApplication(), SendEmailActivity.class);
- 		     }
+		     //Navigate over to send email activity
+		     currentState = SEND_EMAIL;
+		     Intent intent = new Intent(getApplication(), SendEmailActivity.class);
  		     
  		     intent.putExtras(extras);
 		     startActivity(intent);
@@ -295,7 +287,7 @@ public class CallForHelpActivity extends Activity {
 		}
 		else if (idleCounter <= 0 && calledEmergency) {
 			currentState = COMPLETED_CALLS;
-			navigateToNextActivity(true);
+			navigateToNextActivity();
 		}
 
 	} //end handle911Call method
@@ -325,7 +317,7 @@ public class CallForHelpActivity extends Activity {
 						case IDLE:
 							Log.d(getClass().getName(), "****Phone IDLE!");
 							handleNextCall(true);
-							navigateToNextActivity(false);
+							navigateToNextActivity();
 							break;
 						default:
 							Log.d(getClass().getName(), "****Some unknown phone state!");

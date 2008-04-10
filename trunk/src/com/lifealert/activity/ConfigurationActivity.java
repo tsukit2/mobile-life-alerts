@@ -46,12 +46,12 @@ public class ConfigurationActivity extends Activity {
       tabHost.setup();
       
       TabSpec tabspec = tabHost.newTabSpec("about");
-      tabspec.setIndicator(res.getString(R.string.config_about), res.getDrawable(R.drawable.config_about));
+      tabspec.setIndicator(res.getString(R.string.config_about), res.getDrawable(R.drawable.config_info));
       tabspec.setContent(R.id.about);
       tabHost.addTab(tabspec);
       
       tabspec = tabHost.newTabSpec("settings");
-      tabspec.setIndicator(res.getString(R.string.config_settings), res.getDrawable(R.drawable.config_settings));
+      tabspec.setIndicator(res.getString(R.string.config_setup), res.getDrawable(R.drawable.config_sprocket));
       tabspec.setContent(R.id.settings);
       tabHost.addTab(tabspec);
       

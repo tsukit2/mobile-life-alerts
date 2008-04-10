@@ -4,7 +4,7 @@
    package="com.lifealert">
 
    <application
-      android:icon="@drawable/icon"
+      android:icon="@drawable/mobile_life_alert_icon"
       android:theme="@android:style/Theme.Dark">
 
       <activity
