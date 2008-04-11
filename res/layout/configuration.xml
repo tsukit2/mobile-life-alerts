@@ -20,17 +20,63 @@
          android:layout_width="fill_parent"
          android:layout_height="0dip"
          android:layout_weight="1">
-         <LinearLayout
+         <ScrollView
             android:id="@+id/about"
-            android:orientation="vertical"
+            android:layout_marginTop="5dip"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-            <TextView
-               android:text="About LifeAlert"
+            <LinearLayout
+               android:orientation="vertical"
                android:layout_width="fill_parent"
                android:layout_height="fill_parent"
-               android:layout_marginTop="5dip" />
-         </LinearLayout>
+               android:gravity="center">
+               <ImageView
+                  android:paddingTop="20dip"
+                  android:id="@+id/about_logo"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+               <TextView
+                  android:padding="10dip"
+                  android:text="@string/about_appname"
+                  android:textSize="24dip"
+                  android:textStyle="bold"
+                  android:textColor="#0F0"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+               <TextView
+                  android:padding="5dip"
+                  android:text="@string/about_version"
+                  android:textSize="16dip"
+                  android:textStyle="bold"
+                  android:textColor="#0F0"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+               <TextView
+                  android:padding="5dip"
+                  android:text="@string/about_by"
+                  android:textSize="14dip"
+                  android:textStyle="bold"
+                  android:textColor="#0F0"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+               <TextView
+                  android:padding="5dip"
+                  android:text="@string/about_by_chate"
+                  android:textSize="20dip"
+                  android:textStyle="bold"
+                  android:textColor="#0F0"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+               <TextView
+                  android:padding="5dip"
+                  android:text="@string/about_by_ed"
+                  android:textSize="20dip"
+                  android:textStyle="bold"
+                  android:textColor="#0F0"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+            </LinearLayout>
+         </ScrollView>
          <LinearLayout
             android:id="@+id/settings"
             android:layout_width="fill_parent"
@@ -79,7 +125,7 @@
                      android:hint="@string/config_useremail_hint"
                      android:layout_width="fill_parent"
                      android:layout_height="fill_parent" />
-				  <EditText
+                  <EditText
                      android:id="@+id/config_userEmailPassword"
                      android:hint="@string/config_useremailpassword_hint"
                      android:password="true"

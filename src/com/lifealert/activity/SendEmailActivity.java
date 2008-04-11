@@ -3,12 +3,7 @@ package com.lifealert.activity;
 import java.io.IOException;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +16,7 @@ import com.lifealert.ActionStatusEnum;
 import com.lifealert.GmailSender;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
+import com.lifealert.service.ShakeDetectorService;
 
 public class SendEmailActivity extends Activity {
 
@@ -79,6 +75,23 @@ public class SendEmailActivity extends Activity {
          // No emergency email set. Display message.
          textView.setText(R.string.email_no_email_set);
       }
+   }
+
+   @Override
+   protected void onStart() {
+      super.onStart();
+      
+      // put the service on hold
+      ShakeDetectorService.setOnHold(true);
+      
+   }
+
+   @Override
+   protected void onStop() {
+      super.onStop();
+
+      // put the service off hold
+      ShakeDetectorService.setOnHold(false);
    }
 
    /**
