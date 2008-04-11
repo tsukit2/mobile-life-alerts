@@ -24,6 +24,7 @@ public class SendEmailActivity extends Activity {
    private TextView textView;
    private ProgressBar progressBar;
    private Bundle extras;
+   private Thread thread;
 
    private Handler finishEmailingHandler = new Handler() {
       @Override
@@ -64,12 +65,13 @@ public class SendEmailActivity extends Activity {
          textView.setText(R.string.email_sending_email);
 
          // Send the email in a separate thread
-         new Thread(new Runnable() {
+         thread = new Thread(new Runnable() {
             public void run() {
                sendEmergencyEmail(emergencyEmail);
                finishEmailingHandler.sendEmptyMessage(0);
             } // end run
-         }).start();
+         });
+         thread.start();
 
       } else {
          // No emergency email set. Display message.
@@ -92,6 +94,12 @@ public class SendEmailActivity extends Activity {
 
       // put the service off hold
       ShakeDetectorService.setOnHold(false);
+      
+      // finish it
+      if (thread != null && thread.isAlive()) {
+         thread.interrupt();
+      }
+      finish();
    }
 
    /**

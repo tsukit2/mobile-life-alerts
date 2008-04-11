@@ -96,6 +96,9 @@ public class ShakeAlertActivity extends Activity {
       // then let the service continue one
       ShakeDetectorService.setOnHold(false);
       super.onStop();
+      
+      // then finish it
+      finish();
    }
    
    private OnClickListener onOkayClicked = new OnClickListener() {

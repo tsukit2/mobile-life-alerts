@@ -25,6 +25,9 @@ public class SummaryActivity extends Activity {
 
       // put the service off hold
       ShakeDetectorService.setOnHold(false);
+      
+      // finish it off
+      finish();
    }
 
    private Bundle extras;
