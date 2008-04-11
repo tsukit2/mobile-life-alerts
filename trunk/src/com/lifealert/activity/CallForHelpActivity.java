@@ -66,6 +66,7 @@ public class CallForHelpActivity extends Activity {
 		//Initialize the media player
 		try {
 			player = MediaPlayer.create(this, R.raw.help_voicemail);
+			player.setLooping(1);
 	    } catch (Exception ex) {
 	    	Log.e(getClass().getName(), ex.getMessage(), ex);
 	        throw new RuntimeException(ex);
@@ -116,6 +117,12 @@ public class CallForHelpActivity extends Activity {
 
 		// put the service off hold
 		ShakeDetectorService.setOnHold(false);
+		
+		// finish everything
+//      if (idleHandler != null) idleHandler.removeMessages(idleHandler.obtainMessage().what);
+//      if (phoneStateIntentReceiver != null) { phoneStateIntentReceiver.unregisterIntent(); }
+//      if (player != null) { player.stop(); player.release(); }
+//		finish();
 	}
 
 	/**
@@ -309,6 +316,7 @@ public class CallForHelpActivity extends Activity {
 					switch (phoneStateIntentReceiver.getPhoneState()) {
 						case OFFHOOK:
 							Log.d(getClass().getName(), "****Phone OFFHOOK!");
+							Toast.makeText(CallForHelpActivity.this, "Off hook", Toast.LENGTH_SHORT);
 							calledEmergency = true;
 							break;
 						case RINGING:
