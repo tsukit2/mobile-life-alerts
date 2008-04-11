@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,24 +39,8 @@ public class ConfigurationActivity extends Activity {
       // initialize the app config so the rest of the app can use
       AppConfiguration.init(this);
 
-      // the following is to initialize the tabs in the config screen
-      Context context = this;
-      Resources res = context.getResources();
-      
-      TabHost tabHost = (TabHost)findViewById(R.id.tabhost);
-      tabHost.setup();
-      
-      TabSpec tabspec = tabHost.newTabSpec("about");
-      tabspec.setIndicator(res.getString(R.string.config_about), res.getDrawable(R.drawable.config_info));
-      tabspec.setContent(R.id.about);
-      tabHost.addTab(tabspec);
-      
-      tabspec = tabHost.newTabSpec("settings");
-      tabspec.setIndicator(res.getString(R.string.config_setup), res.getDrawable(R.drawable.config_sprocket));
-      tabspec.setContent(R.id.settings);
-      tabHost.addTab(tabspec);
-      
-      tabHost.setCurrentTab(0);
+      // set up the ui
+      setupUI();
 
       // if the service is not already running, make sure to initialize the simulator
       if (!ShakeDetectorService.isRunning()) {
@@ -79,6 +64,30 @@ public class ConfigurationActivity extends Activity {
       
       Button actButton = (Button) findViewById(R.id.config_activiate);
       actButton.setOnClickListener(activateClicked);
+   }
+
+   private void setupUI() {
+      // handle the tab screening
+      Context context = this;
+      Resources res = context.getResources();
+      
+      TabHost tabHost = (TabHost)findViewById(R.id.tabhost);
+      tabHost.setup();
+      
+      TabSpec tabspec = tabHost.newTabSpec("about");
+      tabspec.setIndicator(res.getString(R.string.config_about), res.getDrawable(R.drawable.config_info));
+      tabspec.setContent(R.id.about);
+      tabHost.addTab(tabspec);
+      
+      tabspec = tabHost.newTabSpec("settings");
+      tabspec.setIndicator(res.getString(R.string.config_setup), res.getDrawable(R.drawable.config_sprocket));
+      tabspec.setContent(R.id.settings);
+      tabHost.addTab(tabspec);
+      
+      tabHost.setCurrentTab(0);
+      
+      // then load up the logo
+      ((ImageView) findViewById(R.id.about_logo)).setImageResource(R.drawable.mobile_life_alert_logo);
    }
    
    @Override

@@ -3,15 +3,31 @@ package com.lifealert.activity;
 import com.lifealert.ActionStatusEnum;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
+import com.lifealert.service.ShakeDetectorService;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 public class SummaryActivity extends Activity {
 
-	private Bundle extras;
+	@Override
+   protected void onStart() {
+      super.onStart();
+      
+      // put the service on hold
+      ShakeDetectorService.setOnHold(true);
+   }
+
+   @Override
+   protected void onStop() {
+      super.onStop();
+
+      // put the service off hold
+      ShakeDetectorService.setOnHold(false);
+   }
+
+   private Bundle extras;
 	
 	@Override
 	protected void onCreate(Bundle icicle) {

@@ -7,7 +7,6 @@
    
    <string name="app_name">Mobile Life Monitor</string>
    <string name="call_emergency">Call Emergency No.</string>
-   <string name="select_emergency">Select Emergency Contact</string>
    <string name="email_emergency">Email Emergency Contact</string>
    <string name="monitor_life">Dial Emergency No.</string>
    <string name="confirm_emergency_contact">Confirm Selected Contact</string>
@@ -45,7 +44,7 @@
    <string name="config_emergencyaddr_hint">Someone's address</string>
    <string name="config_emergencyphone_hint">Someone's phone number</string>
    <string name="config_emergencyemail_hint">Someone's email address</string>
-   <string name="config_call911">Call 911?</string>
+   <string name="config_call911">Call 911 if line busy?</string>
    <string name="config_textmsg">Text Message</string>
    <string name="config_textmsg_hint">Message you want to send when emergency</string>
    <string name="config_voicemsg">Voice Message.</string>
@@ -85,5 +84,11 @@
    <string name="alert_okay_notification">Thank God! I'm glad that you are okay.</string>
    
    <string name="geocode_location_address">455 Market St. San Francisco, California</string>
+   
+   <string name="about_appname">Mobile Life Monitor</string>
+   <string name="about_version">Version 0.1</string>
+   <string name="about_by">by</string>
+   <string name="about_by_ed">Sukit Tretriluxana</string>
+   <string name="about_by_chate">Chate Luu</string>
 
 </resources>
