@@ -87,7 +87,7 @@ public class ConfigurationActivity extends Activity {
       tabHost.setCurrentTab(0);
       
       // then load up the logo
-      ((ImageView) findViewById(R.id.about_logo)).setImageResource(R.drawable.mobile_life_alert_logo);
+      ((ImageView) findViewById(R.id.about_logo)).setImageResource(R.drawable.mobile_life_monitor_logo);
    }
    
    @Override
