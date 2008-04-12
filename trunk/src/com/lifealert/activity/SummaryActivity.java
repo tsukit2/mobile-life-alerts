@@ -62,19 +62,19 @@ public class SummaryActivity extends Activity {
 		//Populate the user summary
 		TextView userSummary = (TextView)findViewById(R.id.summary_user);
 		StringBuffer sb = new StringBuffer();
-		sb.append(getString(R.string.summary_name) + AppConfiguration.getUserName() + "\n");
-		sb.append(getString(R.string.summary_phone) + AppConfiguration.getUserPhone() + "\n");
-		sb.append(getString(R.string.summary_address) + AppConfiguration.getUserAddress() + "\n");
-		sb.append(getString(R.string.summary_email) + AppConfiguration.getUserEmail());
+		sb.append(getString(R.string.summary_name) + " " + AppConfiguration.getUserName() + "\n");
+		sb.append(getString(R.string.summary_phone) + " " + AppConfiguration.getUserPhone() + "\n");
+		sb.append(getString(R.string.summary_address) + " " + AppConfiguration.getUserAddress() + "\n");
+		sb.append(getString(R.string.summary_email) + " " + AppConfiguration.getUserEmail());
 		userSummary.setText(sb.toString());
 		
 		//Populate the emegency contact summary
 		TextView emergencyContactSummary = (TextView)findViewById(R.id.summary_emergency_contact);
 		sb = new StringBuffer();
-		sb.append(getString(R.string.summary_name) + AppConfiguration.getEmergencyName() + "\n");
-		sb.append(getString(R.string.summary_phone) + AppConfiguration.getEmergencyPhone() + "\n");
-		sb.append(getString(R.string.summary_address) + AppConfiguration.getEmergencyAddress() + "\n");
-		sb.append(getString(R.string.summary_email) + AppConfiguration.getEmergencyEmail());
+		sb.append(getString(R.string.summary_name) + " " + AppConfiguration.getEmergencyName() + "\n");
+		sb.append(getString(R.string.summary_phone) + " " + AppConfiguration.getEmergencyPhone() + "\n");
+		sb.append(getString(R.string.summary_address) + " " + AppConfiguration.getEmergencyAddress() + "\n");
+		sb.append(getString(R.string.summary_email) + " " + AppConfiguration.getEmergencyEmail());
 		emergencyContactSummary.setText(sb.toString());
 	}
 	
