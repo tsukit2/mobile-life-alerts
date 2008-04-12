@@ -4,7 +4,7 @@
    package="com.lifealert">
 
    <application
-      android:icon="@drawable/mobile_life_alert_icon"
+      android:icon="@drawable/mobile_life_monitor_icon"
       android:theme="@android:style/Theme.Dark">
 
       <activity
@@ -14,11 +14,6 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
          </intent-filter>
-      </activity>
-
-      <activity
-         android:name=".activity.LifeAlerts_ChateActivity"
-         android:label="@string/app_name">
       </activity>
 
       <activity
