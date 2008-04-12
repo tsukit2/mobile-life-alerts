@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <string name="alert_time_left">30</string>
-   <string name="call_emergency_max_conter">2</string>
+   <string name="call_emergency_max_conter">3</string>
    <string name="call_emergency_idle_max_counter">30</string>
    <string name="phone_Number_911">911</string>
    
