@@ -18,6 +18,11 @@ import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 import com.lifealert.service.ShakeDetectorService;
 
+/**
+ * Activity for sending out the emergency email
+ * to the user designated emergency contact.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class SendEmailActivity extends Activity {
 
    private String emergencyEmail;
@@ -118,7 +123,6 @@ public class SendEmailActivity extends Activity {
                AppConfiguration.getEmergencyName(), AppConfiguration
                      .getTextMsg());
 
-         // TODO: Remove hardcoded password of user's Gmail account
          GmailSender gmailSender = new GmailSender(sender, senderPassword);
          gmailSender.sendMail(subject, body, sender, recipients);
          extras.putString(ActionStatusEnum.Actions.EMERGENCY_EMAIL_SENT.toString()
@@ -147,12 +151,6 @@ public class SendEmailActivity extends Activity {
       finalBody.append(emergencyName + ",\n\n");
       finalBody.append(originalMsg + "\n\n");
 
-//      LocationManager locMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//      // LocationProvider provider = locMan.getProviders().get(0);
-//      // //locMan.getBestProvider(new Criteria());
-//      Location curLoc = locMan.getCurrentLocation("gps");
-//      String location = new Geocoder().getFromLocation(curLoc.getLatitude(),
-//            curLoc.getLongitude())[0].toString();
       String location = getString(R.string.geocode_location_address);
 
       finalBody.append("My current location appear to be:\n");

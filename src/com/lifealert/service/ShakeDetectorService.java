@@ -12,6 +12,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * The background service for detecting an emergency situation
+ * on the user mobile device where MLM is installed.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class ShakeDetectorService extends Service implements Runnable {
    private static boolean working;
    private static boolean onHold;

@@ -1,8 +1,11 @@
 package com.lifealert;
 
+/**
+ * Contain enums used for the Mobile Life Monitor app.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class ActionStatusEnum {
 	
-	//Possible enums
 	public enum Status { COMPLETED
 						, FAILED
 						, SKIPPED };

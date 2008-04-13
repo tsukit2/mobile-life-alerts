@@ -9,6 +9,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+/**
+ * Activity to show the summary of the emergency
+ * contacting procedures that MLM has taken on the
+ * user's behalf.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class SummaryActivity extends Activity {
 
 	@Override
@@ -68,7 +74,7 @@ public class SummaryActivity extends Activity {
 		sb.append(getString(R.string.summary_email) + " " + AppConfiguration.getUserEmail());
 		userSummary.setText(sb.toString());
 		
-		//Populate the emegency contact summary
+		//Populate the emergency contact summary
 		TextView emergencyContactSummary = (TextView)findViewById(R.id.summary_emergency_contact);
 		sb = new StringBuffer();
 		sb.append(getString(R.string.summary_name) + " " + AppConfiguration.getEmergencyName() + "\n");

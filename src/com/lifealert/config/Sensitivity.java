@@ -3,7 +3,7 @@ package com.lifealert.config;
 /**
  * Sensitivity type.
  * 
- * @author eddy
+ * @author Chate Luu, Sukit Tretriluxana
  */
 public enum Sensitivity {
    // the enumerations

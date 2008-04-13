@@ -20,6 +20,12 @@ import com.lifealert.config.AppConfiguration;
 import com.lifealert.config.Sensitivity;
 import com.lifealert.service.ShakeDetectorService;
 
+/**
+ * Activity for the user to set and test the sensitivity
+ * preference for the Mobile Life Monitor app to detect
+ * an emergency situation.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class SensitivityTestActivity extends Activity implements Runnable {
 
    private static final int[] SENSITIVITY_BARS = { R.id.sensitivity_bar_0,
@@ -156,17 +162,8 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    }
 
    private void startTesting() {
-      // notify the user first
-//      Toast.makeText(this, R.string.sensitivity_testing_insession, Toast.LENGTH_SHORT).show();
-//      NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//      man.notifyWithText(R.string.sensitivity_testing_insession,
-//            getString(R.string.sensitivity_testing_insession),
-//            NotificationManager.LENGTH_SHORT, null);
-      
       // turn off the status
       statusFlipper.setDisplayedChild(0);
-//      statusNotice.setVisibility(View.VISIBLE);
-//      statusText.setVisibility(View.INVISIBLE);
    }
    
    private void startTestingThread() {
@@ -188,8 +185,6 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    private void testSatisfied() {
       // then start the testing session
       statusFlipper.setDisplayedChild(1);
-//      statusNotice.setVisibility(View.GONE);
-//      statusText.setVisibility(View.VISIBLE);
    }
 
    private void resetBarColor() {

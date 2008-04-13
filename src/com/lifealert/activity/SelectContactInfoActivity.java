@@ -18,6 +18,13 @@ import com.lifealert.ContactInfo;
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 
+/**
+ * This activity gathers the existing contact information
+ * on the device from the Contacts application. It then list
+ * the contacts for the user to select one as their personal
+ * or emergency contact info.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class SelectContactInfoActivity extends ListActivity {
 	
 	private HashMap nameIdHash = new HashMap();
