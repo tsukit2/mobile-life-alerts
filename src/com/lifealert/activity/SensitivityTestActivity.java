@@ -12,7 +12,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.Toast;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
@@ -46,6 +47,8 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    private RadioButton[] rbuttons;
    private Sensitivity curSensitivity;
    private LinearLayout statusText;
+   private TextView statusNotice;
+   private ViewFlipper statusFlipper;
    private Thread thread;
 
 
@@ -68,7 +71,9 @@ public class SensitivityTestActivity extends Activity implements Runnable {
       }
 
       // get a hold of the status status panel
+      statusNotice = (TextView) findViewById(R.id.sensitivity_notice);
       statusText = (LinearLayout) findViewById(R.id.sensitivity_status);
+      statusFlipper = (ViewFlipper) findViewById(R.id.statusFlipper);
 
       // make selection. Choose normal if if it's not already there
       curSensitivity = AppConfiguration.getSensitivity();
@@ -152,14 +157,16 @@ public class SensitivityTestActivity extends Activity implements Runnable {
 
    private void startTesting() {
       // notify the user first
-      Toast.makeText(this, R.string.sensitivity_testing_insession, Toast.LENGTH_SHORT).show();
+//      Toast.makeText(this, R.string.sensitivity_testing_insession, Toast.LENGTH_SHORT).show();
 //      NotificationManager man = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 //      man.notifyWithText(R.string.sensitivity_testing_insession,
 //            getString(R.string.sensitivity_testing_insession),
 //            NotificationManager.LENGTH_SHORT, null);
       
       // turn off the status
-      statusText.setVisibility(View.INVISIBLE);
+      statusFlipper.setDisplayedChild(0);
+//      statusNotice.setVisibility(View.VISIBLE);
+//      statusText.setVisibility(View.INVISIBLE);
    }
    
    private void startTestingThread() {
@@ -180,7 +187,9 @@ public class SensitivityTestActivity extends Activity implements Runnable {
    
    private void testSatisfied() {
       // then start the testing session
-      statusText.setVisibility(View.VISIBLE);
+      statusFlipper.setDisplayedChild(1);
+//      statusNotice.setVisibility(View.GONE);
+//      statusText.setVisibility(View.VISIBLE);
    }
 
    private void resetBarColor() {

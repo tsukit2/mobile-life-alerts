@@ -204,28 +204,41 @@
       android:gravity="center_horizontal"
       android:padding="5dip">
 
-      <LinearLayout
-         android:id="@+id/sensitivity_status"      
+      <ViewFlipper
+         android:id="@+id/statusFlipper"
          android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:orientation="vertical">
+         android:layout_height="wrap_content">
 
          <TextView
-            android:textAlign="center"
-            android:text="@string/sensitivity_teststatus_ok"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="#00ff00"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-
-         <Button
-            android:id="@+id/sensitivity_testagain"
+            android:id="@+id/sensitivity_notice"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sensitivity_testagain"
-            android:textSize="16sp" />
-      </LinearLayout>
+            android:padding="5dip"
+            android:text="@string/sensitivity_testing_insession" />
+
+         <LinearLayout
+            android:id="@+id/sensitivity_status"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+               android:textAlign="center"
+               android:text="@string/sensitivity_teststatus_ok"
+               android:textStyle="bold"
+               android:textSize="16sp"
+               android:textColor="#00ff00"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content" />
+
+            <Button
+               android:id="@+id/sensitivity_testagain"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:text="@string/sensitivity_testagain"
+               android:textSize="16sp" />
+         </LinearLayout>
+      </ViewFlipper>
 
    </LinearLayout>
 </LinearLayout>
