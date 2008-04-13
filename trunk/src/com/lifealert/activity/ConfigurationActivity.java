@@ -22,6 +22,13 @@ import com.lifealert.config.AppConfiguration;
 import com.lifealert.config.Sensitivity;
 import com.lifealert.service.ShakeDetectorService;
 
+/**
+ * The initial screen of the Mobile Life Monitor
+ * application.  Shows the "about" intro tab and 
+ * the "setup" tab where user can configure the 
+ * data needed by the MLM.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class ConfigurationActivity extends Activity {
 	
    //The "Bundle" key to be used by the SelectEmergencyNumber activity
@@ -333,11 +340,7 @@ public class ConfigurationActivity extends Activity {
                ((Button) findViewById(R.id.config_activiate)).setText(R.string.config_systemaction_deactivate);
             } else {
                Toast.makeText(ConfigurationActivity.this, R.string.config_is_incomplete, Toast.LENGTH_SHORT).show();
-//               NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//               notMan.notifyWithText(R.string.config_is_incomplete,
-//                     getText(R.string.config_is_incomplete),
-//                     NotificationManager.LENGTH_SHORT,
-//                     null);
+
             }
          }
       }

@@ -11,7 +11,7 @@ import android.content.SharedPreferences;
  * retrieving and storying the preferences so the rest of the application can do things more easily. Note that
  * the class needs to be initialized first with an application context.
  * 
- * @author eddy
+ * @author Chate Luu, Sukit Tretriluxana
  */
 public class AppConfiguration {
    private static final String PREF_FILENAME = "LifeAlertAppCfg";

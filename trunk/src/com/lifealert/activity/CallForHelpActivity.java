@@ -19,6 +19,11 @@ import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 import com.lifealert.service.ShakeDetectorService;
 
+/**
+ * This class makes the calls to the emergency contact and 911
+ * (if needed).  Navigate to the SendEmail activity screen next.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class CallForHelpActivity extends Activity {
 	
 	//State variable declarations
@@ -107,18 +112,6 @@ public class CallForHelpActivity extends Activity {
 
 		// put the service on hold
 		ShakeDetectorService.setOnHold(true);
-
-//		try {
-//   		if (phoneService != null && phoneService.isOffhook()) {
-//   		   phoneService.endCall(true);
-//   		   if (idleHandler != null) idleHandler.removeMessages(idleHandler.obtainMessage().what);
-//   	      if (phoneStateIntentReceiver != null) { phoneStateIntentReceiver.unregisterIntent(); }
-//   	      if (player != null) { player.stop(); player.release(); }		   
-//   	      finish();
-//   		}
-//		} catch (Exception ex) {
-//		   Log.e("Life", ex.getMessage(), ex);
-//		}
 	}
 
 
@@ -128,13 +121,7 @@ public class CallForHelpActivity extends Activity {
 		super.onStop();
 
 		// put the service off hold
-		ShakeDetectorService.setOnHold(false);
-		
-		// finish everything
-//      if (idleHandler != null) idleHandler.removeMessages(idleHandler.obtainMessage().what);
-//      if (phoneStateIntentReceiver != null) { phoneStateIntentReceiver.unregisterIntent(); }
-//      if (player != null) { player.stop(); player.release(); }
-//		finish();
+		ShakeDetectorService.setOnHold(false);		
 	}
 
 	/**

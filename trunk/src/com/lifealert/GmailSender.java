@@ -15,6 +15,12 @@ import java.io.OutputStream;
 import java.security.Security;  
 import java.util.Properties;  
 
+/**
+ * This class is used to send email through a GMail account.
+ * Inputs needed are sender email address, sending email password,
+ * recipient email address
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class GmailSender extends javax.mail.Authenticator {  
 	
 	private String mailhost = "smtp.gmail.com";  

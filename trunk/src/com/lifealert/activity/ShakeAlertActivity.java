@@ -22,6 +22,14 @@ import com.lifealert.R;
 import com.lifealert.config.AppConfiguration;
 import com.lifealert.service.ShakeDetectorService;
 
+/**
+ * Activity prompted the user to confirm whether 
+ * an actual emergency situation has occurred or not.
+ * If not, navigate back to what the user was doing and
+ * place MLM application back to background monitoring mode.
+ * If yes, start of the emergency contacting procedures.
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class ShakeAlertActivity extends Activity {
    private int timeLeft;
    private boolean okay;
@@ -109,12 +117,6 @@ public class ShakeAlertActivity extends Activity {
    
          // notify user
          Toast.makeText(ShakeAlertActivity.this, R.string.alert_okay_notification, Toast.LENGTH_SHORT).show();
-//         NotificationManager notMan = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//         Notification notice = new Notification();
-//         notMan.notify(new Notification(this, R.string.config_is_incomplete,
-//               getText(R.string.alert_okay_notification),
-//               NotificationManager.LENGTH_SHORT,
-//               null);
          
          // finish this activity
          finish();

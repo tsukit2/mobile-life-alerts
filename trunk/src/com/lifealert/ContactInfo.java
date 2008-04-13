@@ -1,5 +1,10 @@
 package com.lifealert;
 
+/**
+ * Bean object for storing the contacts information
+ * selected from the Contacts app. 
+ * @author Chate Luu, Sukit Tretriluxana
+ */
 public class ContactInfo {
 
 	private String name;
@@ -147,9 +152,17 @@ public class ContactInfo {
 
 	public String toString() {
       return formatContact(name, phoneNumber, null, null);
-//		return formatContact(name, phoneNumber, email, address);
 	}
 	
+	/**
+	 * Return the contact info stored in this object into more readable
+	 * format
+	 * @param inName
+	 * @param inPhone
+	 * @param inEmail
+	 * @param inAddress
+	 * @return
+	 */
 	public static String formatContact (String inName, String inPhone, String inEmail, String inAddress) {
 		inPhone = (inPhone != null && !"".equals(inPhone)) ? "\n\t" + inPhone : "";
 		inEmail = (inEmail != null && !"".equals(inEmail)) ? "\n\t" + inEmail : "";
