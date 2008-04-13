@@ -107,6 +107,18 @@ public class CallForHelpActivity extends Activity {
 
 		// put the service on hold
 		ShakeDetectorService.setOnHold(true);
+
+//		try {
+//   		if (phoneService != null && phoneService.isOffhook()) {
+//   		   phoneService.endCall(true);
+//   		   if (idleHandler != null) idleHandler.removeMessages(idleHandler.obtainMessage().what);
+//   	      if (phoneStateIntentReceiver != null) { phoneStateIntentReceiver.unregisterIntent(); }
+//   	      if (player != null) { player.stop(); player.release(); }		   
+//   	      finish();
+//   		}
+//		} catch (Exception ex) {
+//		   Log.e("Life", ex.getMessage(), ex);
+//		}
 	}
 
 
