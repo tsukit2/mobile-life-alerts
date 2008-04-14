@@ -30,12 +30,13 @@ public class SendEmailActivity extends Activity {
    private ProgressBar progressBar;
    private Bundle extras;
    private Thread thread;
+   private boolean successful;
 
    private Handler finishEmailingHandler = new Handler() {
       @Override
       public void handleMessage(Message msg) {
          if (msg.what == 0) {
-            textView.setText(R.string.email_sent_email);
+            textView.setText(successful ? R.string.email_sent_email : R.string.email_failed);
             finishEmailingHandler.sendMessageDelayed(obtainMessage(1), 1000);
          } else {
             Intent intent = new Intent(getApplication(), SummaryActivity.class);
@@ -72,6 +73,7 @@ public class SendEmailActivity extends Activity {
          // Send the email in a separate thread
          thread = new Thread(new Runnable() {
             public void run() {
+               successful = false;
                sendEmergencyEmail(emergencyEmail);
                finishEmailingHandler.sendEmptyMessage(0);
             } // end run
@@ -127,9 +129,10 @@ public class SendEmailActivity extends Activity {
          gmailSender.sendMail(subject, body, sender, recipients);
          extras.putString(ActionStatusEnum.Actions.EMERGENCY_EMAIL_SENT.toString()
 					, ActionStatusEnum.Status.COMPLETED.toString());
+         successful = true;
       } catch (Exception ex) {
          Log.e(getClass().getName(), ex.getMessage(), ex);
-         textView.setText(R.string.email_failed);
+//         textView.setText(R.string.email_failed);
          extras.putString(ActionStatusEnum.Actions.EMERGENCY_EMAIL_SENT.toString()
 					, ActionStatusEnum.Status.FAILED.toString());
       }
